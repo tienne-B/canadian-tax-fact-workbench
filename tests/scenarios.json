@@ -1,0 +1,208 @@
+[
+  {
+    "name": "Confirmed empty return",
+    "inputs": {
+      "/employments": [],
+      "/businesses": [],
+      "/properties": [],
+      "/otherIncome": [],
+      "/subdivisionEDeductions": [],
+      "/divisionCDeductions": [],
+      "/capital/taxableGainsExcludingLpp": "0",
+      "/capital/taxableNetLppGain": "0",
+      "/capital/allowableLossesExcludingLpp": "0",
+      "/capital/abil": "0",
+      "/taxableIncome/divisionCAdditions": "0",
+      "/return/annualParametersReviewed": true,
+      "/review/coreScopeApproved": true,
+      "/review/sourceClassificationReviewed": true,
+      "/review/capitalTreatmentReviewed": true,
+      "/review/deductionEligibilityReviewed": true
+    },
+    "expected": {
+      "/income/netIncome": "0",
+      "/taxableIncome/amount": "0",
+      "/review/coreReady": true
+    }
+  },
+  {
+    "name": "Employment, business loss, investment income and RRSP deduction",
+    "inherit_zero": true,
+    "inputs": {
+      "/employments": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/employments/#11111111-1111-4111-8111-111111111111/remuneration": "60000",
+      "/employments/#11111111-1111-4111-8111-111111111111/benefits": "1200",
+      "/employments/#11111111-1111-4111-8111-111111111111/optionBenefits": "0",
+      "/employments/#11111111-1111-4111-8111-111111111111/deductions": "1000",
+      "/businesses": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/businesses/#11111111-1111-4111-8111-111111111111/net": "-5000",
+      "/properties": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/properties/#11111111-1111-4111-8111-111111111111/net": "2000",
+      "/subdivisionEDeductions": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/subdivisionEDeductions/#11111111-1111-4111-8111-111111111111/amount": "7000"
+    },
+    "expected": {
+      "/income/section3a": "62200",
+      "/income/section3c": "55200",
+      "/income/netIncome": "50200",
+      "/taxableIncome/amount": "50200"
+    },
+    "remove": []
+  },
+  {
+    "name": "ABIL removed from capital offset then deducted once",
+    "inherit_zero": true,
+    "inputs": {
+      "/capital/taxableGainsExcludingLpp": "10000",
+      "/capital/taxableNetLppGain": "2000",
+      "/capital/allowableLossesExcludingLpp": "7000",
+      "/capital/abil": "3000"
+    },
+    "expected": {
+      "/capital/lossOffset3b": "4000",
+      "/income/section3b": "8000",
+      "/income/netIncome": "5000"
+    },
+    "remove": []
+  },
+  {
+    "name": "Excess ordinary capital loss does not reduce employment income",
+    "inherit_zero": true,
+    "inputs": {
+      "/employments": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/employments/#11111111-1111-4111-8111-111111111111/remuneration": "60000",
+      "/employments/#11111111-1111-4111-8111-111111111111/benefits": "1200",
+      "/employments/#11111111-1111-4111-8111-111111111111/optionBenefits": "0",
+      "/employments/#11111111-1111-4111-8111-111111111111/deductions": "1000",
+      "/capital/taxableGainsExcludingLpp": "1000",
+      "/capital/allowableLossesExcludingLpp": "10000"
+    },
+    "expected": {
+      "/income/section3b": "0",
+      "/income/netIncome": "60200"
+    },
+    "remove": []
+  },
+  {
+    "name": "Different sources stay separate until paragraph 3(d)",
+    "inherit_zero": true,
+    "inputs": {
+      "/businesses": [
+        "11111111-1111-4111-8111-111111111111",
+        "22222222-2222-4222-8222-222222222222"
+      ],
+      "/businesses/#11111111-1111-4111-8111-111111111111/net": "10000",
+      "/businesses/#22222222-2222-4222-8222-222222222222/net": "-15000",
+      "/subdivisionEDeductions": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/subdivisionEDeductions/#11111111-1111-4111-8111-111111111111/amount": "2000"
+    },
+    "expected": {
+      "/income/section3a": "10000",
+      "/income/section3c": "8000",
+      "/income/section3dLosses": "15000",
+      "/income/netIncome": "0"
+    },
+    "remove": []
+  },
+  {
+    "name": "Division C addition and permitted deduction",
+    "inherit_zero": true,
+    "inputs": {
+      "/otherIncome": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/otherIncome/#11111111-1111-4111-8111-111111111111/amount": "1000",
+      "/taxableIncome/divisionCAdditions": "500",
+      "/divisionCDeductions": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/divisionCDeductions/#11111111-1111-4111-8111-111111111111/amount": "1000"
+    },
+    "expected": {
+      "/income/netIncome": "1000",
+      "/taxableIncome/amount": "500"
+    },
+    "remove": []
+  },
+  {
+    "name": "Income deduction floor",
+    "inherit_zero": true,
+    "inputs": {
+      "/subdivisionEDeductions": [
+        "11111111-1111-4111-8111-111111111111"
+      ],
+      "/subdivisionEDeductions/#11111111-1111-4111-8111-111111111111/amount": "5000"
+    },
+    "expected": {
+      "/income/section3c": "0",
+      "/income/netIncome": "0"
+    },
+    "remove": []
+  },
+  {
+    "name": "Unknown capital amount remains unknown",
+    "inherit_zero": true,
+    "inputs": {},
+    "expected": {
+      "/taxableIncome/amount": "MISSING",
+      "/review/coreInputsComplete": false
+    },
+    "remove": [
+      "/capital/abil"
+    ]
+  },
+  {
+    "name": "Missing collection member remains unknown",
+    "inherit_zero": true,
+    "inputs": {
+      "/businesses": [
+        "11111111-1111-4111-8111-111111111111"
+      ]
+    },
+    "expected": {
+      "/taxableIncome/amount": "MISSING",
+      "/review/coreInputsComplete": false
+    },
+    "remove": []
+  },
+  {
+    "name": "Completed arithmetic does not bypass review",
+    "inherit_zero": true,
+    "inputs": {
+      "/review/coreScopeApproved": false
+    },
+    "expected": {
+      "/taxableIncome/amount": "0",
+      "/review/coreReady": false
+    },
+    "remove": []
+  },
+  {
+    "name": "Decimal cents remain exact",
+    "inherit_zero": true,
+    "inputs": {
+      "/properties": [
+        "11111111-1111-4111-8111-111111111111",
+        "22222222-2222-4222-8222-222222222222"
+      ],
+      "/properties/#11111111-1111-4111-8111-111111111111/net": "0.10",
+      "/properties/#22222222-2222-4222-8222-222222222222/net": "0.20"
+    },
+    "expected": {
+      "/income/netIncome": "0.30"
+    },
+    "remove": []
+  }
+]

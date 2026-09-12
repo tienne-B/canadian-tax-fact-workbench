@@ -1,0 +1,1198 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/benefits">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>benefits</String>
+      </Derived>
+    </Fact>
+    <Fact path="/capital">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>capital</String>
+      </Derived>
+    </Fact>
+    <Fact path="/credits">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>credits</String>
+      </Derived>
+    </Fact>
+    <Fact path="/filing">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>filing</String>
+      </Derived>
+    </Fact>
+    <Fact path="/income">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>income</String>
+      </Derived>
+    </Fact>
+    <Fact path="/payments">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>payments</String>
+      </Derived>
+    </Fact>
+    <Fact path="/person">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>person</String>
+      </Derived>
+    </Fact>
+    <Fact path="/registeredPlans">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>registeredPlans</String>
+      </Derived>
+    </Fact>
+    <Fact path="/residence">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>residence</String>
+      </Derived>
+    </Fact>
+    <Fact path="/return">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>return</String>
+      </Derived>
+    </Fact>
+    <Fact path="/review">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>review</String>
+      </Derived>
+    </Fact>
+    <Fact path="/specialTaxes">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>specialTaxes</String>
+      </Derived>
+    </Fact>
+    <Fact path="/taxableIncome">
+      <Description>Structural namespace for dictionary traversal; not a taxpayer fact.</Description>
+      <Derived>
+        <String>taxableIncome</String>
+      </Derived>
+    </Fact>
+    <Fact path="/return/taxYear">
+      <Description>Calendar year of the individual return. Authorities: 249(1)(c) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-249.html Status: evidence_input. </Description>
+      <Writable>
+        <Int />
+      </Writable>
+    </Fact>
+    <Fact path="/return/ruleVersion">
+      <Description>Immutable identifier of the selected and reviewed legal rule bundle. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/return/currency">
+      <Description>All Dollar values in this dictionary are CAD. Host must enforce CAD and documented foreign currency conversion. Authorities: 261(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-261.html Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/return/sourceSnapshot">
+      <Description>Identifier of the statute snapshot used by the selected rule bundle. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/return/annualParametersReviewed">
+      <Description>Application attestation that year-specific parameters and commencement provisions have been reviewed; not automatic legal validation. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/person/birthDate">
+      <Description>Date of birth, used by age-dependent provisions. Authorities: 118(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: evidence_input. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/person/deathDate">
+      <Description>Date of death if applicable; keep absent for a living individual. Authorities: 70(5) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-70.html; 150(1)(b) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-150.html Status: evidence_input. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/person/maritalStatus">
+      <Description>Relationship status; application vocabulary, not a Canadian joint-filing status. Authorities: 248(1), common-law partner https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-248.html; 118(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: evidence_input. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/person/spouseNetIncome">
+      <Description>Spouse or common-law partner income for the relevant provision, after its specified adjustments. Authorities: 118(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/residence/status">
+      <Description>Reviewed residence classification, including treaty effects. Do not infer solely from citizenship, address, or days present. Authorities: 2(1), 2(3) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html; 250(1), 250(3), 250(5) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-250.html Status: external_legal_determination. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/residence/provinceAtYearEnd">
+      <Description>Province or territory at year end for routing to a separate jurisdiction module; also capture permanent establishments when relevant. Authorities: 120(4) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-120.html Status: evidence_input. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/residence/arrivalDate">
+      <Description>Date residence began, if applicable; date alone does not determine residence. Authorities: 114 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-114.html; 128.1(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-128.1.html Status: evidence_input. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/residence/departureDate">
+      <Description>Date residence ceased, if applicable. Authorities: 114 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-114.html; 128.1(4) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-128.1.html Status: evidence_input. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/residence/canadianSourceLiabilityReviewed">
+      <Description>Whether section 2(3) liability and section 115 computations have been assessed for a non-resident. Authorities: 2(3) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html; 115 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-115.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/dependants">
+      <Description>Persons relevant to dependency and family-based provisions; entitlement is provision-specific. Authorities: 118(6) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/dependants/*/birthDate">
+      <Description>Dependant date of birth. Authorities: 118(6) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html; 118.3 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html Status: evidence_input. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/dependants/*/relationship">
+      <Description>Relationship to taxpayer. Authorities: 118(6) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html; 118.3 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html Status: evidence_input. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/dependants/*/netIncome">
+      <Description>Relevant dependant income, determined for the specific benefit or credit. Authorities: 118(6) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html; 118.3 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/dependants/*/disabilityEligibilityReviewed">
+      <Description>Reviewed disability eligibility under the applicable provision. Authorities: 118(6) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html; 118.3 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/dependants/*/sharedCustody">
+      <Description>Reviewed shared-custody status for the relevant benefit period. Authorities: 118(6) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html; 118.3 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/employments">
+      <Description>Each distinct office or employment, with amounts already classified under the Act. Authorities: 4(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-4.html; 5 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html; 6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-6.html; 7 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-7.html; 8 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-8.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/sourceId">
+      <Description>Evidence identifier for the employment; avoid duplicating a T4 amount in benefits. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/remuneration">
+      <Description>Section 5 remuneration received, including gratuities, excluding amounts separately entered below. Authorities: 5(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/benefits">
+      <Description>Additional taxable section 6 benefits not already in remuneration. Authorities: 6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-6.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/optionBenefits">
+      <Description>Section 7 inclusions not already in either preceding field. Authorities: 7 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-7.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/deductions">
+      <Description>Deductions legally permitted and allocated to this employment; expense eligibility and limits reviewed externally. Authorities: 8(1), 8(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-8.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/net">
+      <Description>Income or loss from this employment after reviewed inclusions and deductions. Authorities: 5 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html; 8 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-8.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Add>
+              <Dependency path="../remuneration" />
+              <Dependency path="../benefits" />
+              <Dependency path="../optionBenefits" />
+            </Add>
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="../deductions" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/employments/*/positiveIncome">
+      <Description>Positive employment source income for paragraph 3(a). Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Dependency path="../net" />
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/employments/*/loss">
+      <Description>Employment source loss as a positive magnitude for paragraph 3(d). Authorities: 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html; 5(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dollar>0</Dollar>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="../net" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/businesses">
+      <Description>One item per distinct business source. Input is tax income or loss after statutory adjustments, not accounting cash flow. Authorities: 9 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html; 12 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html; 18 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html; 20 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html; 31 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-31.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/businesses/*/sourceId">
+      <Description>Evidence identifier and source classification. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/businesses/*/net">
+      <Description>Reviewed business income or permitted current-year loss; apply attribution, deductibility, CCA and applicable loss restrictions before entry. Canadian dividends include required gross-up; foreign income is converted to CAD. Authorities: 9 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html; 12 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html; 18 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html; 20 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html; 31 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-31.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/businesses/*/positiveIncome">
+      <Description>Positive source income for paragraph 3(a). Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Dependency path="../net" />
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/businesses/*/loss">
+      <Description>Permitted current-year source loss as positive magnitude; restricted amounts excluded. Authorities: 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dollar>0</Dollar>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="../net" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/properties">
+      <Description>One item per distinct property source. Input is tax income or loss after statutory adjustments, not accounting cash flow. Authorities: 9 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html; 12 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html; 18 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html; 20 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html; 82 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-82.html; 74.1 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-74.1.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/properties/*/sourceId">
+      <Description>Evidence identifier and source classification. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/properties/*/net">
+      <Description>Reviewed property income or permitted current-year loss; apply attribution, deductibility, CCA and applicable loss restrictions before entry. Canadian dividends include required gross-up; foreign income is converted to CAD. Authorities: 9 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html; 12 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html; 18 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html; 20 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html; 82 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-82.html; 74.1 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-74.1.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/properties/*/positiveIncome">
+      <Description>Positive source income for paragraph 3(a). Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Dependency path="../net" />
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/properties/*/loss">
+      <Description>Permitted current-year source loss as positive magnitude; restricted amounts excluded. Authorities: 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dollar>0</Dollar>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="../net" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/otherIncome">
+      <Description>Other source inclusions, disjoint from employment, business, property and capital entries. Authorities: 56 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.html; 96 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-96.html; 104 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-104.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/otherIncome/*/category">
+      <Description>Application classification of included income; partnership/trust amounts retain their statutory character and must not duplicate other sources. Authorities: 56 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.html; 96 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-96.html; 104 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-104.html Status: evidence_input. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/otherIncome/*/amount">
+      <Description>Reviewed taxable inclusion. Scholarship exemptions and support distinctions must be resolved first. Social assistance and workers compensation may also generate a separate Division C deduction. Authorities: 56(1), 56(3) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.html; 56.1 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.1.html; 110(1)(f) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/otherIncome/*/authority">
+      <Description>Exact provision and evidence for this inclusion. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/subdivisionEDeductions">
+      <Description>Permitted deductions counted only under paragraph 3(c), excluding amounts already applied to a source. Authorities: 3(c) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html; 60 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-60.html; 62 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-62.html; 63 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-63.html; 64 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-64.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/subdivisionEDeductions/*/category">
+      <Description>Application classification; category does not itself establish eligibility. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/subdivisionEDeductions/*/amount">
+      <Description>Legally allowable claimed deduction under Subdivision E; relevant limits, ordering, elections and reimbursements already applied. Authorities: 3(c) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html; 60 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-60.html; 62 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-62.html; 63 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-63.html; 64 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-64.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/subdivisionEDeductions/*/authority">
+      <Description>Exact deduction provision, including a section 60 cross-reference where applicable (e.g. RRSP/FHSA). Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/capital/taxableGainsExcludingLpp">
+      <Description>Taxable capital gains other than listed personal property, after applicable exemptions, reserves, inclusion treatment and adjustments. Authorities: 3(b)(i)(A) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html; 38 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-38.html; 39 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-39.html; 40 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-40.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/capital/taxableNetLppGain">
+      <Description>Taxable net gain on listed personal property after the separate LPP loss computation. Authorities: 3(b)(i)(B) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html; 41 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-41.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/capital/allowableLossesExcludingLpp">
+      <Description>Allowable capital losses other than LPP, INCLUDING the allowable business investment losses separately entered below. Authorities: 3(b)(ii) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html; 38(b) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-38.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/capital/abil">
+      <Description>Allowable business investment loss included in the preceding loss amount; also deducted under paragraph 3(d). Authorities: 3(b)(ii), 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html; 38(c) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-38.html; 39(1)(c) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-39.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/capital/lossOffset3b">
+      <Description>Allowable non-LPP capital losses after removing ABIL, floored at zero. Authorities: 3(b)(ii) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/capital/allowableLossesExcludingLpp" />
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/capital/abil" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/income/section3b">
+      <Description>Positive excess of taxable gains and taxable net LPP gain over the paragraph 3(b)(ii) loss offset. Authorities: 3(b) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Add>
+                <Dependency path="/capital/taxableGainsExcludingLpp" />
+                <Dependency path="/capital/taxableNetLppGain" />
+              </Add>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/capital/lossOffset3b" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/income/employmentsIncome">
+      <Description>Aggregate employments positiveIncome across distinct sources. Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/positiveIncome" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/employmentsLosses">
+      <Description>Aggregate employments loss across distinct sources. Authorities: 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/loss" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/businessesIncome">
+      <Description>Aggregate businesses positiveIncome across distinct sources. Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/businesses/*/positiveIncome" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/businessesLosses">
+      <Description>Aggregate businesses loss across distinct sources. Authorities: 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/businesses/*/loss" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/propertiesIncome">
+      <Description>Aggregate properties positiveIncome across distinct sources. Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/properties/*/positiveIncome" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/propertiesLosses">
+      <Description>Aggregate properties loss across distinct sources. Authorities: 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/properties/*/loss" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/otherSourceIncome">
+      <Description>Aggregate other inclusions. Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/otherIncome/*/amount" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/section3a">
+      <Description>Sum of positive source income worldwide; source losses and taxable capital gains are kept separate. Authorities: 3(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <Add>
+          <Dependency path="/income/employmentsIncome" />
+          <Dependency path="/income/businessesIncome" />
+          <Dependency path="/income/propertiesIncome" />
+          <Dependency path="/income/otherSourceIncome" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/income/subdivisionEDeductions">
+      <Description>Aggregate permitted Subdivision E deductions not previously counted. Authorities: 3(c) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/subdivisionEDeductions/*/amount" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/income/section3c">
+      <Description>Paragraph 3(a) plus 3(b), less eligible Subdivision E deductions, floored at zero. Authorities: 3(c) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Add>
+                <Dependency path="/income/section3a" />
+                <Dependency path="/income/section3b" />
+              </Add>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/income/subdivisionEDeductions" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/income/section3dLosses">
+      <Description>Permitted source losses plus ABIL; net capital losses are not included here. Authorities: 3(d) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <Add>
+          <Dependency path="/income/employmentsLosses" />
+          <Dependency path="/income/businessesLosses" />
+          <Dependency path="/income/propertiesLosses" />
+          <Dependency path="/capital/abil" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/income/netIncome">
+      <Description>Income under section 3, after paragraph 3(d), with zero floor. Special taxpayer regimes require separate routing. Authorities: 3(d)–(f) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/income/section3c" />
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/income/section3dLosses" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/divisionCDeductions">
+      <Description>Permitted claimed Division C deductions, after deduction-specific limits. Authorities: 2(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html; 110 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.html; 110.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.6.html; 110.7 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.7.html; 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/divisionCDeductions/*/category">
+      <Description>Classification only; amounts must have passed their own legal limits. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/divisionCDeductions/*/amount">
+      <Description>Deduction allowed for this year; section 111 loss availability and offsets must be checked externally. Authorities: 110 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.html; 110.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.6.html; 110.7 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.7.html; 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/divisionCDeductions/*/authority">
+      <Description>Exact governing provision and evidence for the allowed deduction. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/taxableIncome/divisionCAdditions">
+      <Description>Any additions required by Division C, legally determined; explicitly enter zero only after review. Authorities: 2(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/taxableIncome/totalDeductions">
+      <Description>Sum of individually permitted Division C deductions. Authorities: 2(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/divisionCDeductions/*/amount" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/taxableIncome/amount">
+      <Description>Ordinary resident computation: section 3 income plus Division C additions less permitted deductions, with no negative amount. Not the Division D non-resident computation. Authorities: 2(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html; 248(1), taxable income https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-248.html Status: arithmetic_implemented. </Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Add>
+                <Dependency path="/income/netIncome" />
+                <Dependency path="/taxableIncome/divisionCAdditions" />
+              </Add>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/taxableIncome/totalDeductions" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/registeredPlans/rrspDeduction">
+      <Description>Claimed permitted RRSP deduction; contribution amount is not automatically deductible. Authorities: 146(5), 146(5.1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/registeredPlans/rrspDeductionLimit">
+      <Description>Year-specific RRSP deduction limit, including relevant pension adjustments. Authorities: 146(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/registeredPlans/fhsaDeduction">
+      <Description>Permitted FHSA deduction after annual and lifetime constraints. Authorities: 146.6(5) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.6.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/registeredPlans/hbpIncomeInclusion">
+      <Description>Home Buyers’ Plan amount required in income after repayments. Authorities: 146.01 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.01.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/registeredPlans/llpIncomeInclusion">
+      <Description>Lifelong Learning Plan amount required in income after repayments. Authorities: 146.02 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.02.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/registeredPlans/tfsaTaxableAmount">
+      <Description>Any taxable amount arising under the applicable TFSA/registered-plan rules; ordinary qualifying withdrawals are not source income. Authorities: 146.2 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.2.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/basicPersonal">
+      <Description>Permitted basic personal credit, including income-dependent amount. Authorities: 118(1), 118(1.1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/spouseOrPartner">
+      <Description>Permitted spouse or common-law partner credit. Authorities: 118(1)(a) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/eligibleDependant">
+      <Description>Permitted wholly dependent person credit. Authorities: 118(1)(b) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/caregiver">
+      <Description>Permitted caregiver credit. Authorities: 118(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/age">
+      <Description>Permitted age credit after income reduction. Authorities: 118(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/pension">
+      <Description>Permitted pension income credit. Authorities: 118(3), 118(7), 118(8) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/employment">
+      <Description>Permitted Canada employment credit. Authorities: 118(10) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/topUp">
+      <Description>Permitted top-up credit where applicable to the selected year. Authorities: 118(11) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/donations">
+      <Description>Permitted gifts credit with gift classes, limits, carryforwards and rates reviewed. Authorities: 118.1(3) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.1.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/medical">
+      <Description>Permitted medical expense credit for the elected period and eligible persons. Authorities: 118.2 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.2.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/disability">
+      <Description>Permitted impairment credit, including transfer and supplement restrictions. Authorities: 118.3 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/tuition">
+      <Description>Permitted tuition credit after applicable reductions. Authorities: 118.5 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.5.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/tuitionCarryforward">
+      <Description>Permitted unused tuition/education amounts from earlier years. Authorities: 118.61 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.61.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/studentLoanInterest">
+      <Description>Permitted student loan interest credit. Authorities: 118.62 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.62.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/cppEiQpip">
+      <Description>Permitted contribution and premium credits; amounts deducted from income must not be credited again. Authorities: 118.7 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.7.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/spousalTransfer">
+      <Description>Permitted unused credits transferred from spouse or partner. Authorities: 118.8 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.8.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/tuitionTransfer">
+      <Description>Permitted tuition transfer to parent or grandparent. Authorities: 118.9 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.9.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/dividend">
+      <Description>Permitted federal dividend tax credit; classification and gross-up must match source income. Authorities: 121 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-121.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/foreign">
+      <Description>Permitted foreign tax credits, with business/non-business and country limits. Authorities: 126 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-126.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/credits/political">
+      <Description>Permitted federal political contribution credit. Authorities: 127(3) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-127.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/gstHst">
+      <Description>Benefit under section 122.5 for the relevant payment period, not a blanket offset against tax liability. Authorities: 122.5 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.5.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/childBenefit">
+      <Description>Canada Child Benefit entitlement for the relevant month and family configuration. Authorities: 122.61 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.61.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/workersBenefit">
+      <Description>Canada Workers Benefit entitlement after adjustments and advances. Authorities: 122.7, 122.72 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.7.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/medicalSupplement">
+      <Description>Refundable medical expense supplement. Authorities: 122.51 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.51.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/schoolSupplies">
+      <Description>Eligible educator school supply credit. Authorities: 122.9 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.9.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/training">
+      <Description>Canada training credit with account and tuition interaction. Authorities: 122.91 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.91.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/multigenerationalRenovation">
+      <Description>Multigenerational home renovation credit. Authorities: 122.92 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.92.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/personalSupportWorkers">
+      <Description>Personal support workers credit if in force and applicable for the selected year. Authorities: 122.93 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.93.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/specialTaxes/splitIncome">
+      <Description>Tax on split income after applicable exclusions. Authorities: 120.4 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-120.4.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/specialTaxes/minimumTax">
+      <Description>Minimum tax computation with adjusted taxable income and permitted credits. Authorities: 127.5–127.55 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-127.5.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/specialTaxes/minimumTaxCarryover">
+      <Description>Permitted minimum-tax carryover deduction. Authorities: 120.2 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-120.2.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/specialTaxes/oasRecovery">
+      <Description>Part I.2 tax on Old Age Security benefits. Authorities: 180.2 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-180.2.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/specialTaxes/registeredPlanExcess">
+      <Description>Applicable registered-plan excess contributions or advantage taxes. Authorities: Part XI.01 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-207.01.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/specialTaxes/nonResidentWithholding">
+      <Description>Part XIII withholding after treaty and election analysis. Authorities: 212 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-212.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/payments/taxWithheld">
+      <Description>Tax actually withheld and available for credit to this return. Authorities: 153 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-153.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/payments/instalments">
+      <Description>Instalments actually paid and attributable to this year. Authorities: 156 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-156.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/payments/refundAssessed">
+      <Description>Refund determined through the applicable assessment and refund rules. Authorities: 164 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-164.html Status: external_legal_determination. Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/paymentMonth">
+      <Description>First day of relevant benefit month; benefit years need not equal the income tax year. Authorities: 122.5(4) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.5.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html; 122.61 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.61.html Status: evidence_input. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/benefits/adjustedFamilyNetIncome">
+      <Description>Adjusted family income for the specific benefit; each provision defines its own adjustments and family timing. Authorities: 122.5(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.5.html; 122.6 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html; 122.7(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.7.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/lossBalances">
+      <Description>Loss pools tracked by originating year and statutory category, not inferred from negative net income. Authorities: 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: evidence_input. Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/lossBalances/*/originYear">
+      <Description>Year loss arose. Authorities: 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Int />
+      </Writable>
+    </Fact>
+    <Fact path="/lossBalances/*/category">
+      <Description>Non-capital, net capital, restricted farm, farm or limited partnership loss. Authorities: 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: external_legal_determination. </Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/lossBalances/*/openingAvailable">
+      <Description>Reviewed amount available before current claims. Authorities: 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/lossBalances/*/claimedThisYear">
+      <Description>Permitted amount used this year, respecting category-specific constraints. Authorities: 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/lossBalances/*/closingAvailable">
+      <Description>Reviewed remainder after claims, expiry, adjustments and reassessments. Authorities: 111 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/filing/required">
+      <Description>Reviewed filing obligation, including demands to file. Authorities: 150(1), 150(2) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-150.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/filing/dueDate">
+      <Description>Filing deadline after taxpayer-specific exceptions and applicable extension rules. Authorities: 150(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-150.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/filing/balanceDueDate">
+      <Description>Applicable payment deadline, distinct from filing deadline. Authorities: 248(1), balance-due day https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-248.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/filing/objectionDeadline">
+      <Description>Reviewed objection deadline based on assessment notice, taxpayer class and extensions. Authorities: 165(1) https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-165.html; 166.1 https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-166.1.html Status: external_legal_determination. </Description>
+      <Writable>
+        <Day />
+      </Writable>
+    </Fact>
+    <Fact path="/review/coreScopeApproved">
+      <Description>Reviewer confirms ordinary resident section 3/Division C computation is appropriate; special regimes have been separately handled. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/review/sourceClassificationReviewed">
+      <Description>Reviewer confirms source allocation, attribution, exemptions and loss restrictions. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/review/capitalTreatmentReviewed">
+      <Description>Reviewer confirms capital/LPP/ABIL classification and no duplicated losses. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/review/deductionEligibilityReviewed">
+      <Description>Reviewer confirms deduction eligibility, ordering, amounts and no double counting. Application-defined metadata. Status: application_metadata. </Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/review/coreInputsComplete">
+      <Description>Engine completeness of the core result only; not proof of legal eligibility, year validity, or a complete return. Application-defined metadata. Status: arithmetic_implemented. </Description>
+      <Derived>
+        <IsComplete>
+          <Dependency path="/taxableIncome/amount" />
+        </IsComplete>
+      </Derived>
+    </Fact>
+    <Fact path="/review/coreReady">
+      <Description>Application review gate for the core result. Host must expose results only when true; raw arithmetic facts remain queryable. Application-defined metadata. Status: arithmetic_implemented. </Description>
+      <Derived>
+        <All>
+          <Dependency path="/review/coreScopeApproved" />
+          <Dependency path="/review/sourceClassificationReviewed" />
+          <Dependency path="/review/capitalTreatmentReviewed" />
+          <Dependency path="/review/deductionEligibilityReviewed" />
+          <Dependency path="/review/coreInputsComplete" />
+          <Dependency path="/return/annualParametersReviewed" />
+        </All>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

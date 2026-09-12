@@ -1,0 +1,3722 @@
+{
+  "format": "canadian-personal-income-tax-fact-catalogue",
+  "version": "0.1.0",
+  "scope": "Year-independent federal foundation, one natural person per graph/year; not complete Canadian personal tax law or a filing calculator.",
+  "sources": {
+    "retrieved_on": "2026-09-12",
+    "act": {
+      "title": "Income Tax Act, R.S.C. 1985, c. 1 (5th Supp.)",
+      "requested_url": "https://laws-lois.justice.gc.ca/eng/acts/i-3.3/FullText.html",
+      "xml_url": "https://laws-lois.justice.gc.ca/eng/XML/I-3.3.xml",
+      "xml_sha256": "77aeb72fe5a25070ee9a17cb812be7c0ea6b7950d00519a50965f4e9c17c0e8d",
+      "xml_current_date": "2026-06-21",
+      "xml_last_amended": "2026-06-18",
+      "html_index_current_date": "2026-07-21",
+      "html_index_last_amended": "2026-06-18",
+      "discrepancy": "HTML index and downloaded XML report different current-to dates. Definitions were checked against the downloaded XML; this is not a claim of September 2026 legal currency. Application provisions are absent from the consolidated text.",
+      "bundled_snapshot": "source-income-tax-act.xml.gz"
+    },
+    "framework": {
+      "repository": "https://github.com/IRS-Public/fact-graph",
+      "commit_prefix": "5599f75",
+      "version": "3.1.0-SNAPSHOT",
+      "specification": "docs/fact-dictionary-specification-3.1.md",
+      "validation": "Native Scala.js engine compiled from the inspected source; 11 scenarios, invalid-input checks and JSON round trip passed on 2026-09-12.",
+      "namespace_nodes": "13 derived String namespace constants provide intermediate paths for the 133 domain facts."
+    }
+  },
+  "constraints": [
+    {
+      "id": "capital-abil-subset",
+      "rule": "/capital/abil <= /capital/allowableLossesExcludingLpp",
+      "reason": "ABIL is included in allowable losses before subtraction under 3(b)(ii)."
+    },
+    {
+      "id": "one-taxpayer-year",
+      "rule": "All records belong to one natural-person taxpayer and /return/taxYear; use separate graphs for other years and taxpayers."
+    },
+    {
+      "id": "cad-only",
+      "rule": "/return/currency == CAD; convert foreign amounts under applicable section 261 rules before entry."
+    },
+    {
+      "id": "closed-categories",
+      "rule": "Enforce every non-null values list in this catalogue; XML String does not enforce a vocabulary."
+    },
+    {
+      "id": "no-double-counting",
+      "rule": "Every inclusion/deduction has one posting destination in the core; domain-contract amounts are not additional postings."
+    },
+    {
+      "id": "explicit-absence",
+      "rule": "Unset is unknown, never automatically zero or false. Explicit empty collections and explicit zero reviewed totals establish absence."
+    },
+    {
+      "id": "scope",
+      "rule": "Core output is ordinary resident taxable-income arithmetic only; route non-residents, part-year residents, death and bankruptcy through reviewed special modules."
+    },
+    {
+      "id": "year-gate",
+      "rule": "Do not expose core result until /review/coreReady is true; do not infer a final tax payable or refund."
+    }
+  ],
+  "facts": [
+    {
+      "path": "/return/taxYear",
+      "type": "Int",
+      "module": "return",
+      "kind": "input",
+      "definition": "Calendar year of the individual return.",
+      "authorities": [
+        {
+          "section": "249",
+          "pinpoint": "249(1)(c)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-249.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/return/ruleVersion",
+      "type": "String",
+      "module": "return",
+      "kind": "metadata",
+      "definition": "Immutable identifier of the selected and reviewed legal rule bundle.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/return/currency",
+      "type": "String",
+      "module": "return",
+      "kind": "metadata",
+      "definition": "All Dollar values in this dictionary are CAD. Host must enforce CAD and documented foreign currency conversion.",
+      "authorities": [
+        {
+          "section": "261",
+          "pinpoint": "261(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-261.html"
+        }
+      ],
+      "formula": null,
+      "values": [
+        "CAD"
+      ],
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/return/sourceSnapshot",
+      "type": "String",
+      "module": "return",
+      "kind": "metadata",
+      "definition": "Identifier of the statute snapshot used by the selected rule bundle.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/return/annualParametersReviewed",
+      "type": "Boolean",
+      "module": "return",
+      "kind": "metadata",
+      "definition": "Application attestation that year-specific parameters and commencement provisions have been reviewed; not automatic legal validation.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/person/birthDate",
+      "type": "Day",
+      "module": "person",
+      "kind": "input",
+      "definition": "Date of birth, used by age-dependent provisions.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/person/deathDate",
+      "type": "Day",
+      "module": "person",
+      "kind": "input",
+      "definition": "Date of death if applicable; keep absent for a living individual.",
+      "authorities": [
+        {
+          "section": "70",
+          "pinpoint": "70(5)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-70.html"
+        },
+        {
+          "section": "150",
+          "pinpoint": "150(1)(b)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-150.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/person/maritalStatus",
+      "type": "String",
+      "module": "person",
+      "kind": "input",
+      "definition": "Relationship status; application vocabulary, not a Canadian joint-filing status.",
+      "authorities": [
+        {
+          "section": "248",
+          "pinpoint": "248(1), common-law partner",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-248.html"
+        },
+        {
+          "section": "118",
+          "pinpoint": "118(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": [
+        "single",
+        "married",
+        "commonLaw",
+        "separated",
+        "divorced",
+        "widowed"
+      ],
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/person/spouseNetIncome",
+      "type": "Dollar",
+      "module": "person",
+      "kind": "reviewed_input",
+      "definition": "Spouse or common-law partner income for the relevant provision, after its specified adjustments.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/residence/status",
+      "type": "String",
+      "module": "residence",
+      "kind": "reviewed_input",
+      "definition": "Reviewed residence classification, including treaty effects. Do not infer solely from citizenship, address, or days present.",
+      "authorities": [
+        {
+          "section": "2",
+          "pinpoint": "2(1), 2(3)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html"
+        },
+        {
+          "section": "250",
+          "pinpoint": "250(1), 250(3), 250(5)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-250.html"
+        }
+      ],
+      "formula": null,
+      "values": [
+        "residentFullYear",
+        "residentPartYear",
+        "deemedResident",
+        "nonResident",
+        "treatyDeemedNonResident"
+      ],
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/residence/provinceAtYearEnd",
+      "type": "String",
+      "module": "residence",
+      "kind": "input",
+      "definition": "Province or territory at year end for routing to a separate jurisdiction module; also capture permanent establishments when relevant.",
+      "authorities": [
+        {
+          "section": "120",
+          "pinpoint": "120(4)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-120.html"
+        }
+      ],
+      "formula": null,
+      "values": [
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT",
+        "outsideCanada"
+      ],
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/residence/arrivalDate",
+      "type": "Day",
+      "module": "residence",
+      "kind": "input",
+      "definition": "Date residence began, if applicable; date alone does not determine residence.",
+      "authorities": [
+        {
+          "section": "114",
+          "pinpoint": "114",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-114.html"
+        },
+        {
+          "section": "128.1",
+          "pinpoint": "128.1(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-128.1.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/residence/departureDate",
+      "type": "Day",
+      "module": "residence",
+      "kind": "input",
+      "definition": "Date residence ceased, if applicable.",
+      "authorities": [
+        {
+          "section": "114",
+          "pinpoint": "114",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-114.html"
+        },
+        {
+          "section": "128.1",
+          "pinpoint": "128.1(4)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-128.1.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/residence/canadianSourceLiabilityReviewed",
+      "type": "Boolean",
+      "module": "residence",
+      "kind": "reviewed_input",
+      "definition": "Whether section 2(3) liability and section 115 computations have been assessed for a non-resident.",
+      "authorities": [
+        {
+          "section": "2",
+          "pinpoint": "2(3)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html"
+        },
+        {
+          "section": "115",
+          "pinpoint": "115",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-115.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/dependants",
+      "type": "Collection",
+      "module": "dependants",
+      "kind": "input",
+      "definition": "Persons relevant to dependency and family-based provisions; entitlement is provision-specific.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(6)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/dependants/*/birthDate",
+      "type": "Day",
+      "module": "dependants",
+      "kind": "input",
+      "definition": "Dependant date of birth.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(6)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        },
+        {
+          "section": "118.3",
+          "pinpoint": "118.3",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/dependants/*/relationship",
+      "type": "String",
+      "module": "dependants",
+      "kind": "input",
+      "definition": "Relationship to taxpayer.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(6)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        },
+        {
+          "section": "118.3",
+          "pinpoint": "118.3",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/dependants/*/netIncome",
+      "type": "Dollar",
+      "module": "dependants",
+      "kind": "reviewed_input",
+      "definition": "Relevant dependant income, determined for the specific benefit or credit.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(6)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        },
+        {
+          "section": "118.3",
+          "pinpoint": "118.3",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/dependants/*/disabilityEligibilityReviewed",
+      "type": "Boolean",
+      "module": "dependants",
+      "kind": "reviewed_input",
+      "definition": "Reviewed disability eligibility under the applicable provision.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(6)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        },
+        {
+          "section": "118.3",
+          "pinpoint": "118.3",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/dependants/*/sharedCustody",
+      "type": "Boolean",
+      "module": "dependants",
+      "kind": "reviewed_input",
+      "definition": "Reviewed shared-custody status for the relevant benefit period.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(6)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        },
+        {
+          "section": "118.3",
+          "pinpoint": "118.3",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments",
+      "type": "Collection",
+      "module": "employments",
+      "kind": "input",
+      "definition": "Each distinct office or employment, with amounts already classified under the Act.",
+      "authorities": [
+        {
+          "section": "4",
+          "pinpoint": "4(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-4.html"
+        },
+        {
+          "section": "5",
+          "pinpoint": "5",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html"
+        },
+        {
+          "section": "6",
+          "pinpoint": "6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-6.html"
+        },
+        {
+          "section": "7",
+          "pinpoint": "7",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-7.html"
+        },
+        {
+          "section": "8",
+          "pinpoint": "8",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-8.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/sourceId",
+      "type": "String",
+      "module": "employments",
+      "kind": "metadata",
+      "definition": "Evidence identifier for the employment; avoid duplicating a T4 amount in benefits.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/remuneration",
+      "type": "Dollar",
+      "module": "employments",
+      "kind": "reviewed_input",
+      "definition": "Section 5 remuneration received, including gratuities, excluding amounts separately entered below.",
+      "authorities": [
+        {
+          "section": "5",
+          "pinpoint": "5(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/benefits",
+      "type": "Dollar",
+      "module": "employments",
+      "kind": "reviewed_input",
+      "definition": "Additional taxable section 6 benefits not already in remuneration.",
+      "authorities": [
+        {
+          "section": "6",
+          "pinpoint": "6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/optionBenefits",
+      "type": "Dollar",
+      "module": "employments",
+      "kind": "reviewed_input",
+      "definition": "Section 7 inclusions not already in either preceding field.",
+      "authorities": [
+        {
+          "section": "7",
+          "pinpoint": "7",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-7.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/deductions",
+      "type": "Dollar",
+      "module": "employments",
+      "kind": "reviewed_input",
+      "definition": "Deductions legally permitted and allocated to this employment; expense eligibility and limits reviewed externally.",
+      "authorities": [
+        {
+          "section": "8",
+          "pinpoint": "8(1), 8(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-8.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/net",
+      "type": "Dollar",
+      "module": "employments",
+      "kind": "derived",
+      "definition": "Income or loss from this employment after reviewed inclusions and deductions.",
+      "authorities": [
+        {
+          "section": "5",
+          "pinpoint": "5",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html"
+        },
+        {
+          "section": "8",
+          "pinpoint": "8",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-8.html"
+        }
+      ],
+      "formula": {
+        "op": "Subtract",
+        "args": [
+          {
+            "op": "Minuend",
+            "args": [
+              {
+                "op": "Add",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/employments/*/remuneration"
+                  },
+                  {
+                    "op": "Dependency",
+                    "path": "/employments/*/benefits"
+                  },
+                  {
+                    "op": "Dependency",
+                    "path": "/employments/*/optionBenefits"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Subtrahends",
+            "args": [
+              {
+                "op": "Dependency",
+                "path": "/employments/*/deductions"
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/positiveIncome",
+      "type": "Dollar",
+      "module": "employments",
+      "kind": "derived",
+      "definition": "Positive employment source income for paragraph 3(a).",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Dependency",
+            "path": "/employments/*/net"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/employments/*/loss",
+      "type": "Dollar",
+      "module": "employments",
+      "kind": "derived",
+      "definition": "Employment source loss as a positive magnitude for paragraph 3(d).",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        },
+        {
+          "section": "5",
+          "pinpoint": "5(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-5.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/employments/*/net"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/businesses",
+      "type": "Collection",
+      "module": "businesses",
+      "kind": "input",
+      "definition": "One item per distinct business source. Input is tax income or loss after statutory adjustments, not accounting cash flow.",
+      "authorities": [
+        {
+          "section": "9",
+          "pinpoint": "9",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html"
+        },
+        {
+          "section": "12",
+          "pinpoint": "12",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html"
+        },
+        {
+          "section": "18",
+          "pinpoint": "18",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html"
+        },
+        {
+          "section": "20",
+          "pinpoint": "20",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html"
+        },
+        {
+          "section": "31",
+          "pinpoint": "31",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-31.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/businesses/*/sourceId",
+      "type": "String",
+      "module": "businesses",
+      "kind": "metadata",
+      "definition": "Evidence identifier and source classification.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/businesses/*/net",
+      "type": "Dollar",
+      "module": "businesses",
+      "kind": "reviewed_input",
+      "definition": "Reviewed business income or permitted current-year loss; apply attribution, deductibility, CCA and applicable loss restrictions before entry. Canadian dividends include required gross-up; foreign income is converted to CAD.",
+      "authorities": [
+        {
+          "section": "9",
+          "pinpoint": "9",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html"
+        },
+        {
+          "section": "12",
+          "pinpoint": "12",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html"
+        },
+        {
+          "section": "18",
+          "pinpoint": "18",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html"
+        },
+        {
+          "section": "20",
+          "pinpoint": "20",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html"
+        },
+        {
+          "section": "31",
+          "pinpoint": "31",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-31.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/businesses/*/positiveIncome",
+      "type": "Dollar",
+      "module": "businesses",
+      "kind": "derived",
+      "definition": "Positive source income for paragraph 3(a).",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Dependency",
+            "path": "/businesses/*/net"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/businesses/*/loss",
+      "type": "Dollar",
+      "module": "businesses",
+      "kind": "derived",
+      "definition": "Permitted current-year source loss as positive magnitude; restricted amounts excluded.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/businesses/*/net"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/properties",
+      "type": "Collection",
+      "module": "properties",
+      "kind": "input",
+      "definition": "One item per distinct property source. Input is tax income or loss after statutory adjustments, not accounting cash flow.",
+      "authorities": [
+        {
+          "section": "9",
+          "pinpoint": "9",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html"
+        },
+        {
+          "section": "12",
+          "pinpoint": "12",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html"
+        },
+        {
+          "section": "18",
+          "pinpoint": "18",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html"
+        },
+        {
+          "section": "20",
+          "pinpoint": "20",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html"
+        },
+        {
+          "section": "82",
+          "pinpoint": "82",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-82.html"
+        },
+        {
+          "section": "74.1",
+          "pinpoint": "74.1",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-74.1.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/properties/*/sourceId",
+      "type": "String",
+      "module": "properties",
+      "kind": "metadata",
+      "definition": "Evidence identifier and source classification.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/properties/*/net",
+      "type": "Dollar",
+      "module": "properties",
+      "kind": "reviewed_input",
+      "definition": "Reviewed property income or permitted current-year loss; apply attribution, deductibility, CCA and applicable loss restrictions before entry. Canadian dividends include required gross-up; foreign income is converted to CAD.",
+      "authorities": [
+        {
+          "section": "9",
+          "pinpoint": "9",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-9.html"
+        },
+        {
+          "section": "12",
+          "pinpoint": "12",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-12.html"
+        },
+        {
+          "section": "18",
+          "pinpoint": "18",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-18.html"
+        },
+        {
+          "section": "20",
+          "pinpoint": "20",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-20.html"
+        },
+        {
+          "section": "82",
+          "pinpoint": "82",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-82.html"
+        },
+        {
+          "section": "74.1",
+          "pinpoint": "74.1",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-74.1.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/properties/*/positiveIncome",
+      "type": "Dollar",
+      "module": "properties",
+      "kind": "derived",
+      "definition": "Positive source income for paragraph 3(a).",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Dependency",
+            "path": "/properties/*/net"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/properties/*/loss",
+      "type": "Dollar",
+      "module": "properties",
+      "kind": "derived",
+      "definition": "Permitted current-year source loss as positive magnitude; restricted amounts excluded.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/properties/*/net"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/otherIncome",
+      "type": "Collection",
+      "module": "otherIncome",
+      "kind": "input",
+      "definition": "Other source inclusions, disjoint from employment, business, property and capital entries.",
+      "authorities": [
+        {
+          "section": "56",
+          "pinpoint": "56",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.html"
+        },
+        {
+          "section": "96",
+          "pinpoint": "96",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-96.html"
+        },
+        {
+          "section": "104",
+          "pinpoint": "104",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-104.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/otherIncome/*/category",
+      "type": "String",
+      "module": "otherIncome",
+      "kind": "input",
+      "definition": "Application classification of included income; partnership/trust amounts retain their statutory character and must not duplicate other sources.",
+      "authorities": [
+        {
+          "section": "56",
+          "pinpoint": "56",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.html"
+        },
+        {
+          "section": "96",
+          "pinpoint": "96",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-96.html"
+        },
+        {
+          "section": "104",
+          "pinpoint": "104",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-104.html"
+        }
+      ],
+      "formula": null,
+      "values": [
+        "pension",
+        "oas",
+        "cppQpp",
+        "ei",
+        "rrsp",
+        "rrif",
+        "resp",
+        "rdsp",
+        "fhsa",
+        "support",
+        "scholarshipTaxablePortion",
+        "socialAssistance",
+        "workersCompensation",
+        "partnershipOther",
+        "trustOther",
+        "other"
+      ],
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/otherIncome/*/amount",
+      "type": "Dollar",
+      "module": "otherIncome",
+      "kind": "reviewed_input",
+      "definition": "Reviewed taxable inclusion. Scholarship exemptions and support distinctions must be resolved first. Social assistance and workers compensation may also generate a separate Division C deduction.",
+      "authorities": [
+        {
+          "section": "56",
+          "pinpoint": "56(1), 56(3)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.html"
+        },
+        {
+          "section": "56.1",
+          "pinpoint": "56.1",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-56.1.html"
+        },
+        {
+          "section": "110",
+          "pinpoint": "110(1)(f)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/otherIncome/*/authority",
+      "type": "String",
+      "module": "otherIncome",
+      "kind": "metadata",
+      "definition": "Exact provision and evidence for this inclusion.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/subdivisionEDeductions",
+      "type": "Collection",
+      "module": "subdivisionEDeductions",
+      "kind": "input",
+      "definition": "Permitted deductions counted only under paragraph 3(c), excluding amounts already applied to a source.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(c)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        },
+        {
+          "section": "60",
+          "pinpoint": "60",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-60.html"
+        },
+        {
+          "section": "62",
+          "pinpoint": "62",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-62.html"
+        },
+        {
+          "section": "63",
+          "pinpoint": "63",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-63.html"
+        },
+        {
+          "section": "64",
+          "pinpoint": "64",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-64.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/subdivisionEDeductions/*/category",
+      "type": "String",
+      "module": "subdivisionEDeductions",
+      "kind": "metadata",
+      "definition": "Application classification; category does not itself establish eligibility.",
+      "authorities": [],
+      "formula": null,
+      "values": [
+        "rrsp",
+        "fhsa",
+        "pensionSplit",
+        "support",
+        "moving",
+        "childCare",
+        "disabilitySupports",
+        "cppQpp",
+        "benefitRepayment",
+        "other"
+      ],
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/subdivisionEDeductions/*/amount",
+      "type": "Dollar",
+      "module": "subdivisionEDeductions",
+      "kind": "reviewed_input",
+      "definition": "Legally allowable claimed deduction under Subdivision E; relevant limits, ordering, elections and reimbursements already applied.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(c)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        },
+        {
+          "section": "60",
+          "pinpoint": "60",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-60.html"
+        },
+        {
+          "section": "62",
+          "pinpoint": "62",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-62.html"
+        },
+        {
+          "section": "63",
+          "pinpoint": "63",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-63.html"
+        },
+        {
+          "section": "64",
+          "pinpoint": "64",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-64.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/subdivisionEDeductions/*/authority",
+      "type": "String",
+      "module": "subdivisionEDeductions",
+      "kind": "metadata",
+      "definition": "Exact deduction provision, including a section 60 cross-reference where applicable (e.g. RRSP/FHSA).",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/capital/taxableGainsExcludingLpp",
+      "type": "Dollar",
+      "module": "capital",
+      "kind": "reviewed_input",
+      "definition": "Taxable capital gains other than listed personal property, after applicable exemptions, reserves, inclusion treatment and adjustments.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(b)(i)(A)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        },
+        {
+          "section": "38",
+          "pinpoint": "38",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-38.html"
+        },
+        {
+          "section": "39",
+          "pinpoint": "39",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-39.html"
+        },
+        {
+          "section": "40",
+          "pinpoint": "40",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-40.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/capital/taxableNetLppGain",
+      "type": "Dollar",
+      "module": "capital",
+      "kind": "reviewed_input",
+      "definition": "Taxable net gain on listed personal property after the separate LPP loss computation.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(b)(i)(B)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        },
+        {
+          "section": "41",
+          "pinpoint": "41",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-41.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/capital/allowableLossesExcludingLpp",
+      "type": "Dollar",
+      "module": "capital",
+      "kind": "reviewed_input",
+      "definition": "Allowable capital losses other than LPP, INCLUDING the allowable business investment losses separately entered below.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(b)(ii)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        },
+        {
+          "section": "38",
+          "pinpoint": "38(b)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-38.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/capital/abil",
+      "type": "Dollar",
+      "module": "capital",
+      "kind": "reviewed_input",
+      "definition": "Allowable business investment loss included in the preceding loss amount; also deducted under paragraph 3(d).",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(b)(ii), 3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        },
+        {
+          "section": "38",
+          "pinpoint": "38(c)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-38.html"
+        },
+        {
+          "section": "39",
+          "pinpoint": "39(1)(c)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-39.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/capital/lossOffset3b",
+      "type": "Dollar",
+      "module": "capital",
+      "kind": "derived",
+      "definition": "Allowable non-LPP capital losses after removing ABIL, floored at zero.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(b)(ii)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/capital/allowableLossesExcludingLpp"
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/capital/abil"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/section3b",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Positive excess of taxable gains and taxable net LPP gain over the paragraph 3(b)(ii) loss offset.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(b)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "path": "/capital/taxableGainsExcludingLpp"
+                      },
+                      {
+                        "op": "Dependency",
+                        "path": "/capital/taxableNetLppGain"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/capital/lossOffset3b"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/employmentsIncome",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate employments positiveIncome across distinct sources.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/employments/*/positiveIncome"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/employmentsLosses",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate employments loss across distinct sources.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/employments/*/loss"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/businessesIncome",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate businesses positiveIncome across distinct sources.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/businesses/*/positiveIncome"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/businessesLosses",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate businesses loss across distinct sources.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/businesses/*/loss"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/propertiesIncome",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate properties positiveIncome across distinct sources.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/properties/*/positiveIncome"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/propertiesLosses",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate properties loss across distinct sources.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/properties/*/loss"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/otherSourceIncome",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate other inclusions.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/otherIncome/*/amount"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/section3a",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Sum of positive source income worldwide; source losses and taxable capital gains are kept separate.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "Add",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/income/employmentsIncome"
+          },
+          {
+            "op": "Dependency",
+            "path": "/income/businessesIncome"
+          },
+          {
+            "op": "Dependency",
+            "path": "/income/propertiesIncome"
+          },
+          {
+            "op": "Dependency",
+            "path": "/income/otherSourceIncome"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/subdivisionEDeductions",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Aggregate permitted Subdivision E deductions not previously counted.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(c)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/subdivisionEDeductions/*/amount"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/section3c",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Paragraph 3(a) plus 3(b), less eligible Subdivision E deductions, floored at zero.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(c)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "path": "/income/section3a"
+                      },
+                      {
+                        "op": "Dependency",
+                        "path": "/income/section3b"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/income/subdivisionEDeductions"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/section3dLosses",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Permitted source losses plus ABIL; net capital losses are not included here.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "Add",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/income/employmentsLosses"
+          },
+          {
+            "op": "Dependency",
+            "path": "/income/businessesLosses"
+          },
+          {
+            "op": "Dependency",
+            "path": "/income/propertiesLosses"
+          },
+          {
+            "op": "Dependency",
+            "path": "/capital/abil"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/income/netIncome",
+      "type": "Dollar",
+      "module": "income",
+      "kind": "derived",
+      "definition": "Income under section 3, after paragraph 3(d), with zero floor. Special taxpayer regimes require separate routing.",
+      "authorities": [
+        {
+          "section": "3",
+          "pinpoint": "3(d)–(f)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/income/section3c"
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/income/section3dLosses"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/divisionCDeductions",
+      "type": "Collection",
+      "module": "divisionCDeductions",
+      "kind": "input",
+      "definition": "Permitted claimed Division C deductions, after deduction-specific limits.",
+      "authorities": [
+        {
+          "section": "2",
+          "pinpoint": "2(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html"
+        },
+        {
+          "section": "110",
+          "pinpoint": "110",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.html"
+        },
+        {
+          "section": "110.6",
+          "pinpoint": "110.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.6.html"
+        },
+        {
+          "section": "110.7",
+          "pinpoint": "110.7",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.7.html"
+        },
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/divisionCDeductions/*/category",
+      "type": "String",
+      "module": "divisionCDeductions",
+      "kind": "metadata",
+      "definition": "Classification only; amounts must have passed their own legal limits.",
+      "authorities": [],
+      "formula": null,
+      "values": [
+        "securityOptions",
+        "socialAssistanceWorkersComp",
+        "nonCapitalLoss",
+        "netCapitalLoss",
+        "restrictedFarmLoss",
+        "farmLoss",
+        "limitedPartnershipLoss",
+        "capitalGainsDeduction",
+        "northernResidents",
+        "other"
+      ],
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/divisionCDeductions/*/amount",
+      "type": "Dollar",
+      "module": "divisionCDeductions",
+      "kind": "reviewed_input",
+      "definition": "Deduction allowed for this year; section 111 loss availability and offsets must be checked externally.",
+      "authorities": [
+        {
+          "section": "110",
+          "pinpoint": "110",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.html"
+        },
+        {
+          "section": "110.6",
+          "pinpoint": "110.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.6.html"
+        },
+        {
+          "section": "110.7",
+          "pinpoint": "110.7",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-110.7.html"
+        },
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/divisionCDeductions/*/authority",
+      "type": "String",
+      "module": "divisionCDeductions",
+      "kind": "metadata",
+      "definition": "Exact governing provision and evidence for the allowed deduction.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/taxableIncome/divisionCAdditions",
+      "type": "Dollar",
+      "module": "taxableIncome",
+      "kind": "reviewed_input",
+      "definition": "Any additions required by Division C, legally determined; explicitly enter zero only after review.",
+      "authorities": [
+        {
+          "section": "2",
+          "pinpoint": "2(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/taxableIncome/totalDeductions",
+      "type": "Dollar",
+      "module": "taxableIncome",
+      "kind": "derived",
+      "definition": "Sum of individually permitted Division C deductions.",
+      "authorities": [
+        {
+          "section": "2",
+          "pinpoint": "2(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html"
+        }
+      ],
+      "formula": {
+        "op": "CollectionSum",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/divisionCDeductions/*/amount"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/taxableIncome/amount",
+      "type": "Dollar",
+      "module": "taxableIncome",
+      "kind": "derived",
+      "definition": "Ordinary resident computation: section 3 income plus Division C additions less permitted deductions, with no negative amount. Not the Division D non-resident computation.",
+      "authorities": [
+        {
+          "section": "2",
+          "pinpoint": "2(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-2.html"
+        },
+        {
+          "section": "248",
+          "pinpoint": "248(1), taxable income",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-248.html"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "path": "/income/netIncome"
+                      },
+                      {
+                        "op": "Dependency",
+                        "path": "/taxableIncome/divisionCAdditions"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "path": "/taxableIncome/totalDeductions"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/registeredPlans/rrspDeduction",
+      "type": "Dollar",
+      "module": "registeredPlans",
+      "kind": "reviewed_input",
+      "definition": "Claimed permitted RRSP deduction; contribution amount is not automatically deductible.",
+      "authorities": [
+        {
+          "section": "146",
+          "pinpoint": "146(5), 146(5.1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/registeredPlans/rrspDeductionLimit",
+      "type": "Dollar",
+      "module": "registeredPlans",
+      "kind": "reviewed_input",
+      "definition": "Year-specific RRSP deduction limit, including relevant pension adjustments.",
+      "authorities": [
+        {
+          "section": "146",
+          "pinpoint": "146(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/registeredPlans/fhsaDeduction",
+      "type": "Dollar",
+      "module": "registeredPlans",
+      "kind": "reviewed_input",
+      "definition": "Permitted FHSA deduction after annual and lifetime constraints.",
+      "authorities": [
+        {
+          "section": "146.6",
+          "pinpoint": "146.6(5)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.6.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/registeredPlans/hbpIncomeInclusion",
+      "type": "Dollar",
+      "module": "registeredPlans",
+      "kind": "reviewed_input",
+      "definition": "Home Buyers’ Plan amount required in income after repayments.",
+      "authorities": [
+        {
+          "section": "146.01",
+          "pinpoint": "146.01",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.01.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/registeredPlans/llpIncomeInclusion",
+      "type": "Dollar",
+      "module": "registeredPlans",
+      "kind": "reviewed_input",
+      "definition": "Lifelong Learning Plan amount required in income after repayments.",
+      "authorities": [
+        {
+          "section": "146.02",
+          "pinpoint": "146.02",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.02.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/registeredPlans/tfsaTaxableAmount",
+      "type": "Dollar",
+      "module": "registeredPlans",
+      "kind": "reviewed_input",
+      "definition": "Any taxable amount arising under the applicable TFSA/registered-plan rules; ordinary qualifying withdrawals are not source income.",
+      "authorities": [
+        {
+          "section": "146.2",
+          "pinpoint": "146.2",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-146.2.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/basicPersonal",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted basic personal credit, including income-dependent amount.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(1), 118(1.1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/spouseOrPartner",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted spouse or common-law partner credit.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(1)(a)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/eligibleDependant",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted wholly dependent person credit.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(1)(b)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/caregiver",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted caregiver credit.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/age",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted age credit after income reduction.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/pension",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted pension income credit.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(3), 118(7), 118(8)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/employment",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted Canada employment credit.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(10)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/topUp",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted top-up credit where applicable to the selected year.",
+      "authorities": [
+        {
+          "section": "118",
+          "pinpoint": "118(11)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/donations",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted gifts credit with gift classes, limits, carryforwards and rates reviewed.",
+      "authorities": [
+        {
+          "section": "118.1",
+          "pinpoint": "118.1(3)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.1.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/medical",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted medical expense credit for the elected period and eligible persons.",
+      "authorities": [
+        {
+          "section": "118.2",
+          "pinpoint": "118.2",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.2.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/disability",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted impairment credit, including transfer and supplement restrictions.",
+      "authorities": [
+        {
+          "section": "118.3",
+          "pinpoint": "118.3",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.3.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/tuition",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted tuition credit after applicable reductions.",
+      "authorities": [
+        {
+          "section": "118.5",
+          "pinpoint": "118.5",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.5.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/tuitionCarryforward",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted unused tuition/education amounts from earlier years.",
+      "authorities": [
+        {
+          "section": "118.61",
+          "pinpoint": "118.61",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.61.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/studentLoanInterest",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted student loan interest credit.",
+      "authorities": [
+        {
+          "section": "118.62",
+          "pinpoint": "118.62",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.62.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/cppEiQpip",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted contribution and premium credits; amounts deducted from income must not be credited again.",
+      "authorities": [
+        {
+          "section": "118.7",
+          "pinpoint": "118.7",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.7.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/spousalTransfer",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted unused credits transferred from spouse or partner.",
+      "authorities": [
+        {
+          "section": "118.8",
+          "pinpoint": "118.8",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.8.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/tuitionTransfer",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted tuition transfer to parent or grandparent.",
+      "authorities": [
+        {
+          "section": "118.9",
+          "pinpoint": "118.9",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-118.9.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/dividend",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted federal dividend tax credit; classification and gross-up must match source income.",
+      "authorities": [
+        {
+          "section": "121",
+          "pinpoint": "121",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-121.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/foreign",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted foreign tax credits, with business/non-business and country limits.",
+      "authorities": [
+        {
+          "section": "126",
+          "pinpoint": "126",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-126.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/credits/political",
+      "type": "Dollar",
+      "module": "credits",
+      "kind": "reviewed_input",
+      "definition": "Permitted federal political contribution credit.",
+      "authorities": [
+        {
+          "section": "127",
+          "pinpoint": "127(3)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-127.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/gstHst",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Benefit under section 122.5 for the relevant payment period, not a blanket offset against tax liability.",
+      "authorities": [
+        {
+          "section": "122.5",
+          "pinpoint": "122.5",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.5.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/childBenefit",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Canada Child Benefit entitlement for the relevant month and family configuration.",
+      "authorities": [
+        {
+          "section": "122.61",
+          "pinpoint": "122.61",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.61.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/workersBenefit",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Canada Workers Benefit entitlement after adjustments and advances.",
+      "authorities": [
+        {
+          "section": "122.7",
+          "pinpoint": "122.7, 122.72",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.7.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/medicalSupplement",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Refundable medical expense supplement.",
+      "authorities": [
+        {
+          "section": "122.51",
+          "pinpoint": "122.51",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.51.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/schoolSupplies",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Eligible educator school supply credit.",
+      "authorities": [
+        {
+          "section": "122.9",
+          "pinpoint": "122.9",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.9.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/training",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Canada training credit with account and tuition interaction.",
+      "authorities": [
+        {
+          "section": "122.91",
+          "pinpoint": "122.91",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.91.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/multigenerationalRenovation",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Multigenerational home renovation credit.",
+      "authorities": [
+        {
+          "section": "122.92",
+          "pinpoint": "122.92",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.92.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/personalSupportWorkers",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Personal support workers credit if in force and applicable for the selected year.",
+      "authorities": [
+        {
+          "section": "122.93",
+          "pinpoint": "122.93",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.93.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/specialTaxes/splitIncome",
+      "type": "Dollar",
+      "module": "specialTaxes",
+      "kind": "reviewed_input",
+      "definition": "Tax on split income after applicable exclusions.",
+      "authorities": [
+        {
+          "section": "120.4",
+          "pinpoint": "120.4",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-120.4.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/specialTaxes/minimumTax",
+      "type": "Dollar",
+      "module": "specialTaxes",
+      "kind": "reviewed_input",
+      "definition": "Minimum tax computation with adjusted taxable income and permitted credits.",
+      "authorities": [
+        {
+          "section": "127.5",
+          "pinpoint": "127.5–127.55",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-127.5.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/specialTaxes/minimumTaxCarryover",
+      "type": "Dollar",
+      "module": "specialTaxes",
+      "kind": "reviewed_input",
+      "definition": "Permitted minimum-tax carryover deduction.",
+      "authorities": [
+        {
+          "section": "120.2",
+          "pinpoint": "120.2",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-120.2.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/specialTaxes/oasRecovery",
+      "type": "Dollar",
+      "module": "specialTaxes",
+      "kind": "reviewed_input",
+      "definition": "Part I.2 tax on Old Age Security benefits.",
+      "authorities": [
+        {
+          "section": "180.2",
+          "pinpoint": "180.2",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-180.2.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/specialTaxes/registeredPlanExcess",
+      "type": "Dollar",
+      "module": "specialTaxes",
+      "kind": "reviewed_input",
+      "definition": "Applicable registered-plan excess contributions or advantage taxes.",
+      "authorities": [
+        {
+          "section": "207.01",
+          "pinpoint": "Part XI.01",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-207.01.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/specialTaxes/nonResidentWithholding",
+      "type": "Dollar",
+      "module": "specialTaxes",
+      "kind": "reviewed_input",
+      "definition": "Part XIII withholding after treaty and election analysis.",
+      "authorities": [
+        {
+          "section": "212",
+          "pinpoint": "212",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-212.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/payments/taxWithheld",
+      "type": "Dollar",
+      "module": "payments",
+      "kind": "reviewed_input",
+      "definition": "Tax actually withheld and available for credit to this return.",
+      "authorities": [
+        {
+          "section": "153",
+          "pinpoint": "153",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-153.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/payments/instalments",
+      "type": "Dollar",
+      "module": "payments",
+      "kind": "reviewed_input",
+      "definition": "Instalments actually paid and attributable to this year.",
+      "authorities": [
+        {
+          "section": "156",
+          "pinpoint": "156",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-156.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/payments/refundAssessed",
+      "type": "Dollar",
+      "module": "payments",
+      "kind": "reviewed_input",
+      "definition": "Refund determined through the applicable assessment and refund rules.",
+      "authorities": [
+        {
+          "section": "164",
+          "pinpoint": "164",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-164.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "Domain contract only: not used by the core arithmetic. A host may route an amount into the relevant core collection exactly once after legal review. This is not an implemented entitlement formula.",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/paymentMonth",
+      "type": "Day",
+      "module": "benefits",
+      "kind": "input",
+      "definition": "First day of relevant benefit month; benefit years need not equal the income tax year.",
+      "authorities": [
+        {
+          "section": "122.5",
+          "pinpoint": "122.5(4)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.5.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        },
+        {
+          "section": "122.61",
+          "pinpoint": "122.61",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.61.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/benefits/adjustedFamilyNetIncome",
+      "type": "Dollar",
+      "module": "benefits",
+      "kind": "reviewed_input",
+      "definition": "Adjusted family income for the specific benefit; each provision defines its own adjustments and family timing.",
+      "authorities": [
+        {
+          "section": "122.5",
+          "pinpoint": "122.5(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.5.html"
+        },
+        {
+          "section": "122.6",
+          "pinpoint": "122.6",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.6.html"
+        },
+        {
+          "section": "122.7",
+          "pinpoint": "122.7(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-122.7.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": true,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/lossBalances",
+      "type": "Collection",
+      "module": "lossBalances",
+      "kind": "input",
+      "definition": "Loss pools tracked by originating year and statutory category, not inferred from negative net income.",
+      "authorities": [
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "Explicitly create an empty collection when no items apply. Unset is unknown. UUID items; each item belongs to this taxpayer and taxation year.",
+      "rule_status": "evidence_input",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/lossBalances/*/originYear",
+      "type": "Int",
+      "module": "lossBalances",
+      "kind": "reviewed_input",
+      "definition": "Year loss arose.",
+      "authorities": [
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/lossBalances/*/category",
+      "type": "String",
+      "module": "lossBalances",
+      "kind": "reviewed_input",
+      "definition": "Non-capital, net capital, restricted farm, farm or limited partnership loss.",
+      "authorities": [
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/lossBalances/*/openingAvailable",
+      "type": "Dollar",
+      "module": "lossBalances",
+      "kind": "reviewed_input",
+      "definition": "Reviewed amount available before current claims.",
+      "authorities": [
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/lossBalances/*/claimedThisYear",
+      "type": "Dollar",
+      "module": "lossBalances",
+      "kind": "reviewed_input",
+      "definition": "Permitted amount used this year, respecting category-specific constraints.",
+      "authorities": [
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/lossBalances/*/closingAvailable",
+      "type": "Dollar",
+      "module": "lossBalances",
+      "kind": "reviewed_input",
+      "definition": "Reviewed remainder after claims, expiry, adjustments and reassessments.",
+      "authorities": [
+        {
+          "section": "111",
+          "pinpoint": "111",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-111.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/filing/required",
+      "type": "Boolean",
+      "module": "filing",
+      "kind": "reviewed_input",
+      "definition": "Reviewed filing obligation, including demands to file.",
+      "authorities": [
+        {
+          "section": "150",
+          "pinpoint": "150(1), 150(2)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-150.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/filing/dueDate",
+      "type": "Day",
+      "module": "filing",
+      "kind": "reviewed_input",
+      "definition": "Filing deadline after taxpayer-specific exceptions and applicable extension rules.",
+      "authorities": [
+        {
+          "section": "150",
+          "pinpoint": "150(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-150.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/filing/balanceDueDate",
+      "type": "Day",
+      "module": "filing",
+      "kind": "reviewed_input",
+      "definition": "Applicable payment deadline, distinct from filing deadline.",
+      "authorities": [
+        {
+          "section": "248",
+          "pinpoint": "248(1), balance-due day",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-248.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/filing/objectionDeadline",
+      "type": "Day",
+      "module": "filing",
+      "kind": "reviewed_input",
+      "definition": "Reviewed objection deadline based on assessment notice, taxpayer class and extensions.",
+      "authorities": [
+        {
+          "section": "165",
+          "pinpoint": "165(1)",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-165.html"
+        },
+        {
+          "section": "166.1",
+          "pinpoint": "166.1",
+          "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-166.1.html"
+        }
+      ],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "external_legal_determination",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/review/coreScopeApproved",
+      "type": "Boolean",
+      "module": "review",
+      "kind": "metadata",
+      "definition": "Reviewer confirms ordinary resident section 3/Division C computation is appropriate; special regimes have been separately handled.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/review/sourceClassificationReviewed",
+      "type": "Boolean",
+      "module": "review",
+      "kind": "metadata",
+      "definition": "Reviewer confirms source allocation, attribution, exemptions and loss restrictions.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/review/capitalTreatmentReviewed",
+      "type": "Boolean",
+      "module": "review",
+      "kind": "metadata",
+      "definition": "Reviewer confirms capital/LPP/ABIL classification and no duplicated losses.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/review/deductionEligibilityReviewed",
+      "type": "Boolean",
+      "module": "review",
+      "kind": "metadata",
+      "definition": "Reviewer confirms deduction eligibility, ordering, amounts and no double counting.",
+      "authorities": [],
+      "formula": null,
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "application_metadata",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/review/coreInputsComplete",
+      "type": "Boolean",
+      "module": "review",
+      "kind": "derived",
+      "definition": "Engine completeness of the core result only; not proof of legal eligibility, year validity, or a complete return.",
+      "authorities": [],
+      "formula": {
+        "op": "IsComplete",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/taxableIncome/amount"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    },
+    {
+      "path": "/review/coreReady",
+      "type": "Boolean",
+      "module": "review",
+      "kind": "derived",
+      "definition": "Application review gate for the core result. Host must expose results only when true; raw arithmetic facts remain queryable.",
+      "authorities": [],
+      "formula": {
+        "op": "All",
+        "args": [
+          {
+            "op": "Dependency",
+            "path": "/review/coreScopeApproved"
+          },
+          {
+            "op": "Dependency",
+            "path": "/review/sourceClassificationReviewed"
+          },
+          {
+            "op": "Dependency",
+            "path": "/review/capitalTreatmentReviewed"
+          },
+          {
+            "op": "Dependency",
+            "path": "/review/deductionEligibilityReviewed"
+          },
+          {
+            "op": "Dependency",
+            "path": "/review/coreInputsComplete"
+          },
+          {
+            "op": "Dependency",
+            "path": "/return/annualParametersReviewed"
+          }
+        ]
+      },
+      "values": null,
+      "nonnegative": false,
+      "notes": "",
+      "rule_status": "arithmetic_implemented",
+      "effective_tax_years": null,
+      "temporal_status": "Select applicable legislation and review application provisions before use; no annual parameters supplied."
+    }
+  ]
+}
