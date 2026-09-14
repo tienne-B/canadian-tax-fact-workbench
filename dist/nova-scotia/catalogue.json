@@ -1,0 +1,2515 @@
+{
+  "format": "canadian-personal-income-tax-fact-catalogue",
+  "version": "0.2.0-ns",
+  "scope": "Ordinary full-year NS resident personal returns; 2025 and 2026 annual packs; reviewed complex entitlements.",
+  "facts": [
+    {
+      "path": "/ns/yearSupported",
+      "type": "Boolean",
+      "module": "nsSetup",
+      "kind": "derived",
+      "definition": "An explicitly supplied annual parameter pack exists.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Any",
+        "args": [
+          {
+            "op": "Equal",
+            "args": [
+              {
+                "op": "Left",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/return/taxYear"
+                  }
+                ]
+              },
+              {
+                "op": "Right",
+                "args": [
+                  {
+                    "op": "Int",
+                    "args": [
+                      "2025"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Equal",
+            "args": [
+              {
+                "op": "Left",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/return/taxYear"
+                  }
+                ]
+              },
+              {
+                "op": "Right",
+                "args": [
+                  {
+                    "op": "Int",
+                    "args": [
+                      "2026"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/ordinaryReturnConfirmed",
+      "type": "Boolean",
+      "module": "nsSetup",
+      "kind": "reviewed_input",
+      "definition": "Confirm a living individual\u2019s ordinary full-year Canadian resident return, resident in NS on December 31, with all income allocated to NS. No bankruptcy, separate return, trust, or multi-jurisdiction business allocation.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "5, 23\u201329, 32",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null
+    },
+    {
+      "path": "/ns/creditsReviewed",
+      "type": "Boolean",
+      "module": "nsSetup",
+      "kind": "reviewed_input",
+      "definition": "Confirm all provincial credit eligibility, amounts, transfers, ordering and no double counting have been reviewed for the selected year. This is an attestation, not automatic eligibility verification.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10J, 24, 25",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null
+    },
+    {
+      "path": "/ns/inScope",
+      "type": "Boolean",
+      "module": "nsSetup",
+      "kind": "derived",
+      "definition": "Provincial calculation scope and supported year. A false condition blocks tax payable instead of returning zero.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "5, 23\u201329, 32",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "All",
+        "args": [
+          {
+            "op": "Dependency",
+            "args": [],
+            "path": "/ns/yearSupported"
+          },
+          {
+            "op": "Dependency",
+            "args": [],
+            "path": "/ns/ordinaryReturnConfirmed"
+          },
+          {
+            "op": "Equal",
+            "args": [
+              {
+                "op": "Left",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/residence/status"
+                  }
+                ]
+              },
+              {
+                "op": "Right",
+                "args": [
+                  {
+                    "op": "String",
+                    "args": [
+                      "residentFullYear"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Equal",
+            "args": [
+              {
+                "op": "Left",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/residence/provinceAtYearEnd"
+                  }
+                ]
+              },
+              {
+                "op": "Right",
+                "args": [
+                  {
+                    "op": "String",
+                    "args": [
+                      "NS"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Not",
+            "args": [
+              {
+                "op": "IsComplete",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/person/deathDate"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/bracketTax",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "NS tax on federal taxable income, using annual thresholds and cumulative base taxes.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "LessThan",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/taxableIncome/amount"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/ns/parameters/threshold0"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dollar",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "op": "Multiply",
+                        "args": [
+                          {
+                            "op": "Subtract",
+                            "args": [
+                              {
+                                "op": "Minuend",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/taxableIncome/amount"
+                                  }
+                                ]
+                              },
+                              {
+                                "op": "Subtrahends",
+                                "args": [
+                                  {
+                                    "op": "Dollar",
+                                    "args": [
+                                      "0"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Rational",
+                            "args": [
+                              "879/10000"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "LessThan",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/taxableIncome/amount"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/ns/parameters/threshold1"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/parameters/baseTax0"
+                      },
+                      {
+                        "op": "Multiply",
+                        "args": [
+                          {
+                            "op": "Subtract",
+                            "args": [
+                              {
+                                "op": "Minuend",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/taxableIncome/amount"
+                                  }
+                                ]
+                              },
+                              {
+                                "op": "Subtrahends",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/ns/parameters/threshold0"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Rational",
+                            "args": [
+                              "1495/10000"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "LessThan",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/taxableIncome/amount"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/ns/parameters/threshold2"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/parameters/baseTax1"
+                      },
+                      {
+                        "op": "Multiply",
+                        "args": [
+                          {
+                            "op": "Subtract",
+                            "args": [
+                              {
+                                "op": "Minuend",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/taxableIncome/amount"
+                                  }
+                                ]
+                              },
+                              {
+                                "op": "Subtrahends",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/ns/parameters/threshold1"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Rational",
+                            "args": [
+                              "1667/10000"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "LessThan",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/taxableIncome/amount"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/ns/parameters/threshold3"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/parameters/baseTax2"
+                      },
+                      {
+                        "op": "Multiply",
+                        "args": [
+                          {
+                            "op": "Subtract",
+                            "args": [
+                              {
+                                "op": "Minuend",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/taxableIncome/amount"
+                                  }
+                                ]
+                              },
+                              {
+                                "op": "Subtrahends",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/ns/parameters/threshold2"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Rational",
+                            "args": [
+                              "175/1000"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "True",
+                    "args": []
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/parameters/baseTax3"
+                      },
+                      {
+                        "op": "Multiply",
+                        "args": [
+                          {
+                            "op": "Subtract",
+                            "args": [
+                              {
+                                "op": "Minuend",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/taxableIncome/amount"
+                                  }
+                                ]
+                              },
+                              {
+                                "op": "Subtrahends",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/ns/parameters/threshold3"
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Rational",
+                            "args": [
+                              "21/100"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/basicPersonalBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "derived",
+      "definition": "Basic personal amount; no income phase-out in the supported 2025+ packs.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10B(1), 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Dependency",
+        "args": [],
+        "path": "/ns/parameters/basic"
+      }
+    },
+    {
+      "path": "/ns/claimSpouse",
+      "type": "Boolean",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Claim the eligible spouse/common-law partner amount after reviewing support, separation and federal restrictions. Cannot also claim an eligible dependant. Spouse income is read from the federal family fact.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10C, 10J",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null
+    },
+    {
+      "path": "/ns/spouseBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "derived",
+      "definition": "Eligible spouse amount, reduced by the spouse income from the shared federal dictionary.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10C(1), 10J, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/ns/claimSpouse"
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "GreaterOf",
+                    "args": [
+                      {
+                        "op": "Dollar",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "op": "Subtract",
+                        "args": [
+                          {
+                            "op": "Minuend",
+                            "args": [
+                              {
+                                "op": "Dependency",
+                                "args": [],
+                                "path": "/ns/parameters/spouseCeiling"
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Subtrahends",
+                            "args": [
+                              {
+                                "op": "GreaterOf",
+                                "args": [
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/ns/parameters/spouseFloor"
+                                  },
+                                  {
+                                    "op": "Dependency",
+                                    "args": [],
+                                    "path": "/person/spouseNetIncome"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "True",
+                    "args": []
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/eligibleDependantBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Reviewed eligible-dependant base under s10D, after the income reduction and restrictions. Maximum is the annual basic personal amount. Enter zero if none; exclusive of spouse claim.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10D, 10J, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/ageIncomeAdjustment",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Signed adjustment to federal net income for s10G: remove included s79 gains and add back the s20(1)(ww) deduction. Enter zero if neither applies.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10G",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": false
+    },
+    {
+      "path": "/ns/is65OrOlder",
+      "type": "Boolean",
+      "module": "nsSetup",
+      "kind": "derived",
+      "definition": "Age attained by December 31 from shared date of birth and taxation year.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10G, 36B",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Not",
+        "args": [
+          {
+            "op": "LessThan",
+            "args": [
+              {
+                "op": "Left",
+                "args": [
+                  {
+                    "op": "Subtract",
+                    "args": [
+                      {
+                        "op": "Minuend",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Subtrahends",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/person/birthDate/year"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Right",
+                "args": [
+                  {
+                    "op": "Int",
+                    "args": [
+                      "65"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/ageBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "derived",
+      "definition": "Age amount, phased out at 15% of adjusted income over $30,828. That income threshold is not indexed.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10G, 22A(4)",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/ns/is65OrOlder"
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "GreaterOf",
+                    "args": [
+                      {
+                        "op": "Dollar",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "op": "Subtract",
+                        "args": [
+                          {
+                            "op": "Minuend",
+                            "args": [
+                              {
+                                "op": "Dependency",
+                                "args": [],
+                                "path": "/ns/parameters/age"
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Subtrahends",
+                            "args": [
+                              {
+                                "op": "Multiply",
+                                "args": [
+                                  {
+                                    "op": "GreaterOf",
+                                    "args": [
+                                      {
+                                        "op": "Dollar",
+                                        "args": [
+                                          "0"
+                                        ]
+                                      },
+                                      {
+                                        "op": "Subtract",
+                                        "args": [
+                                          {
+                                            "op": "Minuend",
+                                            "args": [
+                                              {
+                                                "op": "Add",
+                                                "args": [
+                                                  {
+                                                    "op": "Dependency",
+                                                    "args": [],
+                                                    "path": "/income/netIncome"
+                                                  },
+                                                  {
+                                                    "op": "Dependency",
+                                                    "args": [],
+                                                    "path": "/ns/ageIncomeAdjustment"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "op": "Subtrahends",
+                                            "args": [
+                                              {
+                                                "op": "Dollar",
+                                                "args": [
+                                                  "30828"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "op": "Rational",
+                                    "args": [
+                                      "15/100"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "True",
+                    "args": []
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/eligiblePensionIncome",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Pension income eligible under federal s118(3), before the NS $1,173 cap; zero if none.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10H",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/pensionBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "derived",
+      "definition": "Eligible pension base capped at $1,173.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10H",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "LesserOf",
+        "args": [
+          {
+            "op": "Dependency",
+            "args": [],
+            "path": "/ns/eligiblePensionIncome"
+          },
+          {
+            "op": "Dollar",
+            "args": [
+              "1173"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/otherNonrefundableBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Reviewed sum of other NS base amounts before multiplying by 8.79%: caregiver, infirm dependant, young children, disability, tuition/education/carryforward, student-loan interest, CPP/EI and transfers (ss10E\u201310F,10I,13\u201319). Apply each provincial limit first. Exclude basic, spouse, eligible-dependant, age, pension, medical, naturopath and donations entered separately.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10E\u201310F, 10I, 13\u201319",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/eligibleMedicalExpenses",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Reviewed eligible family medical expenses before the income threshold, as permitted by s12. Exclude amounts used by another claimant.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "12",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/otherDependantMedicalBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Reviewed total eligible medical bases for other dependants after each dependant\u2019s income threshold and statutory limit.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "12",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/naturopathBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Reviewed eligible naturopath expenses under s12B, including permitted dependant amounts after their limits. Exclude amounts already claimed under s12.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "12B",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/medicalBase",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "derived",
+      "definition": "Family expenses less the lower of $1,637 and 3% of net income, floored at zero, plus reviewed dependant bases.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "12",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Add",
+        "args": [
+          {
+            "op": "GreaterOf",
+            "args": [
+              {
+                "op": "Dollar",
+                "args": [
+                  "0"
+                ]
+              },
+              {
+                "op": "Subtract",
+                "args": [
+                  {
+                    "op": "Minuend",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/eligibleMedicalExpenses"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "Subtrahends",
+                    "args": [
+                      {
+                        "op": "LesserOf",
+                        "args": [
+                          {
+                            "op": "Dollar",
+                            "args": [
+                              "1637"
+                            ]
+                          },
+                          {
+                            "op": "Multiply",
+                            "args": [
+                              {
+                                "op": "Dependency",
+                                "args": [],
+                                "path": "/income/netIncome"
+                              },
+                              {
+                                "op": "Rational",
+                                "args": [
+                                  "3/100"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Dependency",
+            "args": [],
+            "path": "/ns/otherDependantMedicalBase"
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/ordinaryCredits",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "Combined qualifying NS bases multiplied once by the lowest rate.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10B\u201319",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Multiply",
+        "args": [
+          {
+            "op": "Add",
+            "args": [
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/basicPersonalBase"
+              },
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/spouseBase"
+              },
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/eligibleDependantBase"
+              },
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/ageBase"
+              },
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/pensionBase"
+              },
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/otherNonrefundableBase"
+              },
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/medicalBase"
+              },
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/naturopathBase"
+              }
+            ]
+          },
+          {
+            "op": "Rational",
+            "args": [
+              "879/10000"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/eligibleDonations",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Qualifying gifts used for the federal s118.1 deduction and eligible under NS s11, after applicable limits.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "11",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/donationCredit",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "8.79% on the first $200 and 21% on the balance of qualifying gifts.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "11",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Add",
+        "args": [
+          {
+            "op": "Multiply",
+            "args": [
+              {
+                "op": "LesserOf",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/schedules/claimedGiftsForNs"
+                  },
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "200"
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Rational",
+                "args": [
+                  "879/10000"
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Multiply",
+            "args": [
+              {
+                "op": "GreaterOf",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  },
+                  {
+                    "op": "Subtract",
+                    "args": [
+                      {
+                        "op": "Minuend",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/schedules/claimedGiftsForNs"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Subtrahends",
+                        "args": [
+                          {
+                            "op": "Dollar",
+                            "args": [
+                              "200"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Rational",
+                "args": [
+                  "21/100"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/taxableEligibleDividends",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Taxable eligible Canadian dividends including gross-up, already included once in federal income. Do not enter the cash dividend.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "21(1)",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/taxableOtherDividends",
+      "type": "Dollar",
+      "module": "nsCredits",
+      "kind": "reviewed_input",
+      "definition": "Taxable non-eligible Canadian dividends including gross-up, already included once in federal income.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "21(1A)",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/dividendCredit",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "8.85% of taxable eligible dividends plus 1.5% of taxable other dividends (2025+).",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "21",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Add",
+        "args": [
+          {
+            "op": "Multiply",
+            "args": [
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/taxableEligibleDividends"
+              },
+              {
+                "op": "Rational",
+                "args": [
+                  "885/10000"
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Multiply",
+            "args": [
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/taxableOtherDividends"
+              },
+              {
+                "op": "Rational",
+                "args": [
+                  "15/1000"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/federalSection9Additions",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Reviewed sum of federal additions under ss120.3,120.31 and ITAR40 used by NS s9. Enter zero if none.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "9",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/splitIncomeTax",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Reviewed NS split-income tax under s30, after applicable adjustments. Provincial dollars, not federal TOSI.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "30",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/federalMinimumTaxCarryover",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Federal s120.2 deduction for this year, for the provincial 57.5% carryover credit.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "20",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/federalAdditionalMinimumTax",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Federal additional minimum tax under s120.2(3), for the provincial 57.5% addition.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "31",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/foreignTaxCredit",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Reviewed NS foreign tax credit after country-by-country and statutory limits. Not the federal foreign tax credit.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "34",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/taxBeforeReduction",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "Tax after ordinary credits, dividends, minimum-tax adjustments and provincial foreign credit, with statutory zero floors.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8\u20139, 20\u201321, 30\u201331, 34",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "GreaterOf",
+                        "args": [
+                          {
+                            "op": "Dollar",
+                            "args": [
+                              "0"
+                            ]
+                          },
+                          {
+                            "op": "Subtract",
+                            "args": [
+                              {
+                                "op": "Minuend",
+                                "args": [
+                                  {
+                                    "op": "Add",
+                                    "args": [
+                                      {
+                                        "op": "Dependency",
+                                        "args": [],
+                                        "path": "/ns/bracketTax"
+                                      },
+                                      {
+                                        "op": "Multiply",
+                                        "args": [
+                                          {
+                                            "op": "Dependency",
+                                            "args": [],
+                                            "path": "/ns/federalSection9Additions"
+                                          },
+                                          {
+                                            "op": "Rational",
+                                            "args": [
+                                              "575/1000"
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "op": "Dependency",
+                                        "args": [],
+                                        "path": "/ns/splitIncomeTax"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "op": "Subtrahends",
+                                "args": [
+                                  {
+                                    "op": "Add",
+                                    "args": [
+                                      {
+                                        "op": "Dependency",
+                                        "args": [],
+                                        "path": "/ns/ordinaryCredits"
+                                      },
+                                      {
+                                        "op": "Dependency",
+                                        "args": [],
+                                        "path": "/ns/donationCredit"
+                                      },
+                                      {
+                                        "op": "Dependency",
+                                        "args": [],
+                                        "path": "/ns/dividendCredit"
+                                      },
+                                      {
+                                        "op": "Multiply",
+                                        "args": [
+                                          {
+                                            "op": "Dependency",
+                                            "args": [],
+                                            "path": "/ns/federalMinimumTaxCarryover"
+                                          },
+                                          {
+                                            "op": "Rational",
+                                            "args": [
+                                              "575/1000"
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Multiply",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/ns/federalAdditionalMinimumTax"
+                          },
+                          {
+                            "op": "Rational",
+                            "args": [
+                              "575/1000"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/ns/foreignTaxCredit"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/claimLowIncomeReduction",
+      "type": "Boolean",
+      "module": "nsReduction",
+      "kind": "reviewed_input",
+      "definition": "Confirm eligibility to claim s35, including age/parent/spouse tests, disqualifications, relationship rules and that a spouse has not claimed this reduction. No automatic eligibility inference.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "35",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null
+    },
+    {
+      "path": "/ns/adjustedFamilyIncome",
+      "type": "Dollar",
+      "module": "nsReduction",
+      "kind": "reviewed_input",
+      "definition": "Reviewed s35 adjusted family income: taxpayer plus qualified relation, recalculated for RDSP, UCCB, s79/s40(3.21) gains and deductions in s35(1)(a). Not simply federal net income or a benefits AFNI. Required only if claiming the reduction.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "35(1)(a)",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": false
+    },
+    {
+      "path": "/ns/qualifyingSpouseOrDependant",
+      "type": "Boolean",
+      "module": "nsReduction",
+      "kind": "reviewed_input",
+      "definition": "Confirm exactly one additional $300 amount for a qualifying relation, or qualifying eligible dependant when there is no qualifying relation. Required only if claiming reduction.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "35(2)",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null
+    },
+    {
+      "path": "/ns/otherQualifyingDependants",
+      "type": "Int",
+      "module": "nsReduction",
+      "kind": "reviewed_input",
+      "definition": "Number of other qualifying children/dependants for the $165 amount, excluding the dependant used for the additional $300. Required only if claiming reduction.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "35(2)",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "minimum": 0
+    },
+    {
+      "path": "/ns/lowIncomeReduction",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "Reduction: $300 plus permitted $300 and $165 amounts, less 5% of adjusted family income over $15,000, floored at zero.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "35",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/ns/claimLowIncomeReduction"
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "GreaterOf",
+                    "args": [
+                      {
+                        "op": "Dollar",
+                        "args": [
+                          "0"
+                        ]
+                      },
+                      {
+                        "op": "Subtract",
+                        "args": [
+                          {
+                            "op": "Minuend",
+                            "args": [
+                              {
+                                "op": "Add",
+                                "args": [
+                                  {
+                                    "op": "Dollar",
+                                    "args": [
+                                      "300"
+                                    ]
+                                  },
+                                  {
+                                    "op": "Switch",
+                                    "args": [
+                                      {
+                                        "op": "Case",
+                                        "args": [
+                                          {
+                                            "op": "When",
+                                            "args": [
+                                              {
+                                                "op": "Dependency",
+                                                "args": [],
+                                                "path": "/ns/qualifyingSpouseOrDependant"
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "op": "Then",
+                                            "args": [
+                                              {
+                                                "op": "Dollar",
+                                                "args": [
+                                                  "300"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      },
+                                      {
+                                        "op": "Case",
+                                        "args": [
+                                          {
+                                            "op": "When",
+                                            "args": [
+                                              {
+                                                "op": "True",
+                                                "args": []
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "op": "Then",
+                                            "args": [
+                                              {
+                                                "op": "Dollar",
+                                                "args": [
+                                                  "0"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "op": "Multiply",
+                                    "args": [
+                                      {
+                                        "op": "Dollar",
+                                        "args": [
+                                          "165"
+                                        ]
+                                      },
+                                      {
+                                        "op": "Dependency",
+                                        "args": [],
+                                        "path": "/ns/otherQualifyingDependants"
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Subtrahends",
+                            "args": [
+                              {
+                                "op": "Multiply",
+                                "args": [
+                                  {
+                                    "op": "GreaterOf",
+                                    "args": [
+                                      {
+                                        "op": "Dollar",
+                                        "args": [
+                                          "0"
+                                        ]
+                                      },
+                                      {
+                                        "op": "Subtract",
+                                        "args": [
+                                          {
+                                            "op": "Minuend",
+                                            "args": [
+                                              {
+                                                "op": "Dependency",
+                                                "args": [],
+                                                "path": "/ns/adjustedFamilyIncome"
+                                              }
+                                            ]
+                                          },
+                                          {
+                                            "op": "Subtrahends",
+                                            "args": [
+                                              {
+                                                "op": "Dollar",
+                                                "args": [
+                                                  "15000"
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "op": "Rational",
+                                    "args": [
+                                      "5/100"
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "True",
+                    "args": []
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/politicalContributions",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Eligible NS political contributions supported by receipts.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "50",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/farmerFoodDonations",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Fair market value of eligible farmer food donations already included in eligible donations above, after reviewing s50A qualification.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "50A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/certificateCredits",
+      "type": "Dollar",
+      "module": "nsAdjustments",
+      "kind": "reviewed_input",
+      "definition": "Reviewed total of usable labour-sponsored, equity, innovation-equity and venture-capital credits, after their individual certificate, carryforward and annual limits. Excludes the age credit and political/food credits calculated here.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "37\u201338",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": null,
+      "nonnegative": true
+    },
+    {
+      "path": "/ns/politicalCredit",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "75% of qualifying political contributions, capped at $750 and available tax through the subsequent zero floor.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "50",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "LesserOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "750"
+            ]
+          },
+          {
+            "op": "Multiply",
+            "args": [
+              {
+                "op": "Dependency",
+                "args": [],
+                "path": "/ns/politicalContributions"
+              },
+              {
+                "op": "Rational",
+                "args": [
+                  "75/100"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/farmerFoodCredit",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "25% of qualifying donated food value, claimed in addition to the charitable donation credit.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "50A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Multiply",
+        "args": [
+          {
+            "op": "Dependency",
+            "args": [],
+            "path": "/ns/farmerFoodDonations"
+          },
+          {
+            "op": "Rational",
+            "args": [
+              "25/100"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/ageTaxCredit",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "$1,000 age tax credit when age 65+ and taxable income strictly below $24,000. Ordinary-return scope is required for the final result.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "36B",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "All",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/is65OrOlder"
+                      },
+                      {
+                        "op": "LessThan",
+                        "args": [
+                          {
+                            "op": "Left",
+                            "args": [
+                              {
+                                "op": "Dependency",
+                                "args": [],
+                                "path": "/taxableIncome/amount"
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Right",
+                            "args": [
+                              {
+                                "op": "Dollar",
+                                "args": [
+                                  "24000"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "1000"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "True",
+                    "args": []
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "0"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/taxAfterCredits",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "NS income tax after the modelled nonrefundable credits and reviewed adjustments. Excludes federal tax, payments and refundable NS479 credits. This inspection fact is not gated by review.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "35\u201338, 50\u201350A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "GreaterOf",
+        "args": [
+          {
+            "op": "Dollar",
+            "args": [
+              "0"
+            ]
+          },
+          {
+            "op": "Subtract",
+            "args": [
+              {
+                "op": "Minuend",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/ns/taxBeforeReduction"
+                  }
+                ]
+              },
+              {
+                "op": "Subtrahends",
+                "args": [
+                  {
+                    "op": "Add",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/lowIncomeReduction"
+                      },
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/politicalCredit"
+                      },
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/farmerFoodCredit"
+                      },
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/certificateCredits"
+                      },
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/ageTaxCredit"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/claimsConsistent",
+      "type": "Boolean",
+      "module": "nsSetup",
+      "kind": "derived",
+      "definition": "Spouse and eligible dependant are exclusive; dependant base respects the annual maximum; food gifts are included in total eligible donations.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "10C\u201310D, 50A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "All",
+        "args": [
+          {
+            "op": "Not",
+            "args": [
+              {
+                "op": "All",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/ns/claimSpouse"
+                  },
+                  {
+                    "op": "Not",
+                    "args": [
+                      {
+                        "op": "Equal",
+                        "args": [
+                          {
+                            "op": "Left",
+                            "args": [
+                              {
+                                "op": "Dependency",
+                                "args": [],
+                                "path": "/ns/eligibleDependantBase"
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Right",
+                            "args": [
+                              {
+                                "op": "Dollar",
+                                "args": [
+                                  "0"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Not",
+            "args": [
+              {
+                "op": "LessThan",
+                "args": [
+                  {
+                    "op": "Left",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/parameters/basic"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "Right",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/eligibleDependantBase"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Not",
+            "args": [
+              {
+                "op": "LessThan",
+                "args": [
+                  {
+                    "op": "Left",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/schedules/claimedGiftsForNs"
+                      }
+                    ]
+                  },
+                  {
+                    "op": "Right",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/farmerFoodDonations"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "path": "/ns/taxPayable",
+      "type": "Dollar",
+      "module": "nsTax",
+      "kind": "derived",
+      "definition": "Reviewed NS provincial income tax for a supported ordinary return. Incomplete until scope, core review, CAD and provincial review/consistency gates are satisfied. Not total Canadian tax or balance owing.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "5, 8\u201350A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "All",
+                    "args": [
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/inScope"
+                      },
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/creditsReviewed"
+                      },
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/ns/claimsConsistent"
+                      },
+                      {
+                        "op": "Dependency",
+                        "args": [],
+                        "path": "/review/coreReady"
+                      },
+                      {
+                        "op": "Equal",
+                        "args": [
+                          {
+                            "op": "Left",
+                            "args": [
+                              {
+                                "op": "Dependency",
+                                "args": [],
+                                "path": "/return/currency"
+                              }
+                            ]
+                          },
+                          {
+                            "op": "Right",
+                            "args": [
+                              {
+                                "op": "String",
+                                "args": [
+                                  "CAD"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dependency",
+                    "args": [],
+                    "path": "/ns/taxAfterCredits"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

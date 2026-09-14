@@ -1,0 +1,454 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/ns/parameters">
+      <Derived>
+        <String>/ns/parameters</String>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/basic">
+      <Description>Annual basic selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>11744</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>11932</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/age">
+      <Description>Annual age selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>5734</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>5826</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/spouseCeiling">
+      <Description>Annual spouseCeiling selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>12618</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>12820</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/spouseFloor">
+      <Description>Annual spouseFloor selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>874</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>888</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/threshold0">
+      <Description>Annual threshold0 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>30507</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>30995</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/threshold1">
+      <Description>Annual threshold1 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>61015</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>61991</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/threshold2">
+      <Description>Annual threshold2 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>95883</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>97417</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/threshold3">
+      <Description>Annual threshold3 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>154650</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>157124</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/baseTax0">
+      <Description>Annual baseTax0 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>2681.57</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>2724.46</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/baseTax1">
+      <Description>Annual baseTax1 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>7242.51</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>7358.36</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/baseTax2">
+      <Description>Annual baseTax2 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>13055.01</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>13263.88</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/parameters/baseTax3">
+      <Description>Annual baseTax3 selected by the federal tax year. No fallback for unsupported years.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>23339.23</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>23712.60</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

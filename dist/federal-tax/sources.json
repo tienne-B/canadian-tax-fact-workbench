@@ -1,0 +1,10 @@
+{
+  "retrieved": "2026-09-12",
+  "t1": {
+    "url": "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt",
+    "sha256": "49abf16998ee1b2f4bc21375bdea96024628cbf43044d38e8aa50e33bde522ae",
+    "snapshot": "source-t1-2025.txt.gz"
+  },
+  "parameters": "parameters.json",
+  "limitations": "README.md"
+}

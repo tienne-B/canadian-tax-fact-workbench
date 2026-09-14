@@ -1,0 +1,25 @@
+{
+  "retrieved": "2026-09-12",
+  "sources": [
+    {
+      "url": "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s9/5000-s9-25e.txt",
+      "snapshot": "schedule9-2025.txt.gz",
+      "sha256": "86988baa6d4a6918d202ec7beb167e57c9ae42136bbf2ca19125aada2b26cb06"
+    },
+    {
+      "url": "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-s7/5000-s7-25e.txt",
+      "snapshot": "schedule7-2025.txt.gz",
+      "sha256": "864d3de548746bdf7549d1b815a3387fd90334b372c6ba268d8733682d65cf22"
+    },
+    {
+      "url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4040/rrsps-other-registered-plans-retirement.html",
+      "snapshot": "t4040-2025.html.gz",
+      "sha256": "547b8080fdc5e4f154390c3a2833809192d4d31a65fe328a2d82965dda9bff01"
+    }
+  ],
+  "annualLimits": {
+    "2025": 32490,
+    "2026": 33810
+  },
+  "limitsSource": "https://www.canada.ca/en/revenue-agency/services/tax/registered-plans-administrators/pspa/mp-rrsp-dpsp-tfsa-limits-ympe.html"
+}

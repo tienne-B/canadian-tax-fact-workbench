@@ -1391,7 +1391,7 @@
       "type": "Collection",
       "module": "subdivisionEDeductions",
       "kind": "input",
-      "definition": "Permitted deductions counted only under paragraph 3(c), excluding amounts already applied to a source.",
+      "definition": "Permitted deductions counted only under paragraph 3(c), excluding amounts already applied to a source. RRSP deductions belong in Schedule 7, not this collection.",
       "authorities": [
         {
           "section": "3",
@@ -1432,11 +1432,10 @@
       "type": "String",
       "module": "subdivisionEDeductions",
       "kind": "metadata",
-      "definition": "Application classification; category does not itself establish eligibility.",
+      "definition": "Non-RRSP deduction classification. Use Schedule 7 for RRSP deductions; do not enter them here, including under Other.",
       "authorities": [],
       "formula": null,
       "values": [
-        "rrsp",
         "fhsa",
         "pensionSplit",
         "support",
@@ -2131,7 +2130,7 @@
       "authorities": [
         {
           "section": "3",
-          "pinpoint": "3(d)–(f)",
+          "pinpoint": "3(d)\u2013(f)",
           "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-3.html"
         }
       ],
@@ -2480,7 +2479,7 @@
       "type": "Dollar",
       "module": "registeredPlans",
       "kind": "reviewed_input",
-      "definition": "Home Buyers’ Plan amount required in income after repayments.",
+      "definition": "Home Buyers\u2019 Plan amount required in income after repayments.",
       "authorities": [
         {
           "section": "146.01",
@@ -3156,7 +3155,7 @@
       "authorities": [
         {
           "section": "127.5",
-          "pinpoint": "127.5–127.55",
+          "pinpoint": "127.5\u2013127.55",
           "url": "https://laws-lois.justice.gc.ca/eng/acts/I-3.3/section-127.5.html"
         }
       ],

@@ -1,30 +1,49 @@
 # Canadian Tax Fact Workbench
 
-A static, dictionary-driven frontend using the actual IRS Fact Graph 3.1 Scala.js engine. Nine interview sections expose all 133 domain definitions, with typed controls, repeated records, explicit unknown/empty distinctions, legal links, and an interactive dependency neighbourhood for any concrete fact.
+A browser-only interview and native IRS Fact Graph for shared Canadian income facts, Nova Scotia income tax, federal tax, total payable and the calculated balance owing/refund. Supported ordinary-return parameter packs: 2025 and 2026.
 
-Values exist only in page memory. There is no analytics, server storage, localStorage or third-party value submission. Reloading clears the interview. Export fact graph downloads the native IRS persister JSON. Export nodes & edges adds concrete nodes, dependency links, input values and review state for external graph tools.
+See [federal tax and settlement documentation](dist/federal-tax/README.md) and [Nova Scotia documentation](dist/nova-scotia/README.md) for formulas, sources, scope and reviewed inputs.
 
-## Run locally
+Choose **Federal credits → Credit input basis → Claim amounts** for ordinary pre-rate claim amounts. Donations and top-up remain final credit dollars. Choose **Credit dollars** for older entries that are already tax reductions.
 
-Serve `dist/` using any static HTTP server. For example, `python3 -m http.server 4173 --directory dist`. ES modules require HTTP; opening index.html as a file is not supported.
+## Donations and RRSP schedules
+
+Enable Schedule 9 and/or Schedule 7 under **Schedule options**. See [Schedules 7, 9 and T4040 documentation](dist/schedules/README.md) for donation elections/carryforwards, shared federal/NS credits, RRSP room, contributions, transfers and repayments. Schedule 7 posts reviewed deductions and shortfall income automatically; remove duplicate generic entries first.
+
+## Run
+
+Serve `dist/` over HTTP, for example `python3 -m http.server 4173 --directory dist`. Open the local URL. Export current values before reloading: values are held only in page memory. No analytics, server storage or transmission of entered values is implemented.
+
+Twenty interview sections and a graph explorer expose 373 catalogue definitions. Separate dictionary files are loaded by `dist/dictionary-modules.json` and composed in memory. Exports support native IRS graph JSON and concrete nodes/edges with module references.
+
+## Import saved answers
+
+Click **Import JSON**, choose either a native fact-graph export or a nodes-and-edges export from this app, then confirm the replacement preview. Import replaces the current answers; cancel to keep them. Export first if you want a backup.
+
+Files are read locally (maximum 10 MB). Types, fact paths and collection membership are checked before any answers change. Unknown or calculated input paths are rejected. Calculated nodes in a nodes-and-edges export are ignored and recomputed from its `inputs`. Saved legal review confirmations are cleared so the current dictionaries are reviewed again; ordinary answers, zero/false values and collection identifiers are preserved. Older exports can leave newly added fields unanswered.
 
 ## Validate
 
-Run `node tests/engine.test.mjs`. Eleven original arithmetic scenarios run against the compiled native engine. Additional checks cover input types/limits, ABIL consistency, unknown versus explicitly empty collections, and native JSON round trips.
+```
+node tests/engine.test.mjs
+node tests/nova-scotia.test.mjs
+node tests/federal-tax.test.mjs
+node tests/import-graph.test.mjs
+node tests/schedules.test.mjs
+```
+
+All three suites use the compiled IRS Scala.js engine. Static checks also verify form IDs, local asset references and JavaScript syntax. No browser visual QA was performed for this extension.
 
 ## Structure
 
-- `dist/app.mjs`: dictionary-driven interview, graph explorer and exports.
-- `dist/engine.mjs`: native IRS engine adapter, typed input validation and host consistency checks.
-- `dist/catalogue.json`: the 133 domain facts and legal provenance.
-- `dist/fact-dictionary.xml`: native XML, with 13 derived String namespace constants necessary to resolve nested paths. Namespace constants are infrastructure, not questions.
-- `dist/vendor/factgraph.mjs`: compiled from IRS-Public/fact-graph commit prefix 5599f75 using `factGraphJS/fullLinkJS`, Scala 3.3.6 / sbt 1.11.4 / JDK 17.
-- `dist/vendor/IRS-LICENSE.md`: upstream license.
+- `dist/catalogue.json` and `dist/fact-dictionary.xml`: original federal income foundation, unchanged.
+- `dist/nova-scotia/`: NS rules, annual parameters and source snapshot.
+- `dist/schedules/`: Schedule 9, Schedule 7, T4040 room and explicit derived-income overlays.
+- `dist/federal-tax/`: federal tax and settlement formulas, annual parameters and sources.
+- `dist/dictionary-loader.mjs`: reference loading and duplicate-definition checks.
+- `dist/engine.mjs`: native graph adapter and input/consistency validation.
+- `dist/app.mjs`: generated form, summaries and graph explorer.
+- `scripts/`: reproducible provincial and federal tax dictionary generators.
+- `dist/vendor/factgraph.mjs`: IRS-Public/fact-graph commit prefix 5599f75, compiled with Scala 3.3.6 / sbt 1.11.4 / JDK 17; upstream license alongside it.
 
-The JSGraph `set` API saves values on each call. Collections use its native collection methods. Do not add a `graph.save()` call: the current browser export does not expose that method. GraphFactory.fromJSON(dictionary, exportedJSONString) restores native exports in integrations.
-
-## Scope
-
-Core section 3 and ordinary-resident taxable-income arithmetic only. Credits and benefits are external-determination contracts, not implemented entitlement rules. Summary results remain hidden until review and return metadata are supplied; the graph inspector explicitly exposes arithmetic for debugging. A review attestation does not replace legal review. The year field does not select a legal version automatically. See catalogue source metadata for the June 2026 XML / July 2026 HTML consolidation-date discrepancy.
-
-Manual verification: load the fictional example; inspect `/taxableIncome/amount` ($50,200); change remuneration from $60,000 to $61,000 and inspect $51,200; add/remove a record; clear an input and observe incomplete calculations; export the graph. No user financial values are included in the source or deployment.
+The supported ordinary-return scope and review gates are explicit. Complex entitlement and schedule calculations remain reviewed inputs; this is not certified filing software or a CRA account balance. See the module documentation for cent-rounding behaviour and unsupported return types.

@@ -17,6 +17,7 @@ export function makeEngine(catalogue,xml){
   }else if(f.type==='Boolean'&&typeof v!=='boolean')throw Error('Choose yes or no.');
   else if(f.type==='Day'&&(! /^\d{4}-\d{2}-\d{2}$/.test(v)||!Number.isFinite(Date.parse(v))||new Date(v).toISOString().slice(0,10)!==v))throw Error('Enter a valid date.');
   else if(f.type==='String'&&typeof v!=='string')throw Error('Enter text.');
+  if(f.minimum!==undefined&&Number(v)<f.minimum)throw Error('Minimum value is '+f.minimum);
   if(f.values&&!f.values.includes(v))throw Error('Choose one of the available options.');
  }
  function build(inputs){
@@ -43,6 +44,21 @@ export function makeEngine(catalogue,xml){
   if(a!==undefined&&b!==undefined&&cents(a)>cents(b))errors.push('ABIL must not exceed allowable losses excluding listed personal property.');
   if(inputs['/residence/status']&&inputs['/residence/status']!=='residentFullYear')errors.push('This residence status needs special rules before the core result can be used.');
   if(inputs['/person/deathDate'])errors.push('A deceased taxpayer needs special-return rules before the core result can be used.');
+  if(inputs['/ns/claimSpouse']===true&&Number(inputs['/ns/eligibleDependantBase']??0)>0)errors.push('The Nova Scotia spouse and eligible-dependant amounts cannot both be claimed.');
+  if(inputs['/schedules/useDonations']!==true&&inputs['/ns/farmerFoodDonations']!==undefined&&inputs['/ns/eligibleDonations']!==undefined&&cents(inputs['/ns/farmerFoodDonations'])>cents(inputs['/ns/eligibleDonations']))errors.push('Farmer food donations must be included in eligible donations.');
+  const nsMax={'2025':11744,'2026':11932}[inputs['/return/taxYear']];
+  if(nsMax&&Number(inputs['/ns/eligibleDependantBase'])>nsMax)errors.push('The Nova Scotia eligible-dependant base exceeds the annual maximum.');
+  const fc=inputs['/specialTaxes/minimumTaxCarryover'],pc=inputs['/ns/federalMinimumTaxCarryover'];
+  if(fc!==undefined&&pc!==undefined&&cents(fc)!==cents(pc))errors.push('The federal minimum-tax carryover must match the federal amount used in Nova Scotia tax.');
+  if(inputs['/federalTax/useMinimumTaxSchedule']===false&&Number(inputs['/ns/federalAdditionalMinimumTax']??0)>0)errors.push('Nova Scotia additional minimum tax requires the federal minimum-tax schedule to be reviewed.');
+  if(definitions.has('/schedule9/valid')&&(inputs['/schedules/useDonations']===true||inputs['/schedules/useRrsp']===true)){
+   const candidate=build(inputs);
+   if(inputs['/schedules/useDonations']===true){
+    if(result(candidate,'/schedule9/valid').value==='false')errors.push('Schedule 9 claims exceed a gift pool or income limit, have an invalid origin year, or have inconsistent capital-gift amounts.');
+    const gifts=result(candidate,'/schedule9/claimedGifts');if(gifts.complete&&Number(inputs['/ns/farmerFoodDonations']??0)>Number(gifts.value))errors.push('Farmer food donations must be included in the Schedule 9 gift claim.');
+   }
+   if(inputs['/schedules/useRrsp']===true&&result(candidate,'/schedule7/valid').value==='false')errors.push('Schedule 7 repayments, transfers or the elected deduction exceed the available contributions or room.');
+  }
   return errors;
  }
  return {definitions,dictionary,build,result,validate,constraints};

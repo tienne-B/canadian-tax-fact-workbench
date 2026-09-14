@@ -1,0 +1,2691 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/schedules">
+      <Derived>
+        <String>/schedules</String>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9">
+      <Derived>
+        <String>/schedule9</String>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7">
+      <Derived>
+        <String>/schedule7</String>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom">
+      <Derived>
+        <String>/rrspRoom</String>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp">
+      <Derived>
+        <String>/nextYearRrsp</String>
+      </Derived>
+    </Fact>
+    <Fact path="/schedules/yearSupported">
+      <Description>Schedule packs exist for the selected tax year.</Description>
+      <Derived>
+        <Any>
+          <Equal>
+            <Left>
+              <Dependency path="/return/taxYear" />
+            </Left>
+            <Right>
+              <Int>2025</Int>
+            </Right>
+          </Equal>
+          <Equal>
+            <Left>
+              <Dependency path="/return/taxYear" />
+            </Left>
+            <Right>
+              <Int>2026</Int>
+            </Right>
+          </Equal>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/schedules/useDonations">
+      <Description>Use Schedule 9 to supply both federal donations credit and the eligible gift claim for Nova Scotia. Manual donation-credit fields are ignored while enabled.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/schedules/useRrsp">
+      <Description>Use Schedule 7 to add RRSP deductions and HBP/LLP shortfall income to shared income automatically. Remove those amounts from generic income/deduction records first.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/donationGifts">
+      <Description>Gift pools per origin year and category. Use remaining eligible receipt/certificate amounts after prior claims, advantages and spouse allocation. Confirm an empty collection when none.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/donationGifts/*/source">
+      <Description>Receipt, certificate or pool reference; spouse ownership/allocation evidence.</Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/donationGifts/*/giftYear">
+      <Description>Origin tax year, including carryforward gifts.</Description>
+      <Writable>
+        <Int />
+      </Writable>
+    </Fact>
+    <Fact path="/donationGifts/*/category">
+      <Description>Ordinary categories follow lines 1–4; cultural and ecological gifts follow line 11.</Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/donationGifts/*/available">
+      <Description>Eligible unclaimed amount available before this return. Exclude gifts already used on the 2024 return, including the Jan–Feb 2025 extension.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/donationGifts/*/claim">
+      <Description>Amount elected for this return. Use older eligible gifts first within their applicable class; do not claim the same gift for both spouses.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/donationGifts/*/expiryYear">
+      <Description>Last year to claim this pool (five years; ten for ecological gifts in the supported carryforward window).</Description>
+      <Derived>
+        <Add>
+          <Dependency path="../giftYear" />
+          <Switch>
+            <Case>
+              <When>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>ecological</String>
+                  </Right>
+                </Equal>
+              </When>
+              <Then>
+                <Int>10</Int>
+              </Then>
+            </Case>
+            <Case>
+              <When>
+                <True />
+              </When>
+              <Then>
+                <Int>5</Int>
+              </Then>
+            </Case>
+          </Switch>
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/donationGifts/*/invalidClaim">
+      <Description>Counts claims above the pool or outside its permitted origin-year window.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Not>
+                  <LessThan>
+                    <Left>
+                      <Dependency path="/return/taxYear" />
+                    </Left>
+                    <Right>
+                      <Dependency path="../giftYear" />
+                    </Right>
+                  </LessThan>
+                </Not>
+                <Not>
+                  <LessThan>
+                    <Left>
+                      <Dependency path="../available" />
+                    </Left>
+                    <Right>
+                      <Dependency path="../claim" />
+                    </Right>
+                  </LessThan>
+                </Not>
+                <Any>
+                  <Equal>
+                    <Left>
+                      <Dependency path="../claim" />
+                    </Left>
+                    <Right>
+                      <Dollar>0</Dollar>
+                    </Right>
+                  </Equal>
+                  <All>
+                    <Not>
+                      <LessThan>
+                        <Left>
+                          <Dependency path="/return/taxYear" />
+                        </Left>
+                        <Right>
+                          <Dependency path="../giftYear" />
+                        </Right>
+                      </LessThan>
+                    </Not>
+                    <Not>
+                      <LessThan>
+                        <Left>
+                          <Dependency path="../expiryYear" />
+                        </Left>
+                        <Right>
+                          <Dependency path="/return/taxYear" />
+                        </Right>
+                      </LessThan>
+                    </Not>
+                  </All>
+                </Any>
+              </All>
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>1</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/donationGifts/*/ordinaryClaim">
+      <Description>Claim elected within the ordinary category.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Any>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>charity</String>
+                  </Right>
+                </Equal>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>government</String>
+                  </Right>
+                </Equal>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>foreignUniversity</String>
+                  </Right>
+                </Equal>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>unOrRegisteredForeignCharity</String>
+                  </Right>
+                </Equal>
+              </Any>
+            </When>
+            <Then>
+              <Dependency path="../claim" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/donationGifts/*/specialClaim">
+      <Description>Ecological/cultural claim elected outside the ordinary income limit.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Any>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>charity</String>
+                  </Right>
+                </Equal>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>government</String>
+                  </Right>
+                </Equal>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>foreignUniversity</String>
+                  </Right>
+                </Equal>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>unOrRegisteredForeignCharity</String>
+                  </Right>
+                </Equal>
+              </Any>
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dependency path="../claim" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/donationGifts/*/oldEcologicalClaim">
+      <Description>Ecological gifts from 2015 still eligible in 2025 are excluded from the 33% rate.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Equal>
+                  <Left>
+                    <Dependency path="../category" />
+                  </Left>
+                  <Right>
+                    <String>ecological</String>
+                  </Right>
+                </Equal>
+                <LessThan>
+                  <Left>
+                    <Dependency path="../giftYear" />
+                  </Left>
+                  <Right>
+                    <Int>2016</Int>
+                  </Right>
+                </LessThan>
+              </All>
+            </When>
+            <Then>
+              <Dependency path="../claim" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/donationGifts/*/carryforward">
+      <Description>Unclaimed eligible amount with at least one future year remaining.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Dependency path="../expiryYear" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Dependency path="../available" />
+                  </Minuend>
+                  <Subtrahends>
+                    <Dependency path="../claim" />
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/donationGifts/*/expiredUnclaimed">
+      <Description>Unclaimed amount expiring this year or already expired.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Not>
+                <LessThan>
+                  <Left>
+                    <Dependency path="/return/taxYear" />
+                  </Left>
+                  <Right>
+                    <Dependency path="../expiryYear" />
+                  </Right>
+                </LessThan>
+              </Not>
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Dependency path="../available" />
+                  </Minuend>
+                  <Subtrahends>
+                    <Dependency path="../claim" />
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/donatedDepreciable">
+      <Description>One chart per depreciable-property class. Aggregate min(net proceeds, capital cost) across gifts in that class before entering the class result.</Description>
+      <Writable>
+        <Collection />
+      </Writable>
+    </Fact>
+    <Fact path="/donatedDepreciable/*/classReference">
+      <Description>CCA class and supporting gift calculation.</Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/donatedDepreciable/*/recapture">
+      <Description>Gift-related recapture included in this return, limited to the gift portion after advantages.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/donatedDepreciable/*/eligiblePropertyTotal">
+      <Description>Sum, for this class, of min(net proceeds, capital cost) for each donated property.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/donatedDepreciable/*/boost">
+      <Description>Schedule 9 line 33700 class amount.</Description>
+      <Derived>
+        <LesserOf>
+          <Dependency path="../recapture" />
+          <Dependency path="../eligiblePropertyTotal" />
+        </LesserOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/giftTaxableCapitalGains">
+      <Description>Current-year taxable capital gains attributable to donated property, after gift-portion adjustments. Already included once in the capital-income facts.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule9/giftCapitalGainsDeduction">
+      <Description>Capital gains deduction attributable to those donated-property gains. Already claimed in Division C where applicable.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule9/reviewed">
+      <Description>Confirm qualified donees, certificates, receipt eligibility, carryforward ages/oldest-first ordering, spouse allocation and capital-property charts. US treaty-limited gifts, estates and special-return rules require external review outside this ordinary schedule.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/schedule9/depreciableBoost">
+      <Description>Total line 33700 from class charts.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/donatedDepreciable/*/boost" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/capitalBoost">
+      <Description>Line 33900: taxable gains less related capital gains deduction.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/schedule9/giftTaxableCapitalGains" />
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/schedule9/giftCapitalGainsDeduction" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/ordinaryLimit">
+      <Description>Lesser of net income and 75% of net income plus 25% of eligible capital-property amounts.</Description>
+      <Derived>
+        <LesserOf>
+          <Dependency path="/income/netIncome" />
+          <Add>
+            <Multiply>
+              <Dependency path="/income/netIncome" />
+              <Rational>75/100</Rational>
+            </Multiply>
+            <Multiply>
+              <Add>
+                <Dependency path="/schedule9/depreciableBoost" />
+                <Dependency path="/schedule9/capitalBoost" />
+              </Add>
+              <Rational>25/100</Rational>
+            </Multiply>
+          </Add>
+        </LesserOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/ordinaryClaim">
+      <Description>Total ordinaryClaim across the elected gift pools.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/donationGifts/*/ordinaryClaim" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/specialClaim">
+      <Description>Total specialClaim across the elected gift pools.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/donationGifts/*/specialClaim" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/oldEcologicalClaim">
+      <Description>Total oldEcologicalClaim across the elected gift pools.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/donationGifts/*/oldEcologicalClaim" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/carryforward">
+      <Description>Total carryforward across the elected gift pools.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/donationGifts/*/carryforward" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/expiredUnclaimed">
+      <Description>Total expiredUnclaimed across the elected gift pools.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/donationGifts/*/expiredUnclaimed" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/valid">
+      <Description>Claims fit available pools, origin years and the ordinary-income limit; capital deduction does not exceed related gains.</Description>
+      <Derived>
+        <All>
+          <Equal>
+            <Left>
+              <CollectionSum>
+                <Dependency path="/donationGifts/*/invalidClaim" />
+              </CollectionSum>
+            </Left>
+            <Right>
+              <Dollar>0</Dollar>
+            </Right>
+          </Equal>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/schedule9/ordinaryLimit" />
+              </Left>
+              <Right>
+                <Dependency path="/schedule9/ordinaryClaim" />
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/schedule9/giftTaxableCapitalGains" />
+              </Left>
+              <Right>
+                <Dependency path="/schedule9/giftCapitalGainsDeduction" />
+              </Right>
+            </LessThan>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/claimedGifts">
+      <Description>Total eligible elected gifts; fed and NS share this exact claim. Incomplete until validated and reviewed.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Any>
+                  <Equal>
+                    <Left>
+                      <Dependency path="/return/taxYear" />
+                    </Left>
+                    <Right>
+                      <Int>2025</Int>
+                    </Right>
+                  </Equal>
+                  <Equal>
+                    <Left>
+                      <Dependency path="/return/taxYear" />
+                    </Left>
+                    <Right>
+                      <Int>2026</Int>
+                    </Right>
+                  </Equal>
+                </Any>
+                <Dependency path="/schedule9/reviewed" />
+                <Dependency path="/schedule9/valid" />
+              </All>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/schedule9/ordinaryClaim" />
+                <Dependency path="/schedule9/specialClaim" />
+              </Add>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/first200">
+      <Description>First $200 of the total eligible claim.</Description>
+      <Derived>
+        <LesserOf>
+          <Dollar>200</Dollar>
+          <Dependency path="/schedule9/claimedGifts" />
+        </LesserOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/above200">
+      <Description>Eligible claim exceeding the first $200.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/schedule9/claimedGifts" />
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/schedule9/first200" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/at33Percent">
+      <Description>Lesser of donations above $200 excluding old ecological gifts and taxable income over the top-bracket threshold.</Description>
+      <Derived>
+        <LesserOf>
+          <GreaterOf>
+            <Dollar>0</Dollar>
+            <Subtract>
+              <Minuend>
+                <Dependency path="/schedule9/above200" />
+              </Minuend>
+              <Subtrahends>
+                <Dependency path="/schedule9/oldEcologicalClaim" />
+              </Subtrahends>
+            </Subtract>
+          </GreaterOf>
+          <GreaterOf>
+            <Dollar>0</Dollar>
+            <Subtract>
+              <Minuend>
+                <Dependency path="/taxableIncome/amount" />
+              </Minuend>
+              <Subtrahends>
+                <Dependency path="/federalTax/parameters/threshold3" />
+              </Subtrahends>
+            </Subtract>
+          </GreaterOf>
+        </LesserOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/at29Percent">
+      <Description>Remaining claim above $200.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/schedule9/above200" />
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/schedule9/at33Percent" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/federalCredit">
+      <Description>First $200 at the annual lowest federal rate, plus 33% and 29% portions. This final credit is outside the ordinary nonrefundable-credit percentage.</Description>
+      <Derived>
+        <Add>
+          <Multiply>
+            <Dependency path="/schedule9/first200" />
+            <Dependency path="/federalTax/nonrefundableCreditRate" />
+          </Multiply>
+          <Multiply>
+            <Dependency path="/schedule9/at33Percent" />
+            <Rational>33/100</Rational>
+          </Multiply>
+          <Multiply>
+            <Dependency path="/schedule9/at29Percent" />
+            <Rational>29/100</Rational>
+          </Multiply>
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule9/novaScotiaCredit">
+      <Description>8.79% of first $200 plus 21% of the balance of the same elected eligible gifts.</Description>
+      <Derived>
+        <Add>
+          <Multiply>
+            <Dependency path="/schedule9/first200" />
+            <Rational>879/10000</Rational>
+          </Multiply>
+          <Multiply>
+            <Dependency path="/schedule9/above200" />
+            <Rational>21/100</Rational>
+          </Multiply>
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/openingRoomProvided">
+      <Description>Provide signed opening unused deduction room directly (CRA statement/Chart 3 footnote 3). No means calculate it from prior limit and deductions.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/openingUnusedRoom">
+      <Description>Signed prior-year unused deduction room, including a negative balance where applicable.</Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/priorDeductionLimit">
+      <Description>Prior-year RRSP deduction limit.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/priorOrdinaryDeduction">
+      <Description>Prior-year deduction excluding eligible transfers and specified PSPA recontributions.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/priorEmployerPrpp">
+      <Description>Prior-year employer PRPP contributions.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/openingRoom">
+      <Description>Chart 3 step 1 signed unused room; direct statement value or prior limit less prior ordinary deduction and employer PRPP.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/rrspRoom/openingRoomProvided" />
+            </When>
+            <Then>
+              <Dependency path="/rrspRoom/openingUnusedRoom" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Subtract>
+                <Minuend>
+                  <Dependency path="/rrspRoom/priorDeductionLimit" />
+                </Minuend>
+                <Subtrahends>
+                  <Add>
+                    <Dependency path="/rrspRoom/priorOrdinaryDeduction" />
+                    <Dependency path="/rrspRoom/priorEmployerPrpp" />
+                  </Add>
+                </Subtrahends>
+              </Subtract>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/employmentIncome">
+      <Description>T4040 Chart 3 prior tax year: Prior-year employment earnings (10100 + 10400).</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/royalties">
+      <Description>T4040 Chart 3 prior tax year: Author/inventor royalties included in employment income above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/researchGrants">
+      <Description>T4040 Chart 3 prior tax year: Net research grants included in employment income above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/supplementaryUnemployment">
+      <Description>T4040 Chart 3 prior tax year: Supplementary unemployment payments included above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/wageProtection">
+      <Description>T4040 Chart 3 prior tax year: Wage Earner Protection payments included above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/unionDues">
+      <Description>T4040 Chart 3 prior tax year: Dues attributable to the employment earnings above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/employmentExpenses">
+      <Description>T4040 Chart 3 prior tax year: Employment expenses attributable to those earnings.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/businessIncome">
+      <Description>T4040 Chart 3 prior tax year: Positive active business income, excluding amateur-athlete trust distributions; losses entered separately.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/postdoctoralIncome">
+      <Description>T4040 Chart 3 prior tax year: Postdoctoral fellowship income not already in business income.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/disabilityPension">
+      <Description>T4040 Chart 3 prior tax year: CPP/QPP disability benefits (not regular retirement pensions).</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/rentalIncome">
+      <Description>T4040 Chart 3 prior tax year: Positive net rent from real property (not dividends, interest or capital gains).</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/supportIncome">
+      <Description>T4040 Chart 3 prior tax year: Taxable support and qualifying previously deducted support repaid to you.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/athleteTrustIncome">
+      <Description>T4040 Chart 3 prior tax year: Qualifying performance income contributed to an amateur athlete trust.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/businessLosses">
+      <Description>T4040 Chart 3 prior tax year: Active-business losses as a positive amount.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/eligibleCapitalGains">
+      <Description>T4040 Chart 3 prior tax year: Taxable eligible-capital-property gains included in the business amount, where applicable.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/rentalLosses">
+      <Description>T4040 Chart 3 prior tax year: Real-property rental losses as a positive amount.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/deductibleSupport">
+      <Description>T4040 Chart 3 prior tax year: Deductible support and qualifying repaid support deducted for the prior year.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/adjustedEmployment">
+      <Description>Chart 3 line 15: employment less separately handled inclusions, dues and expenses, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/rrspRoom/employmentIncome" />
+            </Minuend>
+            <Subtrahends>
+              <Add>
+                <Add>
+                  <Dependency path="/rrspRoom/royalties" />
+                  <Dependency path="/rrspRoom/researchGrants" />
+                  <Dependency path="/rrspRoom/supplementaryUnemployment" />
+                  <Dependency path="/rrspRoom/wageProtection" />
+                </Add>
+                <Dependency path="/rrspRoom/unionDues" />
+                <Dependency path="/rrspRoom/employmentExpenses" />
+              </Add>
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/earnedIncome">
+      <Description>Chart 3 earned income: adjusted employment plus permitted inclusions less business/rental losses and deductible support. Can be negative; excludes ordinary investment income.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Add>
+              <Dependency path="/rrspRoom/adjustedEmployment" />
+              <Add>
+                <Dependency path="/rrspRoom/royalties" />
+                <Dependency path="/rrspRoom/researchGrants" />
+                <Dependency path="/rrspRoom/supplementaryUnemployment" />
+                <Dependency path="/rrspRoom/wageProtection" />
+              </Add>
+              <Dependency path="/rrspRoom/businessIncome" />
+              <Dependency path="/rrspRoom/postdoctoralIncome" />
+              <Dependency path="/rrspRoom/disabilityPension" />
+              <Dependency path="/rrspRoom/rentalIncome" />
+              <Dependency path="/rrspRoom/supportIncome" />
+              <Dependency path="/rrspRoom/athleteTrustIncome" />
+            </Add>
+          </Minuend>
+          <Subtrahends>
+            <Add>
+              <Dependency path="/rrspRoom/businessLosses" />
+              <Dependency path="/rrspRoom/eligibleCapitalGains" />
+              <Dependency path="/rrspRoom/rentalLosses" />
+              <Dependency path="/rrspRoom/deductibleSupport" />
+            </Add>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/annualDollarLimit">
+      <Description>Annual new-room ceiling, not personal total room.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>32490</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>33810</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/pensionAdjustment">
+      <Description>Prior-year PA plus applicable connected-person and foreign-plan prescribed adjustments.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/pensionAdjustmentReversal">
+      <Description>Current-year PAR/PAC from T10.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/exemptPspa">
+      <Description>Prior-year exempt PSPA/PCC from T215.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/certifiedPspa">
+      <Description>Current-year certified PSPA from T1004.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/qualifyingWithdrawals">
+      <Description>Current-year qualifying withdrawals designated on T1006; may make net PSPA negative.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/rrspRoom/newRoom">
+      <Description>Lesser of 18% of prior earned income and annual dollar limit, less PA, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <LesserOf>
+                <Multiply>
+                  <Dependency path="/rrspRoom/earnedIncome" />
+                  <Rational>18/100</Rational>
+                </Multiply>
+                <Dependency path="/rrspRoom/annualDollarLimit" />
+              </LesserOf>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/rrspRoom/pensionAdjustment" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/netPspa">
+      <Description>Exempt plus certified PSPA less qualifying withdrawals; may be negative.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Add>
+              <Dependency path="/rrspRoom/exemptPspa" />
+              <Dependency path="/rrspRoom/certifiedPspa" />
+            </Add>
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/rrspRoom/qualifyingWithdrawals" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/unflooredLimit">
+      <Description>Signed pre-floor room: opening + new room + PAR - net PSPA.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Add>
+              <Dependency path="/rrspRoom/openingRoom" />
+              <Dependency path="/rrspRoom/newRoom" />
+              <Dependency path="/rrspRoom/pensionAdjustmentReversal" />
+            </Add>
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/rrspRoom/netPspa" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/estimatedDeductionLimit">
+      <Description>Chart 3 estimated current-year deduction limit, floored at zero. Compare with latest CRA assessment before relying on it.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Dependency path="/rrspRoom/unflooredLimit" />
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/limitSource">
+      <Description>Select the latest CRA deduction limit in Plans &amp; loss balances, or the T4040 estimate after reviewing its inputs.</Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/deductionLimit">
+      <Description>Selected deduction limit; the estimate must be for the shared return year.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/schedule7/limitSource" />
+                </Left>
+                <Right>
+                  <String>craAssessment</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/registeredPlans/rrspDeductionLimit" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/schedule7/limitSource" />
+                </Left>
+                <Right>
+                  <String>t4040Estimate</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="/rrspRoom/estimatedDeductionLimit" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/openingUnusedContributions">
+      <Description>Previously reported contributions available to deduct (not unused deduction room). Includes applicable current-year first-60-day receipts already reported on the previous return.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/ownMainPeriod">
+      <Description>Eligible own RRSP/PRPP/SPP contributions in the main reporting period: Mar 4–Dec 31, 2025; Mar 3–Dec 31, 2026. Include eligible transfers/repayments, exclude employer PRPP and excluded/refunded contributions.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/spousalMainPeriod">
+      <Description>Eligible spouse/common-law RRSP/SPP contributions in the same main reporting period, using your deduction room.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/ownFollowing60Days">
+      <Description>Eligible own contributions Jan 1–Mar 2, 2026 (2025 return) or Jan 1–Mar 1, 2027 (2026 return). These are reported even if reserved for a later deduction year.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/spousalFollowing60Days">
+      <Description>Eligible spouse/common-law RRSP/SPP contributions in the corresponding following-year first-60-day reporting period.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/openingOwnRepaymentEligible">
+      <Description>Portion of opening unused contributions made to your own plan in the current calendar year and eligible for HBP/LLP repayment. Must be included in opening unused; not previously deducted/designated/refunded.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/hbpRepayment">
+      <Description>Eligible contributions designated to repay HBP. Own plans only, not deductible.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/llpRepayment">
+      <Description>Eligible contributions designated to repay LLP. Own plans only, not deductible.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/hbpRequired">
+      <Description>CRA minimum required HBP repayment for this year. Enter zero for deferred repayment years; do not infer it simply from outstanding balance.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/llpRequired">
+      <Description>CRA minimum required LLP repayment for this year.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/employerPrpp">
+      <Description>Employer PRPP contributions reported at 20810; excluded from personal contribution receipts and reduces personal deductible room.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/eligibleTransfers">
+      <Description>Eligible Schedule 7 line 15 transfers included in own contributions and taxable source income. Exclude direct tax-deferred transfers not reportable on Schedule 7. Does not consume ordinary deduction room.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/ordinaryDeductionChosen">
+      <Description>Ordinary contributions elected to deduct this year, excluding transfers. May be less than the maximum to carry contributions forward.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/hbpWithdrawals">
+      <Description>Qualifying HBP withdrawals from T4RSP box 27 for Part E; not ordinary taxable RRSP withdrawals.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/llpWithdrawals">
+      <Description>Qualifying LLP withdrawals from T4RSP box 25 for Part E.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/athleteTrustContributions">
+      <Description>Qualifying current-year amateur-athlete trust contributions for Part F. Relevant to next-year earned income, not the current-year prior-income room calculation.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/hbpHomeAddressMatches">
+      <Description>Part E: HBP purchased-home address matches the return.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/llpSpouseStudent">
+      <Description>Part E: designate spouse/common-law partner as LLP student in the first withdrawal year.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/reviewed">
+      <Description>Confirm receipt periods, transfer eligibility, age/annuitant restrictions, repayment minima and exclusions; ensure RRSP deductions and repayment-shortfall income are removed from generic records before enabling automatic posting.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/schedule7/newContributions">
+      <Description>Schedule 7 line 4, personal and spousal receipts in both reporting periods.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/schedule7/ownMainPeriod" />
+          <Dependency path="/schedule7/spousalMainPeriod" />
+          <Dependency path="/schedule7/ownFollowing60Days" />
+          <Dependency path="/schedule7/spousalFollowing60Days" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/totalContributions">
+      <Description>Opening unused plus new reported contributions.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/schedule7/openingUnusedContributions" />
+          <Dependency path="/schedule7/newContributions" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/repayments">
+      <Description>HBP plus LLP designations, excluded from deductions.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/schedule7/hbpRepayment" />
+          <Dependency path="/schedule7/llpRepayment" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/availableToDeduct">
+      <Description>Total contributions less designations.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/schedule7/totalContributions" />
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/schedule7/repayments" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/personalDeductionRoom">
+      <Description>Deduction limit less employer PRPP, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/schedule7/deductionLimit" />
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/schedule7/employerPrpp" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/maxOrdinaryDeduction">
+      <Description>Lesser of personal room and contributions available excluding transfers.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <LesserOf>
+            <Dependency path="/schedule7/personalDeductionRoom" />
+            <Subtract>
+              <Minuend>
+                <Dependency path="/schedule7/availableToDeduct" />
+              </Minuend>
+              <Subtrahends>
+                <Dependency path="/schedule7/eligibleTransfers" />
+              </Subtrahends>
+            </Subtract>
+          </LesserOf>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/valid">
+      <Description>Contribution/repayment/transfer subsets and elected deduction are consistent. A claim exceeding the maximum blocks posting instead of silently truncating it.</Description>
+      <Derived>
+        <All>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/schedule7/openingUnusedContributions" />
+              </Left>
+              <Right>
+                <Dependency path="/schedule7/openingOwnRepaymentEligible" />
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Add>
+                  <Dependency path="/schedule7/ownMainPeriod" />
+                  <Dependency path="/schedule7/ownFollowing60Days" />
+                  <Dependency path="/schedule7/openingOwnRepaymentEligible" />
+                </Add>
+              </Left>
+              <Right>
+                <Dependency path="/schedule7/repayments" />
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/schedule7/totalContributions" />
+              </Left>
+              <Right>
+                <Dependency path="/schedule7/repayments" />
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Add>
+                  <Dependency path="/schedule7/ownMainPeriod" />
+                  <Dependency path="/schedule7/ownFollowing60Days" />
+                  <Dependency path="/schedule7/openingOwnRepaymentEligible" />
+                </Add>
+              </Left>
+              <Right>
+                <Add>
+                  <Dependency path="/schedule7/repayments" />
+                  <Dependency path="/schedule7/eligibleTransfers" />
+                </Add>
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Add>
+                  <Dependency path="/schedule7/ownMainPeriod" />
+                  <Dependency path="/schedule7/ownFollowing60Days" />
+                </Add>
+              </Left>
+              <Right>
+                <Dependency path="/schedule7/eligibleTransfers" />
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/schedule7/availableToDeduct" />
+              </Left>
+              <Right>
+                <Dependency path="/schedule7/eligibleTransfers" />
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/schedule7/maxOrdinaryDeduction" />
+              </Left>
+              <Right>
+                <Dependency path="/schedule7/ordinaryDeductionChosen" />
+              </Right>
+            </LessThan>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/deduction">
+      <Description>Schedule 7 line 20: eligible transfers plus elected ordinary deduction, bounded by available contributions.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Any>
+                  <Equal>
+                    <Left>
+                      <Dependency path="/return/taxYear" />
+                    </Left>
+                    <Right>
+                      <Int>2025</Int>
+                    </Right>
+                  </Equal>
+                  <Equal>
+                    <Left>
+                      <Dependency path="/return/taxYear" />
+                    </Left>
+                    <Right>
+                      <Int>2026</Int>
+                    </Right>
+                  </Equal>
+                </Any>
+                <Dependency path="/schedule7/reviewed" />
+                <Dependency path="/schedule7/valid" />
+              </All>
+            </When>
+            <Then>
+              <LesserOf>
+                <Dependency path="/schedule7/availableToDeduct" />
+                <Add>
+                  <Dependency path="/schedule7/eligibleTransfers" />
+                  <Dependency path="/schedule7/ordinaryDeductionChosen" />
+                </Add>
+              </LesserOf>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/unusedContributionsCarryforward">
+      <Description>Undeducted contributions remaining after this return; distinct from unused deduction room.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/schedule7/availableToDeduct" />
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/schedule7/deduction" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/hbpShortfall">
+      <Description>Required HBP repayment less designation, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/schedule7/hbpRequired" />
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/schedule7/hbpRepayment" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/llpShortfall">
+      <Description>Required LLP repayment less designation, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/schedule7/llpRequired" />
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/schedule7/llpRepayment" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/schedule7/shortfallIncome">
+      <Description>Taxable HBP/LLP shortfalls. Qualifying Part E withdrawals are not added as income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Any>
+                  <Equal>
+                    <Left>
+                      <Dependency path="/return/taxYear" />
+                    </Left>
+                    <Right>
+                      <Int>2025</Int>
+                    </Right>
+                  </Equal>
+                  <Equal>
+                    <Left>
+                      <Dependency path="/return/taxYear" />
+                    </Left>
+                    <Right>
+                      <Int>2026</Int>
+                    </Right>
+                  </Equal>
+                </Any>
+                <Dependency path="/schedule7/reviewed" />
+                <Dependency path="/schedule7/valid" />
+              </All>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/schedule7/hbpShortfall" />
+                <Dependency path="/schedule7/llpShortfall" />
+              </Add>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/contributionSpaceBeforeNewDeposits">
+      <Description>Selected current-year deduction limit less opening undeducted contributions and employer PRPP. Signed; zero floor shown separately. The $2,000 excess-contribution cushion is NOT deductible room.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/schedule7/deductionLimit" />
+          </Minuend>
+          <Subtrahends>
+            <Add>
+              <Dependency path="/schedule7/openingUnusedContributions" />
+              <Dependency path="/schedule7/employerPrpp" />
+            </Add>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/additionalContributionSpace">
+      <Description>Positive contribution capacity before the new Schedule 7 deposits, excluding any $2,000 excess-contribution cushion.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Dependency path="/rrspRoom/contributionSpaceBeforeNewDeposits" />
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/targetYearCapacityAfterReportedContributions">
+      <Description>Remaining current-year deduction capacity after the reported deposits, excluding designations and eligible transfers. Includes following-year first-60-day receipts; a negative value is NOT automatically calendar-year excess subject to penalty.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/schedule7/personalDeductionRoom" />
+          </Minuend>
+          <Subtrahends>
+            <Subtract>
+              <Minuend>
+                <Dependency path="/schedule7/availableToDeduct" />
+              </Minuend>
+              <Subtrahends>
+                <Dependency path="/schedule7/eligibleTransfers" />
+              </Subtrahends>
+            </Subtract>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/rrspRoom/unusedDeductionRoomCarryforward">
+      <Description>T4040 Chart 3 step 8: signed calculated pre-floor room less ordinary deduction and employer PRPP, not less transfer deductions. Requires Chart 3 inputs even when using an assessed current limit.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/rrspRoom/unflooredLimit" />
+          </Minuend>
+          <Subtrahends>
+            <Add>
+              <Dependency path="/schedule7/ordinaryDeductionChosen" />
+              <Dependency path="/schedule7/employerPrpp" />
+            </Add>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/targetYear">
+      <Description>Year whose RRSP deduction limit is estimated: selected return year plus one.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/return/taxYear" />
+          <Int>1</Int>
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/useCalculatedCarryforward">
+      <Description>Defaults to Yes when unanswered: reuse current T4040/Schedule 7 signed unused room. Choose No only to supply a different CRA statement balance below.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/openingUnusedRoom">
+      <Description>Optional signed CRA unused-room override, used only when Use calculated carryforward is No. Otherwise the earlier T4040 and Schedule 7 values are reused.</Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/openingRoom">
+      <Description>Unused deduction room carried into next year, from the current worksheet or your signed input.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Switch>
+                <Case>
+                  <When>
+                    <IsComplete>
+                      <Dependency path="/nextYearRrsp/useCalculatedCarryforward" />
+                    </IsComplete>
+                  </When>
+                  <Then>
+                    <Dependency path="/nextYearRrsp/useCalculatedCarryforward" />
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <True />
+                  </When>
+                  <Then>
+                    <True />
+                  </Then>
+                </Case>
+              </Switch>
+            </When>
+            <Then>
+              <Dependency path="/rrspRoom/unusedDeductionRoomCarryforward" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dependency path="/nextYearRrsp/openingUnusedRoom" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/employmentIncome">
+      <Description>Linked employment remuneration, taxable benefits and option benefits, plus the explicit line 10400 reconciliation adjustment.</Description>
+      <Derived>
+        <Add>
+          <CollectionSum>
+            <Dependency path="/employments/*/remuneration" />
+          </CollectionSum>
+          <CollectionSum>
+            <Dependency path="/employments/*/benefits" />
+          </CollectionSum>
+          <CollectionSum>
+            <Dependency path="/employments/*/optionBenefits" />
+          </CollectionSum>
+          <Dependency path="/nextYearRrsp/employmentIncomeAdjustment" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/royalties">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/royalties" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/researchGrants">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/researchGrants" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/supplementaryUnemployment">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/supplementaryUnemployment" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/wageProtection">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/wageProtection" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/unionDues">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/unionDues" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/employmentExpenses">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/employmentExpenses" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/businessIncome">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/businesses/*/rrspIncome" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/postdoctoralIncome">
+      <Description>T4040 Chart 3 selected return year: Postdoctoral fellowship income not already in business income.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/disabilityPension">
+      <Description>T4040 Chart 3 selected return year: CPP/QPP disability benefits (not regular retirement pensions).</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/rentalIncome">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/properties/*/rrspRentalIncome" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/supportIncome">
+      <Description>Linked taxable support records from Other income. Include qualifying support repayments in that category.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/otherIncome/*/rrspSupportAmount" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/athleteTrustIncome">
+      <Description>Linked qualifying performance income from Schedule 7 Part F; enter this amount once in Schedule 7.</Description>
+      <Derived>
+        <Dependency path="/schedule7/athleteTrustContributions" />
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/businessLosses">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/businesses/*/rrspLoss" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/eligibleCapitalGains">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/businesses/*/rrspEligibleCapitalGains" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/rentalLosses">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/properties/*/rrspRentalLoss" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/deductibleSupport">
+      <Description>Linked deductible support records from Subdivision E deductions, including qualifying support repayments.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/subdivisionEDeductions/*/rrspSupportAmount" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/adjustedEmployment">
+      <Description>Chart 3 line 15: employment less separately handled inclusions, dues and expenses, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/nextYearRrsp/employmentIncome" />
+            </Minuend>
+            <Subtrahends>
+              <Add>
+                <Add>
+                  <Dependency path="/nextYearRrsp/royalties" />
+                  <Dependency path="/nextYearRrsp/researchGrants" />
+                  <Dependency path="/nextYearRrsp/supplementaryUnemployment" />
+                  <Dependency path="/nextYearRrsp/wageProtection" />
+                </Add>
+                <Dependency path="/nextYearRrsp/unionDues" />
+                <Dependency path="/nextYearRrsp/employmentExpenses" />
+              </Add>
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/earnedIncome">
+      <Description>Chart 3 earned income: adjusted employment plus permitted inclusions less business/rental losses and deductible support. Can be negative; excludes ordinary investment income.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Add>
+              <Dependency path="/nextYearRrsp/adjustedEmployment" />
+              <Add>
+                <Dependency path="/nextYearRrsp/royalties" />
+                <Dependency path="/nextYearRrsp/researchGrants" />
+                <Dependency path="/nextYearRrsp/supplementaryUnemployment" />
+                <Dependency path="/nextYearRrsp/wageProtection" />
+              </Add>
+              <Dependency path="/nextYearRrsp/businessIncome" />
+              <Dependency path="/nextYearRrsp/postdoctoralIncome" />
+              <Dependency path="/nextYearRrsp/disabilityPension" />
+              <Dependency path="/nextYearRrsp/rentalIncome" />
+              <Dependency path="/nextYearRrsp/supportIncome" />
+              <Dependency path="/nextYearRrsp/athleteTrustIncome" />
+            </Add>
+          </Minuend>
+          <Subtrahends>
+            <Add>
+              <Dependency path="/nextYearRrsp/businessLosses" />
+              <Dependency path="/nextYearRrsp/eligibleCapitalGains" />
+              <Dependency path="/nextYearRrsp/rentalLosses" />
+              <Dependency path="/nextYearRrsp/deductibleSupport" />
+            </Add>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/pensionAdjustment">
+      <Description>Selected return year PA plus applicable connected-person and foreign-plan prescribed adjustments.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/pensionAdjustmentReversal">
+      <Description>Next-year PAR/PAC from T10.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/exemptPspa">
+      <Description>Selected return year exempt PSPA/PCC from T215.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/certifiedPspa">
+      <Description>Next-year certified PSPA from T1004.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/qualifyingWithdrawals">
+      <Description>Next-year qualifying withdrawals designated on T1006; may make net PSPA negative.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/nextYearRrsp/newRoom">
+      <Description>Lesser of 18% of selected return year earned income and annual dollar limit, less PA, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <LesserOf>
+                <Multiply>
+                  <Dependency path="/nextYearRrsp/earnedIncome" />
+                  <Rational>18/100</Rational>
+                </Multiply>
+                <Dependency path="/nextYearRrsp/annualDollarLimit" />
+              </LesserOf>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/nextYearRrsp/pensionAdjustment" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/netPspa">
+      <Description>Exempt plus certified PSPA less qualifying withdrawals; may be negative.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Add>
+              <Dependency path="/nextYearRrsp/exemptPspa" />
+              <Dependency path="/nextYearRrsp/certifiedPspa" />
+            </Add>
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/nextYearRrsp/qualifyingWithdrawals" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/unflooredLimit">
+      <Description>Signed pre-floor room: opening + new room + PAR - net PSPA.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Add>
+              <Dependency path="/nextYearRrsp/openingRoom" />
+              <Dependency path="/nextYearRrsp/newRoom" />
+              <Dependency path="/nextYearRrsp/pensionAdjustmentReversal" />
+            </Add>
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/nextYearRrsp/netPspa" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/estimatedDeductionLimit">
+      <Description>Chart 3 estimated next-year deduction limit, floored at zero. Compare with latest CRA assessment before relying on it.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Dependency path="/nextYearRrsp/unflooredLimit" />
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/annualDollarLimit">
+      <Description>Published RRSP dollar ceiling for the following year; unknown for unsupported years. This caps new room, not total carried-forward room.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>33810</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>35390</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/nextYearRrsp/employmentIncomeAdjustment">
+      <Description>Linked from the classified income-source records. Edit the corresponding Employment, Business or Property record to change this amount.</Description>
+      <Derived>
+        <CollectionSum>
+          <Dependency path="/employments/*/employmentIncomeAdjustment" />
+        </CollectionSum>
+      </Derived>
+    </Fact>
+    <Fact path="/otherIncome/*/rrspSupportAmount">
+      <Description>Support amount already classified in this return, linked to next-year RRSP earned income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="../category" />
+                </Left>
+                <Right>
+                  <String>support</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="../amount" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/subdivisionEDeductions/*/rrspSupportAmount">
+      <Description>Support amount already classified in this return, linked to next-year RRSP earned income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="../category" />
+                </Left>
+                <Right>
+                  <String>support</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dependency path="../amount" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/employments/*/royalties">
+      <Description>T4040 Chart 3 selected return year: Author/inventor royalties included in employment income above. Enter only this record’s portion. This detail does not add income or deduct expenses again; include taxable amounts and deductions in the source totals above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/researchGrants">
+      <Description>T4040 Chart 3 selected return year: Net research grants included in employment income above. Enter only this record’s portion. This detail does not add income or deduct expenses again; include taxable amounts and deductions in the source totals above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/supplementaryUnemployment">
+      <Description>T4040 Chart 3 selected return year: Supplementary unemployment payments included above. Enter only this record’s portion. This detail does not add income or deduct expenses again; include taxable amounts and deductions in the source totals above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/wageProtection">
+      <Description>T4040 Chart 3 selected return year: Wage Earner Protection payments included above. Enter only this record’s portion. This detail does not add income or deduct expenses again; include taxable amounts and deductions in the source totals above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/unionDues">
+      <Description>T4040 Chart 3 selected return year: Dues attributable to the employment earnings above. Enter only this record’s portion. This detail does not add income or deduct expenses again; include taxable amounts and deductions in the source totals above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/employmentExpenses">
+      <Description>T4040 Chart 3 selected return year: Employment expenses attributable to those earnings. Enter only this record’s portion. This detail does not add income or deduct expenses again; include taxable amounts and deductions in the source totals above.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/employments/*/employmentIncomeAdjustment">
+      <Description>Signed adjustment to employment remuneration plus benefits and option benefits to reconcile Chart 3 line 10100 + 10400. Include other employment amounts recorded elsewhere; enter zero when the existing employment records contain the full total. Enter only this record’s portion. This detail does not add income or deduct expenses again; include taxable amounts and deductions in the source totals above.</Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/businesses/*/activeForRrsp">
+      <Description>Was this business carried on by you alone or as an active partner for RRSP earned-income purposes?</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/businesses/*/athleteTrustDistributions">
+      <Description>Amateur-athlete trust distributions included in this business net income. Excluded from RRSP earned income. Enter zero if none.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/businesses/*/eligibleCapitalGains">
+      <Description>Taxable eligible-capital-property gains included in this business income for Chart 3 line 25. Enter zero if none. Does not change the business net amount.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/businesses/*/rrspIncome">
+      <Description>Active-business component of next-year RRSP earned income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="../activeForRrsp" />
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Dependency path="../net" />
+                  </Minuend>
+                  <Subtrahends>
+                    <Dependency path="../athleteTrustDistributions" />
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/businesses/*/rrspLoss">
+      <Description>Active-business component of next-year RRSP earned income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="../activeForRrsp" />
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Dollar>0</Dollar>
+                  </Minuend>
+                  <Subtrahends>
+                    <Subtract>
+                      <Minuend>
+                        <Dependency path="../net" />
+                      </Minuend>
+                      <Subtrahends>
+                        <Dependency path="../athleteTrustDistributions" />
+                      </Subtrahends>
+                    </Subtract>
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/businesses/*/rrspEligibleCapitalGains">
+      <Description>Active-business component of next-year RRSP earned income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="../activeForRrsp" />
+            </When>
+            <Then>
+              <Dependency path="../eligibleCapitalGains" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/properties/*/sourceType">
+      <Description>Classify this source: only rent from real property feeds RRSP earned income. Keep investment and rental sources in separate records.</Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/properties/*/rrspRentalIncome">
+      <Description>Real-property rental component of next-year RRSP earned income; excludes other property income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="../sourceType" />
+                </Left>
+                <Right>
+                  <String>realPropertyRental</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Dependency path="../net" />
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/properties/*/rrspRentalLoss">
+      <Description>Real-property rental component of next-year RRSP earned income; excludes other property income.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="../sourceType" />
+                </Left>
+                <Right>
+                  <String>realPropertyRental</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Dollar>0</Dollar>
+                  </Minuend>
+                  <Subtrahends>
+                    <Dependency path="../net" />
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/schedules/rrspDeductionPosted">
+      <Description>Schedule deduction when enabled; zero otherwise for compatibility with older/manual returns.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Switch>
+                <Case>
+                  <When>
+                    <IsComplete>
+                      <Dependency path="/schedules/useRrsp" />
+                    </IsComplete>
+                  </When>
+                  <Then>
+                    <Dependency path="/schedules/useRrsp" />
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <True />
+                  </When>
+                  <Then>
+                    <False />
+                  </Then>
+                </Case>
+              </Switch>
+            </When>
+            <Then>
+              <Dependency path="/schedule7/deduction" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/schedules/rrspIncomePosted">
+      <Description>Schedule repayment-shortfall income when enabled; zero otherwise.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Switch>
+                <Case>
+                  <When>
+                    <IsComplete>
+                      <Dependency path="/schedules/useRrsp" />
+                    </IsComplete>
+                  </When>
+                  <Then>
+                    <Dependency path="/schedules/useRrsp" />
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <True />
+                  </When>
+                  <Then>
+                    <False />
+                  </Then>
+                </Case>
+              </Switch>
+            </When>
+            <Then>
+              <Dependency path="/schedule7/shortfallIncome" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/schedules/federalDonationCredit">
+      <Description>Schedule 9 federal credit when enabled; existing reviewed manual credit otherwise.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Switch>
+                <Case>
+                  <When>
+                    <IsComplete>
+                      <Dependency path="/schedules/useDonations" />
+                    </IsComplete>
+                  </When>
+                  <Then>
+                    <Dependency path="/schedules/useDonations" />
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <True />
+                  </When>
+                  <Then>
+                    <False />
+                  </Then>
+                </Case>
+              </Switch>
+            </When>
+            <Then>
+              <Dependency path="/schedule9/federalCredit" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dependency path="/credits/donations" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/schedules/claimedGiftsForNs">
+      <Description>Shared eligible Schedule 9 claim when enabled; reviewed manual provincial gift amount otherwise.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Switch>
+                <Case>
+                  <When>
+                    <IsComplete>
+                      <Dependency path="/schedules/useDonations" />
+                    </IsComplete>
+                  </When>
+                  <Then>
+                    <Dependency path="/schedules/useDonations" />
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <True />
+                  </When>
+                  <Then>
+                    <False />
+                  </Then>
+                </Case>
+              </Switch>
+            </When>
+            <Then>
+              <Dependency path="/schedule9/claimedGifts" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dependency path="/ns/eligibleDonations" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/income/subdivisionEDeductions">
+      <Description>Aggregate permitted Subdivision E deductions not previously counted. Includes the enabled Schedule 7 posting exactly once; generic records must exclude that amount.</Description>
+      <Derived>
+        <Add>
+          <CollectionSum>
+            <Dependency path="/subdivisionEDeductions/*/amount" />
+          </CollectionSum>
+          <Dependency path="/schedules/rrspDeductionPosted" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/income/otherSourceIncome">
+      <Description>Aggregate other inclusions. Includes the enabled Schedule 7 posting exactly once; generic records must exclude that amount.</Description>
+      <Derived>
+        <Add>
+          <CollectionSum>
+            <Dependency path="/otherIncome/*/amount" />
+          </CollectionSum>
+          <Dependency path="/schedules/rrspIncomePosted" />
+        </Add>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

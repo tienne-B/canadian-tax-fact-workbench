@@ -1,0 +1,1459 @@
+{
+  "format": "canadian-personal-income-tax-fact-catalogue",
+  "version": "0.2.0-ns",
+  "scope": "Ordinary full-year NS resident personal returns; 2025 and 2026 annual packs; reviewed complex entitlements.",
+  "facts": [
+    {
+      "path": "/ns/parameters/basic",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual basic selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "11744"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "11932"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/age",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual age selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "5734"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "5826"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/spouseCeiling",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual spouseCeiling selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "12618"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "12820"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/spouseFloor",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual spouseFloor selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "874"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "888"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/threshold0",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual threshold0 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "30507"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "30995"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/threshold1",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual threshold1 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "61015"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "61991"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/threshold2",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual threshold2 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "95883"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "97417"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/threshold3",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual threshold3 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "154650"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "157124"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/baseTax0",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual baseTax0 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "2681.57"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "2724.46"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/baseTax1",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual baseTax1 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "7242.51"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "7358.36"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/baseTax2",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual baseTax2 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "13055.01"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "13263.88"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    },
+    {
+      "path": "/ns/parameters/baseTax3",
+      "type": "Dollar",
+      "module": "nsParameters",
+      "kind": "derived",
+      "definition": "Annual baseTax3 selected by the federal tax year. No fallback for unsupported years.",
+      "authorities": [
+        {
+          "label": "NS ITA",
+          "pinpoint": "8, 10B\u201310G, 22A",
+          "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm"
+        },
+        {
+          "label": "NS indexation",
+          "pinpoint": "2025 / 2026",
+          "url": "https://www.novascotia.ca/personal-income-tax-rates-and-indexation"
+        }
+      ],
+      "formula": {
+        "op": "Switch",
+        "args": [
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2025"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "23339.23"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "op": "Case",
+            "args": [
+              {
+                "op": "When",
+                "args": [
+                  {
+                    "op": "Equal",
+                    "args": [
+                      {
+                        "op": "Left",
+                        "args": [
+                          {
+                            "op": "Dependency",
+                            "args": [],
+                            "path": "/return/taxYear"
+                          }
+                        ]
+                      },
+                      {
+                        "op": "Right",
+                        "args": [
+                          {
+                            "op": "Int",
+                            "args": [
+                              "2026"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "Then",
+                "args": [
+                  {
+                    "op": "Dollar",
+                    "args": [
+                      "23712.60"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "ui": {
+        "hidden": true
+      }
+    }
+  ]
+}

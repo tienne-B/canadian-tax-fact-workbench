@@ -1,0 +1,16 @@
+{
+  "retrieved": "2026-09-12",
+  "act": {
+    "title": "Income Tax Act, R.S.N.S. 1989, c. 217",
+    "url": "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm",
+    "sha256": "a059d248c1cd59b83d20101acc3080620c6dfdb32f2990a9d51123c7b933c05a",
+    "snapshot": "source-income-tax.html.gz",
+    "html_amended_comment": "April 23, 2026; Release 80",
+    "caveat": "Consolidated text is a snapshot, not a guarantee of all commencement or application provisions."
+  },
+  "annual_sources": [
+    "https://www.novascotia.ca/personal-income-tax-rates-and-indexation",
+    "https://www.canada.ca/en/revenue-agency/services/forms-publications/tax-packages-years/general-income-tax-benefit-package/nova-scotia/5003-pc.html",
+    "https://novascotia.ca/just/regulations/regs/incindexation.htm"
+  ]
+}

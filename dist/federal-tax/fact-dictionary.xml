@@ -1,0 +1,2165 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/federalTax">
+      <Derived>
+        <String>/federalTax</String>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters">
+      <Derived>
+        <String>/federalTax/parameters</String>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/bpaMax">
+      <Description>Annual bpaMax selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>16129</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>16452</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/bpaMin">
+      <Description>Annual bpaMin selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>14538</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>14829</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/threshold0">
+      <Description>Annual threshold0 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>57375</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>58523</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/threshold1">
+      <Description>Annual threshold1 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>114750</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>117045</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/threshold2">
+      <Description>Annual threshold2 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>177882</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>181440</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/threshold3">
+      <Description>Annual threshold3 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>253414</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>258482</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/base0">
+      <Description>Annual base0 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>8319.38</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>8193.22</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/base1">
+      <Description>Annual base1 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>20081.25</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>20190.23</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/base2">
+      <Description>Annual base2 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>36495.57</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>36932.93</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/base3">
+      <Description>Annual base3 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>58399.85</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Dollar>59275.11</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/rate0">
+      <Description>Annual rate0 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>145/1000</Rational>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>14/100</Rational>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/rate1">
+      <Description>Annual rate1 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>205/1000</Rational>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>205/1000</Rational>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/rate2">
+      <Description>Annual rate2 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>26/100</Rational>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>26/100</Rational>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/rate3">
+      <Description>Annual rate3 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>29/100</Rational>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>29/100</Rational>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/parameters/rate4">
+      <Description>Annual rate4 selected by the shared tax year. No extrapolation.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2025</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>33/100</Rational>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/return/taxYear" />
+                </Left>
+                <Right>
+                  <Int>2026</Int>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Rational>33/100</Rational>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/yearSupported">
+      <Description>Explicit federal annual pack is available.</Description>
+      <Derived>
+        <Any>
+          <Equal>
+            <Left>
+              <Dependency path="/return/taxYear" />
+            </Left>
+            <Right>
+              <Int>2025</Int>
+            </Right>
+          </Equal>
+          <Equal>
+            <Left>
+              <Dependency path="/return/taxYear" />
+            </Left>
+            <Right>
+              <Int>2026</Int>
+            </Right>
+          </Equal>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/ordinaryReturnConfirmed">
+      <Description>Confirm a living individual’s ordinary full-year Canadian resident return, all income allocated to Nova Scotia, no separate return, bankruptcy, trust or foreign provincial allocation. Special schedules are entered as reviewed amounts.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/returnReviewed">
+      <Description>Confirm federal credit-dollar amounts, special schedules, income adjustments, provincial tax, payments and refundable credits are complete and reviewed. Zero means confirmed none, not unknown.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/ready">
+      <Description>Shared core, federal review and ordinary scope are satisfied.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/federalTax/ordinaryReturnConfirmed" />
+          <Dependency path="/federalTax/returnReviewed" />
+          <Dependency path="/federalTax/yearSupported" />
+          <Dependency path="/review/coreReady" />
+          <Equal>
+            <Left>
+              <Dependency path="/return/currency" />
+            </Left>
+            <Right>
+              <String>CAD</String>
+            </Right>
+          </Equal>
+          <Equal>
+            <Left>
+              <Dependency path="/residence/status" />
+            </Left>
+            <Right>
+              <String>residentFullYear</String>
+            </Right>
+          </Equal>
+          <Equal>
+            <Left>
+              <Dependency path="/residence/provinceAtYearEnd" />
+            </Left>
+            <Right>
+              <String>NS</String>
+            </Right>
+          </Equal>
+          <Not>
+            <IsComplete>
+              <Dependency path="/person/deathDate" />
+            </IsComplete>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/taxOnTaxableIncome">
+      <Description>Progressive federal tax on shared taxable income. The lowest annual rate is 14.5% in 2025 and 14% in 2026.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/federalTax/parameters/threshold0" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dollar>0</Dollar>
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dollar>0</Dollar>
+                    </Subtrahends>
+                  </Subtract>
+                  <Dependency path="/federalTax/parameters/rate0" />
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/federalTax/parameters/threshold1" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/federalTax/parameters/base0" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/federalTax/parameters/threshold0" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Dependency path="/federalTax/parameters/rate1" />
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/federalTax/parameters/threshold2" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/federalTax/parameters/base1" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/federalTax/parameters/threshold1" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Dependency path="/federalTax/parameters/rate2" />
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/federalTax/parameters/threshold3" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/federalTax/parameters/base2" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/federalTax/parameters/threshold2" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Dependency path="/federalTax/parameters/rate3" />
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/federalTax/parameters/base3" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/federalTax/parameters/threshold3" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Dependency path="/federalTax/parameters/rate4" />
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/basicPersonalIncomeAdjustment">
+      <Description>Signed adjustment to net income for the basic-personal phase-out under s118(1.1): exclude applicable s79/s40(3.21) gains and add back s20(1)(ww). Enter zero if none.</Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/basicPersonalBase">
+      <Description>Basic personal amount reduced linearly from the maximum to the minimum across the fourth income bracket.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/federalTax/parameters/bpaMax" />
+          </Minuend>
+          <Subtrahends>
+            <Divide>
+              <Dividend>
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/federalTax/parameters/bpaMax" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/federalTax/parameters/bpaMin" />
+                    </Subtrahends>
+                  </Subtract>
+                  <LesserOf>
+                    <GreaterOf>
+                      <Dollar>0</Dollar>
+                      <Subtract>
+                        <Minuend>
+                          <Add>
+                            <Dependency path="/income/netIncome" />
+                            <Dependency path="/federalTax/basicPersonalIncomeAdjustment" />
+                          </Add>
+                        </Minuend>
+                        <Subtrahends>
+                          <Dependency path="/federalTax/parameters/threshold2" />
+                        </Subtrahends>
+                      </Subtract>
+                    </GreaterOf>
+                    <Subtract>
+                      <Minuend>
+                        <Dependency path="/federalTax/parameters/threshold3" />
+                      </Minuend>
+                      <Subtrahends>
+                        <Dependency path="/federalTax/parameters/threshold2" />
+                      </Subtrahends>
+                    </Subtract>
+                  </LesserOf>
+                </Multiply>
+              </Dividend>
+              <Divisors>
+                <Subtract>
+                  <Minuend>
+                    <Dependency path="/federalTax/parameters/threshold3" />
+                  </Minuend>
+                  <Subtrahends>
+                    <Dependency path="/federalTax/parameters/threshold2" />
+                  </Subtrahends>
+                </Subtract>
+              </Divisors>
+            </Divide>
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/creditInputBasis">
+      <Description>Choose Claim amounts for ordinary federal amounts before the credit rate, or Credit dollars for already-calculated reductions from an older export. Donations and top-up are always final credit dollars.</Description>
+      <Writable>
+        <String />
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/nonrefundableCreditRate">
+      <Description>Federal nonrefundable credit rate: 14.5% for 2025, 14% for 2026. Donations and top-up are added after this rate.</Description>
+      <Derived>
+        <Dependency path="/federalTax/parameters/rate0" />
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/basicPersonalCredit">
+      <Description>Basic personal credit. Optional override follows Credit input basis: base amount in Claim amounts mode; final reduction in Credit dollars mode. Blank uses the automatic income-dependent base.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/federalTax/creditInputBasis" />
+                </Left>
+                <Right>
+                  <String>claimAmounts</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Switch>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/return/taxYear" />
+                      </Left>
+                      <Right>
+                        <Int>2025</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Switch>
+                      <Case>
+                        <When>
+                          <LessThan>
+                            <Left>
+                              <Switch>
+                                <Case>
+                                  <When>
+                                    <IsComplete>
+                                      <Dependency path="/credits/basicPersonal" />
+                                    </IsComplete>
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/credits/basicPersonal" />
+                                  </Then>
+                                </Case>
+                                <Case>
+                                  <When>
+                                    <True />
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                  </Then>
+                                </Case>
+                              </Switch>
+                            </Left>
+                            <Right>
+                              <Dollar>21474836.48</Dollar>
+                            </Right>
+                          </LessThan>
+                        </When>
+                        <Then>
+                          <Add>
+                            <Multiply>
+                              <Switch>
+                                <Case>
+                                  <When>
+                                    <IsComplete>
+                                      <Dependency path="/credits/basicPersonal" />
+                                    </IsComplete>
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/credits/basicPersonal" />
+                                  </Then>
+                                </Case>
+                                <Case>
+                                  <When>
+                                    <True />
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                  </Then>
+                                </Case>
+                              </Switch>
+                              <Dependency path="/federalTax/nonrefundableCreditRate" />
+                            </Multiply>
+                            <Switch>
+                              <Case>
+                                <When>
+                                  <Equal>
+                                    <Left>
+                                      <Modulo>
+                                        <Multiply>
+                                          <Modulo>
+                                            <RoundToInt>
+                                              <Multiply>
+                                                <Switch>
+                                                  <Case>
+                                                    <When>
+                                                      <IsComplete>
+                                                        <Dependency path="/credits/basicPersonal" />
+                                                      </IsComplete>
+                                                    </When>
+                                                    <Then>
+                                                      <Dependency path="/credits/basicPersonal" />
+                                                    </Then>
+                                                  </Case>
+                                                  <Case>
+                                                    <When>
+                                                      <True />
+                                                    </When>
+                                                    <Then>
+                                                      <Dependency path="/federalTax/basicPersonalBase" />
+                                                    </Then>
+                                                  </Case>
+                                                </Switch>
+                                                <Rational>100/1</Rational>
+                                              </Multiply>
+                                            </RoundToInt>
+                                            <Int>2000</Int>
+                                          </Modulo>
+                                          <Int>145</Int>
+                                        </Multiply>
+                                        <Int>2000</Int>
+                                      </Modulo>
+                                    </Left>
+                                    <Right>
+                                      <Int>500</Int>
+                                    </Right>
+                                  </Equal>
+                                </When>
+                                <Then>
+                                  <Dollar>0.01</Dollar>
+                                </Then>
+                              </Case>
+                              <Case>
+                                <When>
+                                  <True />
+                                </When>
+                                <Then>
+                                  <Dollar>0</Dollar>
+                                </Then>
+                              </Case>
+                            </Switch>
+                          </Add>
+                        </Then>
+                      </Case>
+                      <Case>
+                        <When>
+                          <True />
+                        </When>
+                        <Then>
+                          <Multiply>
+                            <Switch>
+                              <Case>
+                                <When>
+                                  <IsComplete>
+                                    <Dependency path="/credits/basicPersonal" />
+                                  </IsComplete>
+                                </When>
+                                <Then>
+                                  <Dependency path="/credits/basicPersonal" />
+                                </Then>
+                              </Case>
+                              <Case>
+                                <When>
+                                  <True />
+                                </When>
+                                <Then>
+                                  <Dependency path="/federalTax/basicPersonalBase" />
+                                </Then>
+                              </Case>
+                            </Switch>
+                            <Dependency path="/federalTax/nonrefundableCreditRate" />
+                          </Multiply>
+                        </Then>
+                      </Case>
+                    </Switch>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/return/taxYear" />
+                      </Left>
+                      <Right>
+                        <Int>2026</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Switch>
+                      <Case>
+                        <When>
+                          <LessThan>
+                            <Left>
+                              <Switch>
+                                <Case>
+                                  <When>
+                                    <IsComplete>
+                                      <Dependency path="/credits/basicPersonal" />
+                                    </IsComplete>
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/credits/basicPersonal" />
+                                  </Then>
+                                </Case>
+                                <Case>
+                                  <When>
+                                    <True />
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                  </Then>
+                                </Case>
+                              </Switch>
+                            </Left>
+                            <Right>
+                              <Dollar>21474836.48</Dollar>
+                            </Right>
+                          </LessThan>
+                        </When>
+                        <Then>
+                          <Add>
+                            <Multiply>
+                              <Switch>
+                                <Case>
+                                  <When>
+                                    <IsComplete>
+                                      <Dependency path="/credits/basicPersonal" />
+                                    </IsComplete>
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/credits/basicPersonal" />
+                                  </Then>
+                                </Case>
+                                <Case>
+                                  <When>
+                                    <True />
+                                  </When>
+                                  <Then>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                  </Then>
+                                </Case>
+                              </Switch>
+                              <Dependency path="/federalTax/nonrefundableCreditRate" />
+                            </Multiply>
+                            <Switch>
+                              <Case>
+                                <When>
+                                  <Equal>
+                                    <Left>
+                                      <Modulo>
+                                        <Multiply>
+                                          <Modulo>
+                                            <RoundToInt>
+                                              <Multiply>
+                                                <Switch>
+                                                  <Case>
+                                                    <When>
+                                                      <IsComplete>
+                                                        <Dependency path="/credits/basicPersonal" />
+                                                      </IsComplete>
+                                                    </When>
+                                                    <Then>
+                                                      <Dependency path="/credits/basicPersonal" />
+                                                    </Then>
+                                                  </Case>
+                                                  <Case>
+                                                    <When>
+                                                      <True />
+                                                    </When>
+                                                    <Then>
+                                                      <Dependency path="/federalTax/basicPersonalBase" />
+                                                    </Then>
+                                                  </Case>
+                                                </Switch>
+                                                <Rational>100/1</Rational>
+                                              </Multiply>
+                                            </RoundToInt>
+                                            <Int>200</Int>
+                                          </Modulo>
+                                          <Int>14</Int>
+                                        </Multiply>
+                                        <Int>200</Int>
+                                      </Modulo>
+                                    </Left>
+                                    <Right>
+                                      <Int>50</Int>
+                                    </Right>
+                                  </Equal>
+                                </When>
+                                <Then>
+                                  <Dollar>0.01</Dollar>
+                                </Then>
+                              </Case>
+                              <Case>
+                                <When>
+                                  <True />
+                                </When>
+                                <Then>
+                                  <Dollar>0</Dollar>
+                                </Then>
+                              </Case>
+                            </Switch>
+                          </Add>
+                        </Then>
+                      </Case>
+                      <Case>
+                        <When>
+                          <True />
+                        </When>
+                        <Then>
+                          <Multiply>
+                            <Switch>
+                              <Case>
+                                <When>
+                                  <IsComplete>
+                                    <Dependency path="/credits/basicPersonal" />
+                                  </IsComplete>
+                                </When>
+                                <Then>
+                                  <Dependency path="/credits/basicPersonal" />
+                                </Then>
+                              </Case>
+                              <Case>
+                                <When>
+                                  <True />
+                                </When>
+                                <Then>
+                                  <Dependency path="/federalTax/basicPersonalBase" />
+                                </Then>
+                              </Case>
+                            </Switch>
+                            <Dependency path="/federalTax/nonrefundableCreditRate" />
+                          </Multiply>
+                        </Then>
+                      </Case>
+                    </Switch>
+                  </Then>
+                </Case>
+              </Switch>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Switch>
+                <Case>
+                  <When>
+                    <IsComplete>
+                      <Dependency path="/credits/basicPersonal" />
+                    </IsComplete>
+                  </When>
+                  <Then>
+                    <Dependency path="/credits/basicPersonal" />
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <True />
+                  </When>
+                  <Then>
+                    <Switch>
+                      <Case>
+                        <When>
+                          <Equal>
+                            <Left>
+                              <Dependency path="/return/taxYear" />
+                            </Left>
+                            <Right>
+                              <Int>2025</Int>
+                            </Right>
+                          </Equal>
+                        </When>
+                        <Then>
+                          <Switch>
+                            <Case>
+                              <When>
+                                <LessThan>
+                                  <Left>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                  </Left>
+                                  <Right>
+                                    <Dollar>21474836.48</Dollar>
+                                  </Right>
+                                </LessThan>
+                              </When>
+                              <Then>
+                                <Add>
+                                  <Multiply>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                    <Dependency path="/federalTax/nonrefundableCreditRate" />
+                                  </Multiply>
+                                  <Switch>
+                                    <Case>
+                                      <When>
+                                        <Equal>
+                                          <Left>
+                                            <Modulo>
+                                              <Multiply>
+                                                <Modulo>
+                                                  <RoundToInt>
+                                                    <Multiply>
+                                                      <Dependency path="/federalTax/basicPersonalBase" />
+                                                      <Rational>100/1</Rational>
+                                                    </Multiply>
+                                                  </RoundToInt>
+                                                  <Int>2000</Int>
+                                                </Modulo>
+                                                <Int>145</Int>
+                                              </Multiply>
+                                              <Int>2000</Int>
+                                            </Modulo>
+                                          </Left>
+                                          <Right>
+                                            <Int>500</Int>
+                                          </Right>
+                                        </Equal>
+                                      </When>
+                                      <Then>
+                                        <Dollar>0.01</Dollar>
+                                      </Then>
+                                    </Case>
+                                    <Case>
+                                      <When>
+                                        <True />
+                                      </When>
+                                      <Then>
+                                        <Dollar>0</Dollar>
+                                      </Then>
+                                    </Case>
+                                  </Switch>
+                                </Add>
+                              </Then>
+                            </Case>
+                            <Case>
+                              <When>
+                                <True />
+                              </When>
+                              <Then>
+                                <Multiply>
+                                  <Dependency path="/federalTax/basicPersonalBase" />
+                                  <Dependency path="/federalTax/nonrefundableCreditRate" />
+                                </Multiply>
+                              </Then>
+                            </Case>
+                          </Switch>
+                        </Then>
+                      </Case>
+                      <Case>
+                        <When>
+                          <Equal>
+                            <Left>
+                              <Dependency path="/return/taxYear" />
+                            </Left>
+                            <Right>
+                              <Int>2026</Int>
+                            </Right>
+                          </Equal>
+                        </When>
+                        <Then>
+                          <Switch>
+                            <Case>
+                              <When>
+                                <LessThan>
+                                  <Left>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                  </Left>
+                                  <Right>
+                                    <Dollar>21474836.48</Dollar>
+                                  </Right>
+                                </LessThan>
+                              </When>
+                              <Then>
+                                <Add>
+                                  <Multiply>
+                                    <Dependency path="/federalTax/basicPersonalBase" />
+                                    <Dependency path="/federalTax/nonrefundableCreditRate" />
+                                  </Multiply>
+                                  <Switch>
+                                    <Case>
+                                      <When>
+                                        <Equal>
+                                          <Left>
+                                            <Modulo>
+                                              <Multiply>
+                                                <Modulo>
+                                                  <RoundToInt>
+                                                    <Multiply>
+                                                      <Dependency path="/federalTax/basicPersonalBase" />
+                                                      <Rational>100/1</Rational>
+                                                    </Multiply>
+                                                  </RoundToInt>
+                                                  <Int>200</Int>
+                                                </Modulo>
+                                                <Int>14</Int>
+                                              </Multiply>
+                                              <Int>200</Int>
+                                            </Modulo>
+                                          </Left>
+                                          <Right>
+                                            <Int>50</Int>
+                                          </Right>
+                                        </Equal>
+                                      </When>
+                                      <Then>
+                                        <Dollar>0.01</Dollar>
+                                      </Then>
+                                    </Case>
+                                    <Case>
+                                      <When>
+                                        <True />
+                                      </When>
+                                      <Then>
+                                        <Dollar>0</Dollar>
+                                      </Then>
+                                    </Case>
+                                  </Switch>
+                                </Add>
+                              </Then>
+                            </Case>
+                            <Case>
+                              <When>
+                                <True />
+                              </When>
+                              <Then>
+                                <Multiply>
+                                  <Dependency path="/federalTax/basicPersonalBase" />
+                                  <Dependency path="/federalTax/nonrefundableCreditRate" />
+                                </Multiply>
+                              </Then>
+                            </Case>
+                          </Switch>
+                        </Then>
+                      </Case>
+                    </Switch>
+                  </Then>
+                </Case>
+              </Switch>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/otherNonrefundableCredits">
+      <Description>Other ordinary federal claims absent from named fields, after eligibility limits. Enter claim bases in Claim amounts mode or final reductions in Credit dollars mode. Exclude donations, top-up and every separately entered amount.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/ordinaryClaimAmounts">
+      <Description>Total ordinary claim bases, including the selected basic personal amount. Available only in Claim amounts mode. Donations and top-up excluded.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/federalTax/creditInputBasis" />
+                </Left>
+                <Right>
+                  <String>claimAmounts</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Add>
+                <Switch>
+                  <Case>
+                    <When>
+                      <IsComplete>
+                        <Dependency path="/credits/basicPersonal" />
+                      </IsComplete>
+                    </When>
+                    <Then>
+                      <Dependency path="/credits/basicPersonal" />
+                    </Then>
+                  </Case>
+                  <Case>
+                    <When>
+                      <True />
+                    </When>
+                    <Then>
+                      <Dependency path="/federalTax/basicPersonalBase" />
+                    </Then>
+                  </Case>
+                </Switch>
+                <Dependency path="/credits/spouseOrPartner" />
+                <Dependency path="/credits/eligibleDependant" />
+                <Dependency path="/credits/caregiver" />
+                <Dependency path="/credits/age" />
+                <Dependency path="/credits/pension" />
+                <Dependency path="/credits/employment" />
+                <Dependency path="/credits/medical" />
+                <Dependency path="/credits/disability" />
+                <Dependency path="/credits/tuition" />
+                <Dependency path="/credits/tuitionCarryforward" />
+                <Dependency path="/credits/studentLoanInterest" />
+                <Dependency path="/credits/cppEiQpip" />
+                <Dependency path="/credits/spousalTransfer" />
+                <Dependency path="/credits/tuitionTransfer" />
+                <Dependency path="/federalTax/otherNonrefundableCredits" />
+              </Add>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/ordinaryNonrefundableCredit">
+      <Description>Ordinary claim amounts multiplied once by the annual credit rate, rounded once. Credit dollars mode instead sums already-calculated reductions.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/federalTax/creditInputBasis" />
+                </Left>
+                <Right>
+                  <String>claimAmounts</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Switch>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/return/taxYear" />
+                      </Left>
+                      <Right>
+                        <Int>2025</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Switch>
+                      <Case>
+                        <When>
+                          <LessThan>
+                            <Left>
+                              <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                            </Left>
+                            <Right>
+                              <Dollar>21474836.48</Dollar>
+                            </Right>
+                          </LessThan>
+                        </When>
+                        <Then>
+                          <Add>
+                            <Multiply>
+                              <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                              <Dependency path="/federalTax/nonrefundableCreditRate" />
+                            </Multiply>
+                            <Switch>
+                              <Case>
+                                <When>
+                                  <Equal>
+                                    <Left>
+                                      <Modulo>
+                                        <Multiply>
+                                          <Modulo>
+                                            <RoundToInt>
+                                              <Multiply>
+                                                <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                                                <Rational>100/1</Rational>
+                                              </Multiply>
+                                            </RoundToInt>
+                                            <Int>2000</Int>
+                                          </Modulo>
+                                          <Int>145</Int>
+                                        </Multiply>
+                                        <Int>2000</Int>
+                                      </Modulo>
+                                    </Left>
+                                    <Right>
+                                      <Int>500</Int>
+                                    </Right>
+                                  </Equal>
+                                </When>
+                                <Then>
+                                  <Dollar>0.01</Dollar>
+                                </Then>
+                              </Case>
+                              <Case>
+                                <When>
+                                  <True />
+                                </When>
+                                <Then>
+                                  <Dollar>0</Dollar>
+                                </Then>
+                              </Case>
+                            </Switch>
+                          </Add>
+                        </Then>
+                      </Case>
+                      <Case>
+                        <When>
+                          <True />
+                        </When>
+                        <Then>
+                          <Multiply>
+                            <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                            <Dependency path="/federalTax/nonrefundableCreditRate" />
+                          </Multiply>
+                        </Then>
+                      </Case>
+                    </Switch>
+                  </Then>
+                </Case>
+                <Case>
+                  <When>
+                    <Equal>
+                      <Left>
+                        <Dependency path="/return/taxYear" />
+                      </Left>
+                      <Right>
+                        <Int>2026</Int>
+                      </Right>
+                    </Equal>
+                  </When>
+                  <Then>
+                    <Switch>
+                      <Case>
+                        <When>
+                          <LessThan>
+                            <Left>
+                              <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                            </Left>
+                            <Right>
+                              <Dollar>21474836.48</Dollar>
+                            </Right>
+                          </LessThan>
+                        </When>
+                        <Then>
+                          <Add>
+                            <Multiply>
+                              <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                              <Dependency path="/federalTax/nonrefundableCreditRate" />
+                            </Multiply>
+                            <Switch>
+                              <Case>
+                                <When>
+                                  <Equal>
+                                    <Left>
+                                      <Modulo>
+                                        <Multiply>
+                                          <Modulo>
+                                            <RoundToInt>
+                                              <Multiply>
+                                                <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                                                <Rational>100/1</Rational>
+                                              </Multiply>
+                                            </RoundToInt>
+                                            <Int>200</Int>
+                                          </Modulo>
+                                          <Int>14</Int>
+                                        </Multiply>
+                                        <Int>200</Int>
+                                      </Modulo>
+                                    </Left>
+                                    <Right>
+                                      <Int>50</Int>
+                                    </Right>
+                                  </Equal>
+                                </When>
+                                <Then>
+                                  <Dollar>0.01</Dollar>
+                                </Then>
+                              </Case>
+                              <Case>
+                                <When>
+                                  <True />
+                                </When>
+                                <Then>
+                                  <Dollar>0</Dollar>
+                                </Then>
+                              </Case>
+                            </Switch>
+                          </Add>
+                        </Then>
+                      </Case>
+                      <Case>
+                        <When>
+                          <True />
+                        </When>
+                        <Then>
+                          <Multiply>
+                            <Dependency path="/federalTax/ordinaryClaimAmounts" />
+                            <Dependency path="/federalTax/nonrefundableCreditRate" />
+                          </Multiply>
+                        </Then>
+                      </Case>
+                    </Switch>
+                  </Then>
+                </Case>
+              </Switch>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <Equal>
+                <Left>
+                  <Dependency path="/federalTax/creditInputBasis" />
+                </Left>
+                <Right>
+                  <String>creditDollars</String>
+                </Right>
+              </Equal>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/federalTax/basicPersonalCredit" />
+                <Dependency path="/credits/spouseOrPartner" />
+                <Dependency path="/credits/eligibleDependant" />
+                <Dependency path="/credits/caregiver" />
+                <Dependency path="/credits/age" />
+                <Dependency path="/credits/pension" />
+                <Dependency path="/credits/employment" />
+                <Dependency path="/credits/medical" />
+                <Dependency path="/credits/disability" />
+                <Dependency path="/credits/tuition" />
+                <Dependency path="/credits/tuitionCarryforward" />
+                <Dependency path="/credits/studentLoanInterest" />
+                <Dependency path="/credits/cppEiQpip" />
+                <Dependency path="/credits/spousalTransfer" />
+                <Dependency path="/credits/tuitionTransfer" />
+                <Dependency path="/federalTax/otherNonrefundableCredits" />
+              </Add>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/nonrefundableCredits">
+      <Description>Ordinary nonrefundable credit plus donations and top-up credit dollars. Neither donations nor top-up is multiplied by the ordinary rate.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/federalTax/ordinaryNonrefundableCredit" />
+          <Dependency path="/schedules/federalDonationCredit" />
+          <Dependency path="/credits/topUp" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/basicFederalTax">
+      <Description>Federal bracket tax plus TOSI, less nonrefundable credits, dividend credit and minimum-tax carryover, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Add>
+                <Dependency path="/federalTax/taxOnTaxableIncome" />
+                <Dependency path="/specialTaxes/splitIncome" />
+              </Add>
+            </Minuend>
+            <Subtrahends>
+              <Add>
+                <Dependency path="/federalTax/nonrefundableCredits" />
+                <Dependency path="/credits/dividend" />
+                <Dependency path="/specialTaxes/minimumTaxCarryover" />
+              </Add>
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/investmentCreditRecapture">
+      <Description>Investment tax credit recapture from Form T2038(IND).</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/loggingTaxCredit">
+      <Description>Permitted federal logging tax credit after limits.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/federalTaxAfterForeignCredit">
+      <Description>Basic federal tax less the permitted foreign credit, plus investment credit recapture, less logging credit, floored at zero. Foreign surtax is outside the ordinary NS allocation scope.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Add>
+                <Subtract>
+                  <Minuend>
+                    <Dependency path="/federalTax/basicFederalTax" />
+                  </Minuend>
+                  <Subtrahends>
+                    <Dependency path="/credits/foreign" />
+                  </Subtrahends>
+                </Subtract>
+                <Dependency path="/federalTax/investmentCreditRecapture" />
+              </Add>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/federalTax/loggingTaxCredit" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/investmentTaxCredit">
+      <Description>Permitted nonrefundable investment tax credit after limits and recapture review. Refundable ITC belongs in payments.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/labourSponsoredCredit">
+      <Description>Permitted federal labour-sponsored funds credit after applicable limits.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/regularTaxAfterCredits">
+      <Description>Federal tax after political, investment and labour-sponsored credits, floored at zero.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/federalTax/federalTaxAfterForeignCredit" />
+            </Minuend>
+            <Subtrahends>
+              <Add>
+                <Dependency path="/credits/political" />
+                <Dependency path="/federalTax/investmentTaxCredit" />
+                <Dependency path="/federalTax/labourSponsoredCredit" />
+              </Add>
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/useMinimumTaxSchedule">
+      <Description>Has T691 determined the amount to report on line 41700? If yes, enter the FINAL line 41700 amount from T691 in Minimum tax in Other tax &amp; filing. This replaces regular tax; it is not an added AMT amount.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/taxAfterCredits">
+      <Description>Line 41700: regular calculation, or the reviewed final T691 result when the minimum-tax schedule applies.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/federalTax/useMinimumTaxSchedule" />
+            </When>
+            <Then>
+              <Dependency path="/specialTaxes/minimumTax" />
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dependency path="/federalTax/regularTaxAfterCredits" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/advancedWorkersBenefit">
+      <Description>Advanced Canada workers benefit amount required on line 41500 from Schedule 6. Enter the CWB credit separately among refundable credits.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/specialTaxes41800">
+      <Description>Reviewed total special taxes included on T1 line 41800. Exclude TOSI, AMT, OAS/EI repayments and taxes reported on separate returns (including separate registered-plan tax forms).</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/netFederalTaxBeforeReview">
+      <Description>Line 41700 plus ACWB and line 41800 special taxes. Inspection amount; final output is review gated.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/federalTax/taxAfterCredits" />
+          <Dependency path="/federalTax/advancedWorkersBenefit" />
+          <Dependency path="/federalTax/specialTaxes41800" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/netFederalTax">
+      <Description>Reviewed net federal tax; does not include provincial tax or contributions and repayments on Step 6.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/federalTax/ready" />
+            </When>
+            <Then>
+              <Dependency path="/federalTax/netFederalTaxBeforeReview" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/cppContributionsPayable">
+      <Description>CPP payable on self-employment and other earnings from Schedule 8/RC381. Separate from the deductible and creditable CPP portions already included in income/credits.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/eiPremiumsPayable">
+      <Description>EI premiums payable on self-employment and other eligible earnings from Schedule 13.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/eiBenefitsRepayment">
+      <Description>EI benefits repayment included in line 23500/42200. Exclude the OAS recovery tax supplied in Other tax &amp; filing. Review the corresponding income deduction separately.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/socialBenefitsRepayment">
+      <Description>OAS recovery tax plus EI benefits repayment. Review any corresponding net-income deduction; do not deduct the payable twice.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/specialTaxes/oasRecovery" />
+          <Dependency path="/federalTax/eiBenefitsRepayment" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/provincialTax">
+      <Description>Reviewed NS tax read by reference from the separate provincial module.</Description>
+      <Derived>
+        <Dependency path="/ns/taxPayable" />
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/provincialSchedulesConsistent">
+      <Description>Shared minimum-tax carryover agrees with the amount entered for NS, and no NS additional minimum tax is claimed when T691 is not used. Other special-schedule correspondence remains subject to review.</Description>
+      <Derived>
+        <All>
+          <Equal>
+            <Left>
+              <Dependency path="/specialTaxes/minimumTaxCarryover" />
+            </Left>
+            <Right>
+              <Dependency path="/ns/federalMinimumTaxCarryover" />
+            </Right>
+          </Equal>
+          <Any>
+            <Dependency path="/federalTax/useMinimumTaxSchedule" />
+            <Equal>
+              <Left>
+                <Dependency path="/ns/federalAdditionalMinimumTax" />
+              </Left>
+              <Right>
+                <Dollar>0</Dollar>
+              </Right>
+            </Equal>
+          </Any>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/totalPayable">
+      <Description>Combined federal and provincial tax plus CPP/EI payable and social benefits repayment, before payments and refundable credits.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/federalTax/provincialSchedulesConsistent" />
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/federalTax/netFederalTax" />
+                <Dependency path="/federalTax/provincialTax" />
+                <Dependency path="/federalTax/cppContributionsPayable" />
+                <Dependency path="/federalTax/eiPremiumsPayable" />
+                <Dependency path="/federalTax/socialBenefitsRepayment" />
+              </Add>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/cppQppOverpayment">
+      <Description>CPP/QPP overpayment from Schedule 8 or RC381. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/eiOverpayment">
+      <Description>EI overpayment. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/refundableMedicalSupplement">
+      <Description>Refundable medical expense supplement. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/workersBenefit">
+      <Description>Canada workers benefit from Schedule 6; ACWB goes separately on line 41500. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/canadaTrainingCredit">
+      <Description>Canada training credit from Schedule 11. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/multigenerationalRenovationCredit">
+      <Description>Multigenerational home renovation credit from Schedule 12. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/investmentCreditRefund">
+      <Description>Refundable investment tax credit. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/partXII2Credit">
+      <Description>Part XII.2 credit from applicable slips. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/gstHstRebate">
+      <Description>Employee/partner GST/HST rebate from GST370; not GST/HST benefit payments. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/educatorSupplyCredit">
+      <Description>Eligible educator school supply CREDIT DOLLARS after the 25% rate and $1,000 expense limit. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/journalismLabourCredit">
+      <Description>Canadian journalism labour tax credit. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/fuelChargeFarmerCredit">
+      <Description>Return of fuel-charge proceeds to farmers credit. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/provincialRefundableCredits">
+      <Description>Reviewed NS479 refundable credits; separate from NS428 nonrefundable credits. Enter zero only after confirming none applies.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/federalTax/refundableCredits">
+      <Description>Sum of reviewed refundable-credit and overpayment amounts, excluding withholding and instalments. Quebec abatement is not applicable to this NS scope.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/federalTax/cppQppOverpayment" />
+          <Dependency path="/federalTax/eiOverpayment" />
+          <Dependency path="/federalTax/refundableMedicalSupplement" />
+          <Dependency path="/federalTax/workersBenefit" />
+          <Dependency path="/federalTax/canadaTrainingCredit" />
+          <Dependency path="/federalTax/multigenerationalRenovationCredit" />
+          <Dependency path="/federalTax/investmentCreditRefund" />
+          <Dependency path="/federalTax/partXII2Credit" />
+          <Dependency path="/federalTax/gstHstRebate" />
+          <Dependency path="/federalTax/educatorSupplyCredit" />
+          <Dependency path="/federalTax/journalismLabourCredit" />
+          <Dependency path="/federalTax/fuelChargeFarmerCredit" />
+          <Dependency path="/federalTax/provincialRefundableCredits" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/totalCreditsAndPayments">
+      <Description>Tax withheld, instalments, refundable credits and overpayments. Do not include benefits paid outside the T1 reconciliation.</Description>
+      <Derived>
+        <Add>
+          <Dependency path="/payments/taxWithheld" />
+          <Dependency path="/payments/instalments" />
+          <Dependency path="/federalTax/refundableCredits" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/netPayable">
+      <Description>Signed reconciliation: total payable minus credits/payments. Positive means owing; negative means a calculated refund.</Description>
+      <Derived>
+        <Subtract>
+          <Minuend>
+            <Dependency path="/federalTax/totalPayable" />
+          </Minuend>
+          <Subtrahends>
+            <Dependency path="/federalTax/totalCreditsAndPayments" />
+          </Subtrahends>
+        </Subtract>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/amountOwing">
+      <Description>Calculated balance owing, floored at zero. Excludes arrears, interest, penalties, CRA account offsets and assessment changes.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Dependency path="/federalTax/netPayable" />
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/federalTax/refund">
+      <Description>Calculated refund magnitude, floored at zero; not a refund already assessed or issued by CRA.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dollar>0</Dollar>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/federalTax/netPayable" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

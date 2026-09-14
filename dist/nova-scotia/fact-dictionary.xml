@@ -1,0 +1,878 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FactDictionaryModule>
+  <Facts>
+    <Fact path="/ns">
+      <Derived>
+        <String>/ns</String>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/yearSupported">
+      <Description>An explicitly supplied annual parameter pack exists.</Description>
+      <Derived>
+        <Any>
+          <Equal>
+            <Left>
+              <Dependency path="/return/taxYear" />
+            </Left>
+            <Right>
+              <Int>2025</Int>
+            </Right>
+          </Equal>
+          <Equal>
+            <Left>
+              <Dependency path="/return/taxYear" />
+            </Left>
+            <Right>
+              <Int>2026</Int>
+            </Right>
+          </Equal>
+        </Any>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/ordinaryReturnConfirmed">
+      <Description>Confirm a living individual’s ordinary full-year Canadian resident return, resident in NS on December 31, with all income allocated to NS. No bankruptcy, separate return, trust, or multi-jurisdiction business allocation.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/ns/creditsReviewed">
+      <Description>Confirm all provincial credit eligibility, amounts, transfers, ordering and no double counting have been reviewed for the selected year. This is an attestation, not automatic eligibility verification.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/ns/inScope">
+      <Description>Provincial calculation scope and supported year. A false condition blocks tax payable instead of returning zero.</Description>
+      <Derived>
+        <All>
+          <Dependency path="/ns/yearSupported" />
+          <Dependency path="/ns/ordinaryReturnConfirmed" />
+          <Equal>
+            <Left>
+              <Dependency path="/residence/status" />
+            </Left>
+            <Right>
+              <String>residentFullYear</String>
+            </Right>
+          </Equal>
+          <Equal>
+            <Left>
+              <Dependency path="/residence/provinceAtYearEnd" />
+            </Left>
+            <Right>
+              <String>NS</String>
+            </Right>
+          </Equal>
+          <Not>
+            <IsComplete>
+              <Dependency path="/person/deathDate" />
+            </IsComplete>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/bracketTax">
+      <Description>NS tax on federal taxable income, using annual thresholds and cumulative base taxes.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/ns/parameters/threshold0" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dollar>0</Dollar>
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dollar>0</Dollar>
+                    </Subtrahends>
+                  </Subtract>
+                  <Rational>879/10000</Rational>
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/ns/parameters/threshold1" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/ns/parameters/baseTax0" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/ns/parameters/threshold0" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Rational>1495/10000</Rational>
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/ns/parameters/threshold2" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/ns/parameters/baseTax1" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/ns/parameters/threshold1" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Rational>1667/10000</Rational>
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <LessThan>
+                <Left>
+                  <Dependency path="/taxableIncome/amount" />
+                </Left>
+                <Right>
+                  <Dependency path="/ns/parameters/threshold3" />
+                </Right>
+              </LessThan>
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/ns/parameters/baseTax2" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/ns/parameters/threshold2" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Rational>175/1000</Rational>
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Add>
+                <Dependency path="/ns/parameters/baseTax3" />
+                <Multiply>
+                  <Subtract>
+                    <Minuend>
+                      <Dependency path="/taxableIncome/amount" />
+                    </Minuend>
+                    <Subtrahends>
+                      <Dependency path="/ns/parameters/threshold3" />
+                    </Subtrahends>
+                  </Subtract>
+                  <Rational>21/100</Rational>
+                </Multiply>
+              </Add>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/basicPersonalBase">
+      <Description>Basic personal amount; no income phase-out in the supported 2025+ packs.</Description>
+      <Derived>
+        <Dependency path="/ns/parameters/basic" />
+      </Derived>
+    </Fact>
+    <Fact path="/ns/claimSpouse">
+      <Description>Claim the eligible spouse/common-law partner amount after reviewing support, separation and federal restrictions. Cannot also claim an eligible dependant. Spouse income is read from the federal family fact.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/ns/spouseBase">
+      <Description>Eligible spouse amount, reduced by the spouse income from the shared federal dictionary.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/ns/claimSpouse" />
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Dependency path="/ns/parameters/spouseCeiling" />
+                  </Minuend>
+                  <Subtrahends>
+                    <GreaterOf>
+                      <Dependency path="/ns/parameters/spouseFloor" />
+                      <Dependency path="/person/spouseNetIncome" />
+                    </GreaterOf>
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/eligibleDependantBase">
+      <Description>Reviewed eligible-dependant base under s10D, after the income reduction and restrictions. Maximum is the annual basic personal amount. Enter zero if none; exclusive of spouse claim.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/ageIncomeAdjustment">
+      <Description>Signed adjustment to federal net income for s10G: remove included s79 gains and add back the s20(1)(ww) deduction. Enter zero if neither applies.</Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/ns/is65OrOlder">
+      <Description>Age attained by December 31 from shared date of birth and taxation year.</Description>
+      <Derived>
+        <Not>
+          <LessThan>
+            <Left>
+              <Subtract>
+                <Minuend>
+                  <Dependency path="/return/taxYear" />
+                </Minuend>
+                <Subtrahends>
+                  <Dependency path="/person/birthDate/year" />
+                </Subtrahends>
+              </Subtract>
+            </Left>
+            <Right>
+              <Int>65</Int>
+            </Right>
+          </LessThan>
+        </Not>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/ageBase">
+      <Description>Age amount, phased out at 15% of adjusted income over $30,828. That income threshold is not indexed.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/ns/is65OrOlder" />
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Dependency path="/ns/parameters/age" />
+                  </Minuend>
+                  <Subtrahends>
+                    <Multiply>
+                      <GreaterOf>
+                        <Dollar>0</Dollar>
+                        <Subtract>
+                          <Minuend>
+                            <Add>
+                              <Dependency path="/income/netIncome" />
+                              <Dependency path="/ns/ageIncomeAdjustment" />
+                            </Add>
+                          </Minuend>
+                          <Subtrahends>
+                            <Dollar>30828</Dollar>
+                          </Subtrahends>
+                        </Subtract>
+                      </GreaterOf>
+                      <Rational>15/100</Rational>
+                    </Multiply>
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/eligiblePensionIncome">
+      <Description>Pension income eligible under federal s118(3), before the NS $1,173 cap; zero if none.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/pensionBase">
+      <Description>Eligible pension base capped at $1,173.</Description>
+      <Derived>
+        <LesserOf>
+          <Dependency path="/ns/eligiblePensionIncome" />
+          <Dollar>1173</Dollar>
+        </LesserOf>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/otherNonrefundableBase">
+      <Description>Reviewed sum of other NS base amounts before multiplying by 8.79%: caregiver, infirm dependant, young children, disability, tuition/education/carryforward, student-loan interest, CPP/EI and transfers (ss10E–10F,10I,13–19). Apply each provincial limit first. Exclude basic, spouse, eligible-dependant, age, pension, medical, naturopath and donations entered separately.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/eligibleMedicalExpenses">
+      <Description>Reviewed eligible family medical expenses before the income threshold, as permitted by s12. Exclude amounts used by another claimant.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/otherDependantMedicalBase">
+      <Description>Reviewed total eligible medical bases for other dependants after each dependant’s income threshold and statutory limit.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/naturopathBase">
+      <Description>Reviewed eligible naturopath expenses under s12B, including permitted dependant amounts after their limits. Exclude amounts already claimed under s12.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/medicalBase">
+      <Description>Family expenses less the lower of $1,637 and 3% of net income, floored at zero, plus reviewed dependant bases.</Description>
+      <Derived>
+        <Add>
+          <GreaterOf>
+            <Dollar>0</Dollar>
+            <Subtract>
+              <Minuend>
+                <Dependency path="/ns/eligibleMedicalExpenses" />
+              </Minuend>
+              <Subtrahends>
+                <LesserOf>
+                  <Dollar>1637</Dollar>
+                  <Multiply>
+                    <Dependency path="/income/netIncome" />
+                    <Rational>3/100</Rational>
+                  </Multiply>
+                </LesserOf>
+              </Subtrahends>
+            </Subtract>
+          </GreaterOf>
+          <Dependency path="/ns/otherDependantMedicalBase" />
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/ordinaryCredits">
+      <Description>Combined qualifying NS bases multiplied once by the lowest rate.</Description>
+      <Derived>
+        <Multiply>
+          <Add>
+            <Dependency path="/ns/basicPersonalBase" />
+            <Dependency path="/ns/spouseBase" />
+            <Dependency path="/ns/eligibleDependantBase" />
+            <Dependency path="/ns/ageBase" />
+            <Dependency path="/ns/pensionBase" />
+            <Dependency path="/ns/otherNonrefundableBase" />
+            <Dependency path="/ns/medicalBase" />
+            <Dependency path="/ns/naturopathBase" />
+          </Add>
+          <Rational>879/10000</Rational>
+        </Multiply>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/eligibleDonations">
+      <Description>Qualifying gifts used for the federal s118.1 deduction and eligible under NS s11, after applicable limits.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/donationCredit">
+      <Description>8.79% on the first $200 and 21% on the balance of qualifying gifts.</Description>
+      <Derived>
+        <Add>
+          <Multiply>
+            <LesserOf>
+              <Dependency path="/schedules/claimedGiftsForNs" />
+              <Dollar>200</Dollar>
+            </LesserOf>
+            <Rational>879/10000</Rational>
+          </Multiply>
+          <Multiply>
+            <GreaterOf>
+              <Dollar>0</Dollar>
+              <Subtract>
+                <Minuend>
+                  <Dependency path="/schedules/claimedGiftsForNs" />
+                </Minuend>
+                <Subtrahends>
+                  <Dollar>200</Dollar>
+                </Subtrahends>
+              </Subtract>
+            </GreaterOf>
+            <Rational>21/100</Rational>
+          </Multiply>
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/taxableEligibleDividends">
+      <Description>Taxable eligible Canadian dividends including gross-up, already included once in federal income. Do not enter the cash dividend.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/taxableOtherDividends">
+      <Description>Taxable non-eligible Canadian dividends including gross-up, already included once in federal income.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/dividendCredit">
+      <Description>8.85% of taxable eligible dividends plus 1.5% of taxable other dividends (2025+).</Description>
+      <Derived>
+        <Add>
+          <Multiply>
+            <Dependency path="/ns/taxableEligibleDividends" />
+            <Rational>885/10000</Rational>
+          </Multiply>
+          <Multiply>
+            <Dependency path="/ns/taxableOtherDividends" />
+            <Rational>15/1000</Rational>
+          </Multiply>
+        </Add>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/federalSection9Additions">
+      <Description>Reviewed sum of federal additions under ss120.3,120.31 and ITAR40 used by NS s9. Enter zero if none.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/splitIncomeTax">
+      <Description>Reviewed NS split-income tax under s30, after applicable adjustments. Provincial dollars, not federal TOSI.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/federalMinimumTaxCarryover">
+      <Description>Federal s120.2 deduction for this year, for the provincial 57.5% carryover credit.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/federalAdditionalMinimumTax">
+      <Description>Federal additional minimum tax under s120.2(3), for the provincial 57.5% addition.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/foreignTaxCredit">
+      <Description>Reviewed NS foreign tax credit after country-by-country and statutory limits. Not the federal foreign tax credit.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/taxBeforeReduction">
+      <Description>Tax after ordinary credits, dividends, minimum-tax adjustments and provincial foreign credit, with statutory zero floors.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Add>
+                <GreaterOf>
+                  <Dollar>0</Dollar>
+                  <Subtract>
+                    <Minuend>
+                      <Add>
+                        <Dependency path="/ns/bracketTax" />
+                        <Multiply>
+                          <Dependency path="/ns/federalSection9Additions" />
+                          <Rational>575/1000</Rational>
+                        </Multiply>
+                        <Dependency path="/ns/splitIncomeTax" />
+                      </Add>
+                    </Minuend>
+                    <Subtrahends>
+                      <Add>
+                        <Dependency path="/ns/ordinaryCredits" />
+                        <Dependency path="/ns/donationCredit" />
+                        <Dependency path="/ns/dividendCredit" />
+                        <Multiply>
+                          <Dependency path="/ns/federalMinimumTaxCarryover" />
+                          <Rational>575/1000</Rational>
+                        </Multiply>
+                      </Add>
+                    </Subtrahends>
+                  </Subtract>
+                </GreaterOf>
+                <Multiply>
+                  <Dependency path="/ns/federalAdditionalMinimumTax" />
+                  <Rational>575/1000</Rational>
+                </Multiply>
+              </Add>
+            </Minuend>
+            <Subtrahends>
+              <Dependency path="/ns/foreignTaxCredit" />
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/claimLowIncomeReduction">
+      <Description>Confirm eligibility to claim s35, including age/parent/spouse tests, disqualifications, relationship rules and that a spouse has not claimed this reduction. No automatic eligibility inference.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/ns/adjustedFamilyIncome">
+      <Description>Reviewed s35 adjusted family income: taxpayer plus qualified relation, recalculated for RDSP, UCCB, s79/s40(3.21) gains and deductions in s35(1)(a). Not simply federal net income or a benefits AFNI. Required only if claiming the reduction.</Description>
+      <Writable>
+        <Dollar />
+      </Writable>
+    </Fact>
+    <Fact path="/ns/qualifyingSpouseOrDependant">
+      <Description>Confirm exactly one additional $300 amount for a qualifying relation, or qualifying eligible dependant when there is no qualifying relation. Required only if claiming reduction.</Description>
+      <Writable>
+        <Boolean />
+      </Writable>
+    </Fact>
+    <Fact path="/ns/otherQualifyingDependants">
+      <Description>Number of other qualifying children/dependants for the $165 amount, excluding the dependant used for the additional $300. Required only if claiming reduction.</Description>
+      <Writable>
+        <Int />
+        <Limit type="Min">
+          <Int>0</Int>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/lowIncomeReduction">
+      <Description>Reduction: $300 plus permitted $300 and $165 amounts, less 5% of adjusted family income over $15,000, floored at zero.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <Dependency path="/ns/claimLowIncomeReduction" />
+            </When>
+            <Then>
+              <GreaterOf>
+                <Dollar>0</Dollar>
+                <Subtract>
+                  <Minuend>
+                    <Add>
+                      <Dollar>300</Dollar>
+                      <Switch>
+                        <Case>
+                          <When>
+                            <Dependency path="/ns/qualifyingSpouseOrDependant" />
+                          </When>
+                          <Then>
+                            <Dollar>300</Dollar>
+                          </Then>
+                        </Case>
+                        <Case>
+                          <When>
+                            <True />
+                          </When>
+                          <Then>
+                            <Dollar>0</Dollar>
+                          </Then>
+                        </Case>
+                      </Switch>
+                      <Multiply>
+                        <Dollar>165</Dollar>
+                        <Dependency path="/ns/otherQualifyingDependants" />
+                      </Multiply>
+                    </Add>
+                  </Minuend>
+                  <Subtrahends>
+                    <Multiply>
+                      <GreaterOf>
+                        <Dollar>0</Dollar>
+                        <Subtract>
+                          <Minuend>
+                            <Dependency path="/ns/adjustedFamilyIncome" />
+                          </Minuend>
+                          <Subtrahends>
+                            <Dollar>15000</Dollar>
+                          </Subtrahends>
+                        </Subtract>
+                      </GreaterOf>
+                      <Rational>5/100</Rational>
+                    </Multiply>
+                  </Subtrahends>
+                </Subtract>
+              </GreaterOf>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/politicalContributions">
+      <Description>Eligible NS political contributions supported by receipts.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/farmerFoodDonations">
+      <Description>Fair market value of eligible farmer food donations already included in eligible donations above, after reviewing s50A qualification.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/certificateCredits">
+      <Description>Reviewed total of usable labour-sponsored, equity, innovation-equity and venture-capital credits, after their individual certificate, carryforward and annual limits. Excludes the age credit and political/food credits calculated here.</Description>
+      <Writable>
+        <Dollar />
+        <Limit type="Min">
+          <Dollar>0</Dollar>
+        </Limit>
+      </Writable>
+    </Fact>
+    <Fact path="/ns/politicalCredit">
+      <Description>75% of qualifying political contributions, capped at $750 and available tax through the subsequent zero floor.</Description>
+      <Derived>
+        <LesserOf>
+          <Dollar>750</Dollar>
+          <Multiply>
+            <Dependency path="/ns/politicalContributions" />
+            <Rational>75/100</Rational>
+          </Multiply>
+        </LesserOf>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/farmerFoodCredit">
+      <Description>25% of qualifying donated food value, claimed in addition to the charitable donation credit.</Description>
+      <Derived>
+        <Multiply>
+          <Dependency path="/ns/farmerFoodDonations" />
+          <Rational>25/100</Rational>
+        </Multiply>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/ageTaxCredit">
+      <Description>$1,000 age tax credit when age 65+ and taxable income strictly below $24,000. Ordinary-return scope is required for the final result.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/ns/is65OrOlder" />
+                <LessThan>
+                  <Left>
+                    <Dependency path="/taxableIncome/amount" />
+                  </Left>
+                  <Right>
+                    <Dollar>24000</Dollar>
+                  </Right>
+                </LessThan>
+              </All>
+            </When>
+            <Then>
+              <Dollar>1000</Dollar>
+            </Then>
+          </Case>
+          <Case>
+            <When>
+              <True />
+            </When>
+            <Then>
+              <Dollar>0</Dollar>
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/taxAfterCredits">
+      <Description>NS income tax after the modelled nonrefundable credits and reviewed adjustments. Excludes federal tax, payments and refundable NS479 credits. This inspection fact is not gated by review.</Description>
+      <Derived>
+        <GreaterOf>
+          <Dollar>0</Dollar>
+          <Subtract>
+            <Minuend>
+              <Dependency path="/ns/taxBeforeReduction" />
+            </Minuend>
+            <Subtrahends>
+              <Add>
+                <Dependency path="/ns/lowIncomeReduction" />
+                <Dependency path="/ns/politicalCredit" />
+                <Dependency path="/ns/farmerFoodCredit" />
+                <Dependency path="/ns/certificateCredits" />
+                <Dependency path="/ns/ageTaxCredit" />
+              </Add>
+            </Subtrahends>
+          </Subtract>
+        </GreaterOf>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/claimsConsistent">
+      <Description>Spouse and eligible dependant are exclusive; dependant base respects the annual maximum; food gifts are included in total eligible donations.</Description>
+      <Derived>
+        <All>
+          <Not>
+            <All>
+              <Dependency path="/ns/claimSpouse" />
+              <Not>
+                <Equal>
+                  <Left>
+                    <Dependency path="/ns/eligibleDependantBase" />
+                  </Left>
+                  <Right>
+                    <Dollar>0</Dollar>
+                  </Right>
+                </Equal>
+              </Not>
+            </All>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/ns/parameters/basic" />
+              </Left>
+              <Right>
+                <Dependency path="/ns/eligibleDependantBase" />
+              </Right>
+            </LessThan>
+          </Not>
+          <Not>
+            <LessThan>
+              <Left>
+                <Dependency path="/schedules/claimedGiftsForNs" />
+              </Left>
+              <Right>
+                <Dependency path="/ns/farmerFoodDonations" />
+              </Right>
+            </LessThan>
+          </Not>
+        </All>
+      </Derived>
+    </Fact>
+    <Fact path="/ns/taxPayable">
+      <Description>Reviewed NS provincial income tax for a supported ordinary return. Incomplete until scope, core review, CAD and provincial review/consistency gates are satisfied. Not total Canadian tax or balance owing.</Description>
+      <Derived>
+        <Switch>
+          <Case>
+            <When>
+              <All>
+                <Dependency path="/ns/inScope" />
+                <Dependency path="/ns/creditsReviewed" />
+                <Dependency path="/ns/claimsConsistent" />
+                <Dependency path="/review/coreReady" />
+                <Equal>
+                  <Left>
+                    <Dependency path="/return/currency" />
+                  </Left>
+                  <Right>
+                    <String>CAD</String>
+                  </Right>
+                </Equal>
+              </All>
+            </When>
+            <Then>
+              <Dependency path="/ns/taxAfterCredits" />
+            </Then>
+          </Case>
+        </Switch>
+      </Derived>
+    </Fact>
+  </Facts>
+</FactDictionaryModule>

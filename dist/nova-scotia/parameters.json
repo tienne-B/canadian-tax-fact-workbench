@@ -1,0 +1,53 @@
+{
+  "rates": [
+    "879/10000",
+    "1495/10000",
+    "1667/10000",
+    "175/1000",
+    "21/100"
+  ],
+  "years": {
+    "2025": {
+      "thresholds": [
+        30507,
+        61015,
+        95883,
+        154650
+      ],
+      "basic": 11744,
+      "age": 5734,
+      "spouseCeiling": 12618,
+      "spouseFloor": 874,
+      "baseTaxes": [
+        "2681.57",
+        "7242.51",
+        "13055.01",
+        "23339.23"
+      ]
+    },
+    "2026": {
+      "thresholds": [
+        30995,
+        61991,
+        97417,
+        157124
+      ],
+      "basic": 11932,
+      "age": 5826,
+      "spouseCeiling": 12820,
+      "spouseFloor": 888,
+      "baseTaxes": [
+        "2724.46",
+        "7358.36",
+        "13263.88",
+        "23712.60"
+      ]
+    }
+  },
+  "notes": "2026 spouse ceiling and floor rounded from 2025 under s22A. $30,828 age phase-out threshold is not indexed. No extrapolation beyond explicit packs. Base taxes accumulate exact bands, then round to cents.",
+  "sources": [
+    "https://nslegislature.ca/sites/default/files/legc/statutes%20HTML/income%20tax.htm",
+    "https://www.novascotia.ca/personal-income-tax-rates-and-indexation",
+    "https://www.canada.ca/en/revenue-agency/services/forms-publications/tax-packages-years/general-income-tax-benefit-package/nova-scotia/5003-pc.html"
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "years": {
+    "2025": {
+      "thresholds": [
+        57375,
+        114750,
+        177882,
+        253414
+      ],
+      "rates": [
+        "145/1000",
+        "205/1000",
+        "26/100",
+        "29/100",
+        "33/100"
+      ],
+      "bpaMax": 16129,
+      "bpaMin": 14538,
+      "bases": [
+        "8319.38",
+        "20081.25",
+        "36495.57",
+        "58399.85"
+      ]
+    },
+    "2026": {
+      "thresholds": [
+        58523,
+        117045,
+        181440,
+        258482
+      ],
+      "rates": [
+        "14/100",
+        "205/1000",
+        "26/100",
+        "29/100",
+        "33/100"
+      ],
+      "bpaMax": 16452,
+      "bpaMin": 14829,
+      "bases": [
+        "8193.22",
+        "20190.23",
+        "36932.93",
+        "59275.11"
+      ]
+    }
+  },
+  "sources": [
+    "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/5000-r/5000-r-25e.txt",
+    "https://www.canada.ca/en/revenue-agency/services/tax/individuals/tax-rates-brackets.html",
+    "https://www.canada.ca/en/revenue-agency/services/forms-publications/payroll/t4032-payroll-deductions-tables/t4032oc-jan/t4032oc-january-general-information.html"
+  ],
+  "retrieved": "2026-09-12",
+  "notes": "2026 final-return layout not yet verified. Formula sequence follows 2025 T1. Base taxes use exact bands before rounding."
+}
